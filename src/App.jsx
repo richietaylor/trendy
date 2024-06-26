@@ -10,8 +10,8 @@ import ReactFlow, {
  
 import DownloadButton from './DownloadButton.jsx';
 // import CustomNode from './CustomNode';
-import SaveButton from './SaveButton.jsx';
-import UploadButton from './UploadButton.jsx';
+// import SaveButton from './SaveButton.jsx';
+// import UploadButton from './UploadButton.jsx';
 import { initialNodes, initialEdges } from './nodes-edges';
 // import ShapePalette from './ShapePalette';
 
@@ -46,8 +46,8 @@ export default function App() {
         <MiniMap />
         <Background variant="dots" gap={12} size={1} />
         <DownloadButton />
-        <SaveButton nodes={nodes} edges={edges} />
-        <UploadButton onLoad={loadGraph} />
+        {/* <SaveButton nodes={nodes} edges={edges} /> */}
+        {/* <UploadButton onLoad={loadGraph} /> */}
       </ReactFlow>
     </div>
   );

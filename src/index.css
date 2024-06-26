@@ -13,6 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* No idea what a is lol */
 a {
   font-weight: 500;
   color: #646cff;
@@ -35,6 +36,8 @@ h1 {
   line-height: 1.1;
 }
 
+
+/* For all buttons */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -54,6 +57,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* No idea what this does */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -67,6 +71,7 @@ button:focus-visible {
   }
 }
 
+/* For download button */
 .download-image.react-flow {
   background: #1a365d;
 }
@@ -95,7 +100,7 @@ button:focus-visible {
   transform: none;
 }
 
-.download-image .download-btn {
+/* .download-image .download-btn {
   border: 1px solid #eee;
   background: #ebf8ff;
   padding: 10px 20px;
@@ -106,25 +111,6 @@ button:focus-visible {
 
 .download-image .download-btn:hover {
   opacity: 0.9;
-}
+} */
 
-.shape-palette {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-  width: 150px;
-}
 
-.shape-item {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  background-color: #f0f0f0;
-  cursor: grab;
-}
-
-.reactflow-wrapper {
-  height: 100%;
-  width: calc(100% - 150px);
-}
