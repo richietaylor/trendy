@@ -6,6 +6,8 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   addEdge,
+  useReactFlow,
+  ReactFlowProvider,
 } from 'reactflow';
  
 import DownloadButton from './DownloadButton.jsx';
@@ -14,6 +16,7 @@ import DownloadButton from './DownloadButton.jsx';
 // import UploadButton from './UploadButton.jsx';
 import { initialNodes, initialEdges } from './nodes-edges';
 // import ShapePalette from './ShapePalette';
+import Sidebar from './Sidebar';
 
 import 'reactflow/dist/style.css';
  
@@ -23,10 +26,26 @@ export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
  
+//   const onConnect = useCallback(
+//     (params) => setEdges((eds) => addEdge(params, eds)),
+//     [setEdges],
+//   );
+
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) => {
+        //set some custom parameters here
+      const customizedParams = {
+        ...params,
+        type: 'customEdge',
+        label: 'New Connection',
+      };
+      console.log('Customized Params:', customizedParams);
+      setEdges((eds) => addEdge(customizedParams, eds));
+    },
     [setEdges],
   );
+  
+
 
   const loadGraph = (graph) => {
     setNodes(graph.nodes || []);
