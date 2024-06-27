@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -19,13 +19,19 @@ import { initialNodes, initialEdges } from './nodes-edges';
 import Sidebar from './Sidebar';
 
 import 'reactflow/dist/style.css';
+import './index.css';
+
  
+let id = 0;
+const getId = () => `dndnode_${id++}`;
 
 
-export default function App() {
+// export default function App() {
+const DnDFlow = () => {
+  const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
- 
+  const { project } = useReactFlow();
 //   const onConnect = useCallback(
 //     (params) => setEdges((eds) => addEdge(params, eds)),
 //     [setEdges],
@@ -45,6 +51,42 @@ export default function App() {
     [setEdges],
   );
   
+  const onDragOver = useCallback((event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+      console.log('Drop event:', event);
+  
+      const type = event.dataTransfer.getData('application/reactflow');
+      console.log('Node type:', type);
+  
+      if (typeof type === 'undefined' || !type) {
+        return;
+      }
+  
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+      const position = project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+      console.log('Position:', position);
+  
+      const newNode = {
+        id: getId(),
+        type,
+        position,
+        data: { label: `${type} node` },
+      };
+  
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [project, setNodes],
+  );
+  
 
 
   const loadGraph = (graph) => {
@@ -59,18 +101,30 @@ export default function App() {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onDrop={onDrop}
         onConnect={onConnect}
+        onDragOver={onDragOver}
+        ref={reactFlowWrapper}
       >
         <Controls />
         <MiniMap />
         <Background variant="dots" gap={12} size={1} />
         <DownloadButton />
+        <Sidebar/>
         {/* <SaveButton nodes={nodes} edges={edges} /> */}
         {/* <UploadButton onLoad={loadGraph} /> */}
       </ReactFlow>
     </div>
   );
-}
+};
+
+export default function App() {
+    return (
+      <ReactFlowProvider>
+        <DnDFlow />
+      </ReactFlowProvider>
+    );
+  }
 
 // import React, { useCallback } from 'react';
 // import ReactFlow, {
