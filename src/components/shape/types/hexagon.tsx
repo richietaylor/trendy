@@ -1,4 +1,3 @@
-import React from 'react';
 import { type ShapeProps } from '.';
 import { generatePath } from './utils';
 

@@ -20,7 +20,6 @@ import { defaultNodes, defaultEdges } from './initial-elements';
 import ShapeNode from './components/shape-node';
 import Sidebar from './components/sidebar';
 import MiniMapNode from './components/minimap-node';
-import React from 'react';
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNode,

@@ -1,7 +1,6 @@
 import { type DragEvent, useRef } from 'react';
 import Shape from '../shape';
 import { type ShapeType } from '../shape/types';
-import React from 'react';
 
 type SidebarItemProps = {
   type: ShapeType;
