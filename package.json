@@ -11,6 +11,7 @@
     "generate-js": "npx tsc --jsx preserve -t es2020 --outDir srcJs --noEmit false && npx prettier srcJs --write && npx shx cp src/*.css srcJs"
   },
   "dependencies": {
+    "leva": "^0.9.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reactflow": "^11.10.1"
