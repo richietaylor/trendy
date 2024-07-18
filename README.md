@@ -1,54 +1,109 @@
-![](https://github.com/xyflow/web/blob/main/assets/codesandbox-header-ts.png?raw=true)
+# Shapes Editor
 
-# React Flow starter (Vite + TS)
+This pro example shows how to implement an editor for flowcharts and diagrams. It contains a resizable custom node component that can render different shapes as well as common editor ui components such as a sidebar and interactive minimap.
 
-We've put together this template to serve as a starting point for folks
-interested in React Flow. You can use this both as a base for your own React
-Flow applications, or for small experiments or bug reports.
+## Dependencies
 
-**TypeScript not your thing?** We also have a vanilla JavaScript starter template,
-just for you!
+- @xyflow/react
 
-## Getting up and running
+## Breakdown
 
-You can get this template without forking/cloning the repo using `degit`:
+### Implementing the shape component
 
-```bash
-npx degit xyflow/vite-react-flow-template your-app-name
+The key parts of this example is a reusable component that renders a svg containing a shape with certain dimensions. To add your own shape, you can add it to `/src/components/shape/types`.
+
+Each shape gets the same props passed from the wrapper component and returns an svg `path` based on the dimensions. As an example, this component renders a diamond shape:
+
+```ts
+function Diamond({ width, height, ...svgAttributes }: ShapeProps) {
+  // The `generatePath` function is a helper that turns an array of points into an svg path definition
+  const diamondPath = generatePath([
+    [0, height / 2],
+    [width / 2, 0],
+    [width, height / 2],
+    [width / 2, height],
+  ]);
+
+  return <path d={diamondPath} {...svgAttributes} />;
+}
 ```
 
-The template contains mostly the minimum dependencies to get up and running, but
-also includes eslint and some additional rules to help you write React code that
-is less likely to run into issues:
+By making the wrapper component (/src/components/shape/index.tsx) accept a `type` prop (string), we can render any shape that we have registered and wrap it with an svg element:
 
-```bash
-npm install # or `pnpm install` or `yarn install`
+```tsx
+// simplified, for full implementation see: /src/components/shape/index.tsx
+function Shape({ type }: { type: string }) {
+  // this returns the shape component (for example the diamond we have created above)
+  const ShapeComponent = ShapeComponents[type];
+
+  return (
+    <svg>
+      <ShapeComponent />
+    </svg>
+  );
+}
 ```
 
-Vite is a great development server and build tool that we recommend our users to
-use. You can start a development server with:
+### Implementing the custom shape node
 
-```bash
-npm run dev
+Now that we have a component rendering the shape, we can create our custom node with it:
+
+```tsx
+// simplified, for full implementation see: src/components/shape-node/index.tsx
+function ShapeNode({ data }) {
+  const { width, height } = useNodeDimensions(id);
+
+  return (
+    <Shape
+      type={data.type}
+      width={width}
+      height={height}
+      fill={data.color}
+      strokeWidth={2}
+      stroke={data.color}
+      fillOpacity={0.8}
+    />
+  );
+}
 ```
 
-While the development server is running, changes you make to the code will be
-automatically reflected in the browser!
+By rendering the shape based on the data passed to the node, we have full control over the node from the node options. So, we can define our nodes like this:
 
-## Things to try:
+```ts
+const nodes = [
+  {
+    id: 'diamond-node',
+    // we are using the same node type for all nodes
+    type: 'shape',
+    // the color and type of the shape is defined in the data option
+    data: { type: 'diamond', color: '#ff0071' },
+    // the initial dimensions that the node will be rendered with
+    style: { width: 300, height: 300 },
+    position: { x: 100, y: 100 },
+  },
+];
+```
 
-- Create a new custom node inside `src/nodes/` (don't forget to export it from `src/nodes/index.ts`).
-- Change how things look by [overriding some of the built-in classes](https://reactflow.dev/learn/customization/theming#overriding-built-in-classes).
-- Add a layouting library to [position your nodes automatically](https://reactflow.dev/learn/layouting/layouting)
+In the actual implementation, there are other pieces added to the custom node such as a `NodeToolbar` to edit the color, an editable node label and a `NodeResizer` to change the dimensions of the node.
 
-## Resources
+### Reusing the shapes component
 
-Links:
+The shapes component is reused multiple times in our application:
 
-- [React Flow - Docs](https://reactflow.dev)
-- [React Flow - Discord](https://discord.com/invite/Bqt6xrs)
+1. Inside our custom node to render the shape node
+2. Within the sidebar component as a little icon of the shape it will create
+3. In the minimap node to render the actual shape of the nodes in the minimap
 
-Learn:
+## Related docs:
 
-- [React Flow – Custom Nodes](https://reactflow.dev/learn/customization/custom-nodes)
-- [React Flow – Layouting](https://reactflow.dev/learn/layouting/layouting)
+You can read more about some of React Flow features we're using in this example here:
+
+- [Custom Nodes](https://reactflow.dev/learn/customization/custom-nodes)
+- [NodeResizer](https://reactflow.dev/api-reference/components/node-resizer)
+- [NodeToolbar](https://reactflow.dev/api-reference/components/node-toolbar)
+- [Panel](https://reactflow.dev/api-reference/components/panel)
+
+## See also:
+
+- [Can you control how an SVG's stroke-width is drawn?](https://stackoverflow.com/questions/7241393/can-you-control-how-an-svgs-stroke-width-is-drawn): Because the stroke of an svg can't be drawn inside of a shape, we are subtracting the stroke width from the svg size so that it doesn't overflow.
+- [Paths](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths): Detailed explanation on how to draw SVG paths manually
