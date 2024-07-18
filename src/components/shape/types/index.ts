@@ -11,6 +11,7 @@ import Cylinder from './cylinder';
 import Triangle from './triangle';
 import Parallelogram from './parallelogram';
 import Plus from './plus';
+import Entity from './entity'
 
 // here we register all the shapes that are available
 // you can add your own here
@@ -25,6 +26,7 @@ export const ShapeComponents = {
   triangle: Triangle,
   parallelogram: Parallelogram,
   plus: Plus,
+  entity: Entity,
 };
 
 export type ShapeType = keyof typeof ShapeComponents;
