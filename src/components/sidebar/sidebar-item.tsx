@@ -32,7 +32,7 @@ function SidebarItem({ type }: SidebarItemProps) {
           type={type}
           width={80}
           height={80}
-          fill="#3F8AE2"
+          fill="white"
           fillOpacity={0.7}
           stroke="#3F8AE2"
           strokeWidth={2}

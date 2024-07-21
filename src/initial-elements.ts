@@ -14,7 +14,17 @@ export const defaultNodes: ShapeNode[] = [
       type: 'temporalRelationship',
       color: 'black',
     },
-  }
+  },
+  {
+    id: '2',
+    type: 'shape',
+    position: { x: 20, y: 20 },
+    style: { width: 120, height: 80 },
+    data: {
+      type: 'temporalAttribute',
+      color: 'black',
+    },
+  } 
 ];
 
 export const defaultEdges: Edge[] = [];

@@ -1,24 +1,26 @@
 import { SVGAttributes } from 'react';
 import type { Node } from '@xyflow/react';
 
-import Circle from './circle';
-import RoundRectangle from './round-rectangle';
-import Rectangle from './rectangle';
-import Hexagon from './hexagon';
-import Diamond from './diamond';
-import ArrowRectangle from './arrow-rectangle';
-import Cylinder from './cylinder';
-import Triangle from './triangle';
-import Parallelogram from './parallelogram';
-import Plus from './plus';
+// import Circle from './TemporalAttribute';
+// import RoundRectangle from './round-rectangle';
+// import Rectangle from './TemporalEntity';
+// import Hexagon from './hexagon';
+// import Diamond from './diamond';
+// import ArrowRectangle from './arrow-rectangle';
+// import Cylinder from './cylinder';
+// import Triangle from './triangle';
+// import Parallelogram from './parallelogram';
+// import Plus from './plus';
 import TemporalRelationship from './temporalRelationship'
-
+import TemporalEntity from './TemporalEntity'
+import TemporalAttribute from './TemporalAttribute'
+import FrozenAttribute from './FrozenAttribute'
 // here we register all the shapes that are available
 // you can add your own here
 export const ShapeComponents = {
   // circle: Circle,
   // 'round-rectangle': RoundRectangle,
-  rectangle: Rectangle,
+  // rectangle: Rectangle,
   // hexagon: Hexagon,
   // diamond: Diamond,
   // 'arrow-rectangle': ArrowRectangle,
@@ -27,6 +29,10 @@ export const ShapeComponents = {
   // parallelogram: Parallelogram,
   // plus: Plus,
   temporalRelationship: TemporalRelationship,
+  temporalEntity: TemporalEntity,
+  temporalAttribute: TemporalAttribute,
+  frozenAttribute: FrozenAttribute
+  
 };
 
 export type ShapeType = keyof typeof ShapeComponents;

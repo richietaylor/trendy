@@ -72,6 +72,7 @@ function ShapesProExampleApp({
       data: {
         type,
         color: 'black',
+        // fill: "white",
       },
       selected: true,
     };
@@ -97,7 +98,7 @@ function ShapesProExampleApp({
       panOnScroll={panOnScroll}
       onDrop={onDrop}
       snapToGrid={snapToGrid}
-      snapGrid={[10, 10]}
+      snapGrid={[20, 20]}
       onDragOver={onDragOver}
       zoomOnDoubleClick={zoomOnDoubleClick}
     >

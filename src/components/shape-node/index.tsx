@@ -68,9 +68,9 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
         type={type}
         width={width}
         height={height}
-        fill={color}
+        fill={"white"}
         strokeWidth={2}
-        stroke={color}
+        stroke={"black"}
         fillOpacity={0.8}
       />
       <Handle
