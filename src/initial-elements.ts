@@ -11,7 +11,7 @@ export const defaultNodes: ShapeNode[] = [
     position: { x: 0, y: 0 },
     style: { width: 120, height: 80 },
     data: {
-      type: 'entity',
+      type: 'temporalRelationship',
       color: 'black',
     },
   }

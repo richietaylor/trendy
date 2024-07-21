@@ -2,6 +2,12 @@ import React from 'react';
 import { type ShapeProps } from '.';
 import { generatePath } from './utils';
 
+// Import the SVG image
+import SmallImage from './clock.svg';
+
+export const placeholder = "Relation";
+
+
 function Diamond({ width, height, ...svgAttributes }: ShapeProps) {
   const diamondPath = generatePath([
     [0, height / 2],
@@ -9,20 +15,23 @@ function Diamond({ width, height, ...svgAttributes }: ShapeProps) {
     [width, height / 2],
     [width / 2, height],
   ]);
-  const handleStyle = {
-    background: '#555',
-    border: '2px solid white',  // Make the handles more visible
-    width: '10px', 
-    height: '10px',
-    display: 'block', // Ensure handles are always displayed
-  };
+
+  // Calculate the center position of the diamond
+  const imageSize = 20; // Size of the image
+  const centerX = (width - imageSize) / 2 - 35;
+  const centerY = (height - imageSize) / 2;
+
   return (
     <svg width={width} height={height} {...svgAttributes}>
       <path d={diamondPath} fill="white" stroke="black" fillOpacity={1} />
-      <svg x="10" y="10" width="24" height="24" viewBox="0 0 24 24">
-        {/* <!-- Your SVG content here, example below --> */}
-        {/* <circle cx="12" cy="12" r="10" stroke="black" strokeWidth="1" fill="blue" /> */}
-      </svg>
+      {/* Center the small SVG image within the diamond */}
+      <image
+        href={SmallImage}
+        x={centerX}
+        y={centerY}
+        width={imageSize}
+        height={imageSize}
+      />
     </svg>
   );
 }

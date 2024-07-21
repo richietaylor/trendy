@@ -22,6 +22,7 @@ function useNodeDimensions(id: string) {
   };
 }
 
+
 function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
   const { color, type } = data;
   const { setNodes } = useReactFlow();
@@ -30,7 +31,7 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
   const shiftKeyPressed = useKeyPress('Shift');
   // const handleStyle = { backgroundColor: color };
   const handleStyle = {
-    background: '#555',
+    background: 'black',
     border: '2px solid white',  // Make the handles more visible
     width: '10px', 
     height: '10px',
@@ -77,6 +78,7 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
         id="top"
         type="source"
         position={Position.Top}
+        // isVisible={true}
       />
       <Handle
         style={handleStyle}
@@ -96,7 +98,7 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
         type="source"
         position={Position.Left}
       />
-      <NodeLabel placeholder={data.type} />
+      <NodeLabel placeholder={"Test" || data.type} />
     </>
   );
 }

@@ -20,7 +20,7 @@ import '@xyflow/react/dist/style.css';
 import { defaultNodes, defaultEdges } from './initial-elements';
 import ShapeNodeComponent from './components/shape-node';
 import Sidebar from './components/sidebar';
-import MiniMapNode from './components/minimap-node';
+// import MiniMapNode from './components/minimap-node';
 import { ShapeNode, ShapeType } from './components/shape/types';
 
 const nodeTypes: NodeTypes = {
@@ -106,7 +106,8 @@ function ShapesProExampleApp({
         <Sidebar />
       </Panel>
       <Controls />
-      <MiniMap zoomable draggable nodeComponent={MiniMapNode} />
+      {/* <MiniMap zoomable draggable nodeComponent={MiniMapNode} /> */}
+      <MiniMap/>
     </ReactFlow>
   );
 }

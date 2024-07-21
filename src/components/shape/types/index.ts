@@ -11,14 +11,14 @@ import Cylinder from './cylinder';
 import Triangle from './triangle';
 import Parallelogram from './parallelogram';
 import Plus from './plus';
-import Entity from './entity'
+import TemporalRelationship from './temporalRelationship'
 
 // here we register all the shapes that are available
 // you can add your own here
 export const ShapeComponents = {
   // circle: Circle,
   // 'round-rectangle': RoundRectangle,
-  // rectangle: Rectangle,
+  rectangle: Rectangle,
   // hexagon: Hexagon,
   // diamond: Diamond,
   // 'arrow-rectangle': ArrowRectangle,
@@ -26,7 +26,7 @@ export const ShapeComponents = {
   // triangle: Triangle,
   // parallelogram: Parallelogram,
   // plus: Plus,
-  entity: Entity,
+  temporalRelationship: TemporalRelationship,
 };
 
 export type ShapeType = keyof typeof ShapeComponents;
