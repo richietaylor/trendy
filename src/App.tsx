@@ -29,14 +29,14 @@ const nodeTypes: NodeTypes = {
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
   type: 'smoothstep',
-  markerEnd: { type: MarkerType.ArrowClosed },
-  style: { strokeWidth: 2 },
+  markerEnd: { type: MarkerType.ArrowClosed, color:'black' },
+  style: { stroke: 'black', strokeWidth: 2 },
 };
 
 const proOptions = { account: 'paid-pro', hideAttribution: true };
 
 type ExampleProps = {
-  theme?: 'dark' | 'light';
+  theme?: 'light' | 'dark';
   snapToGrid?: boolean;
   panOnScroll?: boolean;
   zoomOnDoubleClick?: boolean;
@@ -68,10 +68,10 @@ function ShapesProExampleApp({
       id: Date.now().toString(),
       type: 'shape',
       position,
-      style: { width: 100, height: 100 },
+      style: { width: 120, height: 80 },
       data: {
         type,
-        color: '#3F8AE2',
+        color: 'black',
       },
       selected: true,
     };
@@ -115,7 +115,7 @@ function ProExampleWrapper() {
   // 👇 this renders a leva control panel to interactively configure the example
   // you can safely remove this in your own app
   const props = useControls({
-    theme: { options: ['dark', 'light'] },
+    theme: { value: 'light', options: ['dark', 'light'] },
     snapToGrid: true,
     panOnScroll: true,
     zoomOnDoubleClick: false,

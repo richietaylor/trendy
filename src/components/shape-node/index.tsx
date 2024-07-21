@@ -28,7 +28,14 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
 
   const { width, height } = useNodeDimensions(id);
   const shiftKeyPressed = useKeyPress('Shift');
-  const handleStyle = { backgroundColor: color };
+  // const handleStyle = { backgroundColor: color };
+  const handleStyle = {
+    background: '#555',
+    border: '2px solid white',  // Make the handles more visible
+    width: '10px', 
+    height: '10px',
+    display: 'block', // Ensure handles are always displayed
+  };
 
   const onColorChange = (color: string) => {
     setNodes((nodes) =>

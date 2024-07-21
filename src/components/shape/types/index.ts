@@ -16,16 +16,16 @@ import Entity from './entity'
 // here we register all the shapes that are available
 // you can add your own here
 export const ShapeComponents = {
-  circle: Circle,
-  'round-rectangle': RoundRectangle,
-  rectangle: Rectangle,
-  hexagon: Hexagon,
-  diamond: Diamond,
-  'arrow-rectangle': ArrowRectangle,
-  cylinder: Cylinder,
-  triangle: Triangle,
-  parallelogram: Parallelogram,
-  plus: Plus,
+  // circle: Circle,
+  // 'round-rectangle': RoundRectangle,
+  // rectangle: Rectangle,
+  // hexagon: Hexagon,
+  // diamond: Diamond,
+  // 'arrow-rectangle': ArrowRectangle,
+  // cylinder: Cylinder,
+  // triangle: Triangle,
+  // parallelogram: Parallelogram,
+  // plus: Plus,
   entity: Entity,
 };
 
