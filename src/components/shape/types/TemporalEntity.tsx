@@ -6,16 +6,16 @@
 
 // export default Rectangle;
 
-import React from 'react';
+// import React from 'react';
 import { type ShapeProps } from '.';
 
 // Import the SVG image
-import SmallImage from './clock.svg';
+import SmallImage from '../../../../public/clock.svg';
 
 function Rectangle({ width, height, ...svgAttributes }: ShapeProps) {
-  // Calculate the center position of the image
+  // Calculate the vertical center position of the image
   const imageSize = 20; // Size of the image
-  const centerX = (width - imageSize) / 2 - 40;
+  const offsetX = 5; // Offset from the left border
   const centerY = (height - imageSize) / 2;
 
   return (
@@ -25,14 +25,14 @@ function Rectangle({ width, height, ...svgAttributes }: ShapeProps) {
         y={0}
         width={width}
         height={height}
-        // fill="white" // Set the center to white
-        // stroke="black" // Optional: set the border color
+        fill="white" // Set the center to white
+        stroke="black" // Optional: set the border color
         strokeWidth={4} // Optional: set the border width
       />
-      {/* Center the small SVG image within the rectangle */}
+      {/* Position the small SVG image 5 pixels away from the left border */}
       <image
         href={SmallImage}
-        x={centerX}
+        x={offsetX}
         y={centerY}
         width={imageSize}
         height={imageSize}

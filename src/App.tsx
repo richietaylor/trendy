@@ -1,4 +1,4 @@
-import { DragEvent, DragEventHandler } from 'react';
+import { DragEvent, DragEventHandler, useEffect, useCallback } from 'react';
 import {
   ReactFlow,
   Background,
@@ -12,6 +12,8 @@ import {
   Controls,
   useReactFlow,
   MiniMap,
+  useNodesState,
+  useEdgesState,
 } from '@xyflow/react';
 import { useControls } from 'leva';
 
@@ -83,6 +85,23 @@ function ShapesProExampleApp({
       ])
     );
   };
+
+  const deleteSelectedElements = useCallback(() => {
+    setNodes((nds) => nds.filter((node) => !node.selected));
+    // setEdges((eds) => eds.filter((edge) => !edge.selected));
+  }, [setNodes]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Delete') {
+        deleteSelectedElements();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [deleteSelectedElements]);
 
   return (
     <ReactFlow

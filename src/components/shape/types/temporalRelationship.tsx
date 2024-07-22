@@ -3,10 +3,9 @@ import { type ShapeProps } from '.';
 import { generatePath } from './utils';
 
 // Import the SVG image
-import SmallImage from './clock.svg';
+import SmallImage from '../../../../public/clock.svg';
 
 export const placeholder = "Relation";
-
 
 function Diamond({ width, height, ...svgAttributes }: ShapeProps) {
   const diamondPath = generatePath([
@@ -18,16 +17,16 @@ function Diamond({ width, height, ...svgAttributes }: ShapeProps) {
 
   // Calculate the center position of the diamond
   const imageSize = 20; // Size of the image
-  const centerX = (width - imageSize) / 2 - 35;
+  const offsetX = 10; // Offset from the left border
   const centerY = (height - imageSize) / 2;
 
   return (
     <svg width={width} height={height} {...svgAttributes}>
       <path d={diamondPath} fill="white" stroke="black" fillOpacity={1} />
-      {/* Center the small SVG image within the diamond */}
+      {/* Position the small SVG image 5 pixels away from the left border */}
       <image
         href={SmallImage}
-        x={centerX}
+        x={offsetX}
         y={centerY}
         width={imageSize}
         height={imageSize}

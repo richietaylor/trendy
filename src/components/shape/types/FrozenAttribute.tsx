@@ -18,29 +18,29 @@
 import { type ShapeProps } from '.';
 
 // Import the SVG image
-import SmallImage from './pin.svg';
+import SmallImage from '../../../../public/pin.svg';
 
 function Circle({ width, height, ...svgAttributes }: ShapeProps) {
-  // Calculate the center position of the image
+  // Calculate the vertical center position of the image
   const imageSize = 20; // Size of the image
-  const centerX = (width - imageSize) / 2 - 40;
-  const centerY = (height - imageSize) / 2 -1;
+  const offsetX = 5; // Offset from the left border
+  const centerY = (height - imageSize) / 2 - 1;
 
   return (
     <svg width={width} height={height} {...svgAttributes}>
       <ellipse
-        cx={(width / 2)}
-        cy={(height / 2)}
-        rx={(width / 2)-1}
-        ry={(height / 3)-1}
+        cx={width / 2}
+        cy={height / 2}
+        rx={width / 2 - 1}
+        ry={height / 3 - 1}
         fill="white" // Set the center to white
         stroke="black" // Optional: set the border color
         strokeWidth={2} // Optional: set the border width
       />
-      {/* Center the small SVG image within the ellipse */}
+      {/* Position the small SVG image 5 pixels away from the left border */}
       <image
         href={SmallImage}
-        x={centerX}
+        x={offsetX}
         y={centerY}
         width={imageSize}
         height={imageSize}
