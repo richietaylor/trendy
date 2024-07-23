@@ -9,10 +9,14 @@ export const placeholder = "Relation";
 
 function Diamond({ width, height, ...svgAttributes }: ShapeProps) {
   const diamondPath = generatePath([
-    [0, height / 2],
-    [width / 2, 0],
-    [width, height / 2],
-    [width / 2, height],
+    // [0, height / 2],
+    // [width / 2, 0],
+    // [width, height / 2],
+    // [width / 2, height],
+    [1, height / 2],             
+    [width / 2, 1],              
+    [width - 1, height / 2],     
+    [width / 2, height - 1],
   ]);
 
   // Calculate the center position of the diamond

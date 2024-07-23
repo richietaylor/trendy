@@ -19,8 +19,8 @@ export const defaultNodes: ShapeNode[] = [
   {
     id: '2',
     type: 'shape',
-    position: { x: 20, y: 20 },
-    style: { width: 120, height: 120 },
+    position: { x: 200, y: 20 },
+    style: { width: 120, height: 80 },
     data: {
       type: 'temporalAttribute',
       color: 'black',
@@ -31,9 +31,22 @@ export const defaultNodes: ShapeNode[] = [
 export const defaultEdges: Edge[] = [ {
   id: 'e1-2',
   source: '1',
+  sourceHandle:'right',
   target: '2',
+  targetHandle:"left",
   type: 'optionalEvolution',  // Specify custom type here
   animated: false,
   // markerEnd: {type: MarkerType.ArrowClosed, color: 'black'},
   style: { stroke: 'black', strokeWidth: 2 },
-},];
+  
+},{
+  id: 'e2-1',
+  source: '2',
+  sourceHandle:'top',
+  target: '1',
+  targetHandle:'top',
+  type: 'mandatoryExtension',  // Specify custom type here
+  animated: false,
+  // markerEnd: {type: MarkerType.ArrowClosed, color: 'black'},
+  style: { stroke: 'black', strokeWidth: 2 },
+}];

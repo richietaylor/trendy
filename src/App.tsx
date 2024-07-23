@@ -25,6 +25,7 @@ import Sidebar from './components/sidebar';
 // import MiniMapNode from './components/minimap-node';
 import { ShapeNode, ShapeType } from './components/shape/types';
 import OptionalEvolution from './components/edges/OptionalEvolution'
+import MandatoryExtension from './components/edges/MandatoryExtension';
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
@@ -32,6 +33,7 @@ const nodeTypes: NodeTypes = {
 
 const edgeTypes = {
   optionalEvolution: OptionalEvolution,
+  mandatoryExtension: MandatoryExtension
 };
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
