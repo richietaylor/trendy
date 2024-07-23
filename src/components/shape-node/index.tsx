@@ -9,7 +9,7 @@ import {
 } from '@xyflow/react';
 
 import Shape from '../shape';
-import ShapeNodeToolbar from '../toolbar';
+// import ShapeNodeToolbar from '../toolbar';
 import { type ShapeNode } from '../shape/types';
 import NodeLabel from './label';
 
@@ -58,7 +58,7 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
 
   return (
     <>
-      <ShapeNodeToolbar onColorChange={onColorChange} activeColor={color} />
+      {/* <ShapeNodeToolbar onColorChange={onColorChange} activeColor={color} /> */}
       <NodeResizer
         color={color}
         keepAspectRatio={shiftKeyPressed}

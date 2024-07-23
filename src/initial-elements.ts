@@ -27,4 +27,11 @@ export const defaultNodes: ShapeNode[] = [
   } 
 ];
 
-export const defaultEdges: Edge[] = [];
+export const defaultEdges: Edge[] = [ {
+  id: 'e1-2',
+  source: '1',
+  target: '2',
+  type: 'custom',  // Specify custom type here
+  animated: false,
+  style: { stroke: 'black', strokeWidth: 2 },
+},];

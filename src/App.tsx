@@ -24,9 +24,14 @@ import ShapeNodeComponent from './components/shape-node';
 import Sidebar from './components/sidebar';
 // import MiniMapNode from './components/minimap-node';
 import { ShapeNode, ShapeType } from './components/shape/types';
+import CustomEdge from './components/edges/CustomEdge'
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
+};
+
+const edgeTypes = {
+  custom: CustomEdge,
 };
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
@@ -108,6 +113,7 @@ function ShapesProExampleApp({
       colorMode={theme}
       proOptions={proOptions}
       nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
       defaultNodes={defaultNodes}
       defaultEdges={defaultEdges}
       defaultEdgeOptions={defaultEdgeOptions}
