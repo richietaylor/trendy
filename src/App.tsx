@@ -24,14 +24,14 @@ import ShapeNodeComponent from './components/shape-node';
 import Sidebar from './components/sidebar';
 // import MiniMapNode from './components/minimap-node';
 import { ShapeNode, ShapeType } from './components/shape/types';
-import CustomEdge from './components/edges/CustomEdge'
+import OptionalEvolution from './components/edges/OptionalEvolution'
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
 };
 
 const edgeTypes = {
-  custom: CustomEdge,
+  optionalEvolution: OptionalEvolution,
 };
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
@@ -48,6 +48,14 @@ type ExampleProps = {
   panOnScroll?: boolean;
   zoomOnDoubleClick?: boolean;
 };
+
+const nodeStyles = {
+  temporalAttribute: { width: 120, height: 80 },
+  temporalEntity: { width: 120, height: 80 },
+  temporalRelationship: { width: 120, height: 120 },
+  frozenAttribute: { width: 120, height: 80 },
+};
+
 
 function ShapesProExampleApp({
   theme = 'light',
@@ -75,12 +83,13 @@ function ShapesProExampleApp({
       id: Date.now().toString(),
       type: 'shape',
       position,
-      style: { width: 120, height: 120 },
+      // style: { width: 120, height: 120 },
       data: {
         type,
         color: 'black',
         // fill: "white",
       },
+      style: nodeStyles[type] || { width: 120, height: 120 }, 
       selected: true,
     };
 

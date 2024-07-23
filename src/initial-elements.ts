@@ -32,8 +32,8 @@ export const defaultEdges: Edge[] = [ {
   id: 'e1-2',
   source: '1',
   target: '2',
-  type: 'custom',  // Specify custom type here
+  type: 'optionalEvolution',  // Specify custom type here
   animated: false,
-  markerEnd: {type: MarkerType.ArrowClosed, color: 'black'},
+  // markerEnd: {type: MarkerType.ArrowClosed, color: 'black'},
   style: { stroke: 'black', strokeWidth: 2 },
 },];

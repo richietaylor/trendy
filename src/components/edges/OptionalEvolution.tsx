@@ -2,7 +2,7 @@ import { MarkerType } from '@xyflow/react';
 import React from 'react';
 import { EdgeProps, getSmoothStepPath } from 'reactflow';
 
-const CustomEdge: React.FC<EdgeProps> = ({
+const OptionalEvolution: React.FC<EdgeProps> = ({
   id,
   sourceX,
   sourceY,
@@ -57,8 +57,12 @@ const CustomEdge: React.FC<EdgeProps> = ({
           CHG
         </textPath>
       </text>
+      {/* Add the bottom for Quantitative */}
+    {/* <foreignObject x={labelX + 20} y={labelY - 10} width="40" height="20">
+      <input type="number" style={{ width: '100%', height: '100%' }} />
+    </foreignObject> */}
     </>
   );
 };
 
-export default CustomEdge;
+export default OptionalEvolution;
