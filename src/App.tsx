@@ -36,7 +36,7 @@ const edgeTypes = {
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
   type: 'smoothstep',
-  markerEnd: { type: MarkerType.ArrowClosed, color:'black' },
+  // markerEnd: { type: MarkerType.ArrowClosed, color:'black' },
   style: { stroke: 'black', strokeWidth: 2 },
 };
 
@@ -75,7 +75,7 @@ function ShapesProExampleApp({
       id: Date.now().toString(),
       type: 'shape',
       position,
-      style: { width: 120, height: 80 },
+      style: { width: 120, height: 120 },
       data: {
         type,
         color: 'black',

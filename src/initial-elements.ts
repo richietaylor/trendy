@@ -1,5 +1,6 @@
-import { type Edge } from '@xyflow/react';
+import { MarkerType, type Edge } from '@xyflow/react';
 import { type ShapeNode } from './components/shape/types';
+import ArrowRectangle from './components/shape/types/arrow-rectangle';
 
 // export const defaultNodes: ShapeNode[] = []
 // export const defaultEdges: Edge[] = []
@@ -9,7 +10,7 @@ export const defaultNodes: ShapeNode[] = [
     id: '1',
     type: 'shape',
     position: { x: 0, y: 0 },
-    style: { width: 120, height: 80 },
+    style: { width: 120, height: 120 },
     data: {
       type: 'temporalRelationship',
       color: 'black',
@@ -19,7 +20,7 @@ export const defaultNodes: ShapeNode[] = [
     id: '2',
     type: 'shape',
     position: { x: 20, y: 20 },
-    style: { width: 120, height: 80 },
+    style: { width: 120, height: 120 },
     data: {
       type: 'temporalAttribute',
       color: 'black',
@@ -33,5 +34,6 @@ export const defaultEdges: Edge[] = [ {
   target: '2',
   type: 'custom',  // Specify custom type here
   animated: false,
+  markerEnd: {type: MarkerType.ArrowClosed, color: 'black'},
   style: { stroke: 'black', strokeWidth: 2 },
 },];

@@ -32,7 +32,7 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
   // const handleStyle = { backgroundColor: color };
   const handleStyle = {
     background: 'black',
-    border: '2px solid white',  // Make the handles more visible
+    border: '1px solid white',  // Make the handles more visible
     width: '10px', 
     height: '10px',
     display: 'block', // Ensure handles are always displayed
