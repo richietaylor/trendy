@@ -1,3 +1,87 @@
+// import { MarkerType } from '@xyflow/react';
+// import React from 'react';
+// import { EdgeProps, getSmoothStepPath } from 'reactflow';
+
+// const MandatoryFutureExtension: React.FC<EdgeProps> = ({
+//   id,
+//   sourceX,
+//   sourceY,
+//   targetX,
+//   targetY,
+//   sourcePosition,
+//   targetPosition,
+//   style = {},
+//   markerEnd = { type: MarkerType.ArrowClosed, color: 'black' },
+//   markerStart = { type: MarkerType.ArrowClosed, color: 'black' }, // Default marker start to ArrowClosed
+// }) => {
+//   const [edgePath, labelX, labelY] = getSmoothStepPath({
+//     sourceX,
+//     sourceY,
+//     sourcePosition,
+//     targetX,
+//     targetY,
+//     targetPosition,
+//   });
+
+//   // Ensure markerEnd and markerStart are objects with type and color
+//   const markerEndDef = typeof markerEnd === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerEnd;
+//   const markerStartDef = typeof markerStart === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerStart;
+
+//   // Adjust labelY to render the label above the edge
+//   const adjustedLabelY = labelY - 5; // Adjust this value as needed to position the label above the edge
+//   const adjustedLabelX = labelX - 11;
+
+//   return (
+//     <>
+//       <svg width="0" height="0">
+//         <defs>
+//           <marker
+//             id="open-arrow"
+//             markerWidth="10"
+//             markerHeight="10"
+//             refX="5"
+//             refY="5"
+//             orient="auto"
+//             markerUnits="strokeWidth"
+//           >
+//             <path d="M0,5 L5,0 L10,5 L5,10 Z" fill="none" stroke={markerEndDef.color} />
+//           </marker>
+//           <marker
+//             id="start-arrow"
+//             markerWidth="10"
+//             markerHeight="10"
+//             refX="5"
+//             refY="5"
+//             orient="auto"
+//             markerUnits="strokeWidth"
+//           >
+//             <path d="M0,5 L5,0 L10,5 L5,10 Z" fill="none" stroke={markerStartDef.color} />
+//           </marker>
+//         </defs>
+//       </svg>
+
+//       <path
+//         id={id}
+//         style={{ ...style }} // Apply drop shadow
+//         className="react-flow__edge-path"
+//         d={edgePath}
+//         markerStart="url(#start-arrow)" // Use start arrow marker
+//         markerEnd="url(#open-arrow)" // Use open arrow marker
+//       />
+//       <text x={adjustedLabelX} y={adjustedLabelY} style={{ fontSize: 12 }} textAnchor="middle">
+//         EXT
+//       </text>
+//       {/* Add the bottom for Quantitative */}
+//       {/* <foreignObject x={labelX + 20} y={labelY - 10} width="40" height="20">
+//         <input type="number" style={{ width: '100%', height: '100%' }} />
+//       </foreignObject> */}
+//     </>
+//   );
+// };
+
+// export default MandatoryFutureExtension;
+
+
 import { MarkerType } from '@xyflow/react';
 import React from 'react';
 import { EdgeProps, getSmoothStepPath } from 'reactflow';
@@ -11,7 +95,8 @@ const MandatoryFutureExtension: React.FC<EdgeProps> = ({
   sourcePosition,
   targetPosition,
   style = {},
-  markerEnd = { type: MarkerType.ArrowClosed, color: 'black' }, // Default marker end to ArrowClosed
+  markerEnd = { type: MarkerType.ArrowClosed, color: 'black' },
+  markerStart = { type: MarkerType.ArrowClosed, color: 'black' }, // Default marker start to ArrowClosed
 }) => {
   const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
@@ -22,45 +107,90 @@ const MandatoryFutureExtension: React.FC<EdgeProps> = ({
     targetPosition,
   });
 
-  // Ensure markerEnd is an object with type and color
-  const markerEndDef = typeof markerEnd === 'string' ? { type: MarkerType.Arrow, color: 'black' } : markerEnd;
+  // Ensure markerEnd and markerStart are objects with type and color
+  const markerEndDef = typeof markerEnd === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerEnd;
+  const markerStartDef = typeof markerStart === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerStart;
+
+  // Adjust labelY to render the label above the edge
+  const adjustedLabelY = labelY - 5; // Adjust this value as needed to position the label above the edge
+  const adjustedLabelX = labelX -0;
+
+  // Calculate angle of the edge
+  const dx = targetX - sourceX;
+  const dy = targetY - sourceY;
+  let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+  // Round the angle to the nearest multiple of 90 degrees
+  // console.log(angle)
+  if (angle < 5)
+  {
+    angle = Math.floor(angle / 90) * 90;
+  }
+  else if (angle > 5)
+  {
+    angle = Math.ceil(angle / 90) * 90;
+  }
+  else
+  {
+    angle = Math.round(angle / 90) * 90;
+  }
+  // console.log("----")
+  // console.log(angle)
+ 
 
   return (
     <>
+      <svg width="0" height="0">
+        <defs>
+          <marker
+            id="open-arrow"
+            markerWidth="8"
+            markerHeight="8"
+            refX="4"
+            refY="4"
+            orient="auto"
+            markerUnits="strokeWidth"
+          >
+            <path d="M0,0 L4,4 L0,8" fill="none" stroke={markerEndDef.color} strokeWidth="1" />
+          </marker>
+          <marker
+            id="start-arrow"
+            markerWidth="8"
+            markerHeight="8"
+            refX="4"
+            refY="4"
+            orient="auto"
+            markerUnits="strokeWidth"
+          >
+            <path d="M8,0 L4,4 L8,8" fill="none" stroke={markerStartDef.color} strokeWidth="1" />
+          </marker>
+        </defs>
+      </svg>
+
       <path
         id={id}
-        style={{ ...style}}
+        style={{ ...style , zIndex: 11}}
         className="react-flow__edge-path"
         d={edgePath}
-        markerEnd={`url(#${markerEndDef.type})`} // Use markerEnd type
+        markerStart="url(#start-arrow)" // Use start open arrow marker
+        markerEnd="url(#open-arrow)" // Use end open arrow marker
       />
-      <defs>
-        <marker
-          id={MarkerType.ArrowClosed}
-          markerWidth="10"
-          markerHeight="10"
-          refX="5"
-          refY="5"
-          orient="auto"
-          markerUnits="strokeWidth"
-        >
-          <path d="M0,0 L10,5 L0,10 z" fill={markerEndDef.color} />
-        </marker>
-      </defs>
-      <text>
-        <textPath
-          href={`#${id}`}
-          style={{ fontSize: 12 }}
-          startOffset="50%"
-          textAnchor="middle"
-        >
-          EXT
-        </textPath>
+      {/* <text x={adjustedLabelX} y={adjustedLabelY} style={{ fontSize: 12, zIndex:11 }} textAnchor="middle">
+        EXT
+      </text> */}
+            <text
+        x={labelX}
+        y={labelY-5}
+        style={{ fontSize: 13, zIndex: 10, position: 'relative'}}
+        textAnchor="middle"
+        transform={`rotate(${angle}, ${labelX}, ${labelY})`}
+      >
+        EXT
       </text>
       {/* Add the bottom for Quantitative */}
-    {/* <foreignObject x={labelX + 20} y={labelY - 10} width="40" height="20">
-      <input type="number" style={{ width: '100%', height: '100%' }} />
-    </foreignObject> */}
+      {/* <foreignObject x={labelX + 20} y={labelY - 10} width="40" height="20">
+        <input type="number" style={{ width: '100%', height: '100%' }} />
+      </foreignObject> */}
     </>
   );
 };

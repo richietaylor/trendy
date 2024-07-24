@@ -35,20 +35,20 @@ export const defaultEdges: Edge[] = [
   sourceHandle:'right',
   target: '2',
   targetHandle:"left",
-  type: 'optionalFutureEvolution',  // Specify custom type here
+  type: 'mandatoryFutureExtension',  // Specify custom type here
   animated: false,
   // markerEnd: {type: MarkerType.ArrowClosed, color: 'black'},
-  style: { stroke: 'black', strokeWidth: 2 },
+  // style: { stroke: 'black', strokeWidth: 2 },
   
 },{
   id: 'e2-1',
   source: '2',
   sourceHandle:'top',
   target: '1',
-  targetHandle:'bottom',
-  type: 'mandatoryFutureExtension',  // Specify custom type here
+  targetHandle:'top',
+  type: 'optionalFutureEvolution',  // Specify custom type here
   animated: false,
-  // markerEnd: {type: MarkerType.ArrowClosed, color: 'black'},
-  style: { stroke: 'black', strokeWidth: 2 },
+  // markerEnd: {type: MarkerType.Arrow, color: 'black'},
+  // style: { stroke: 'black', strokeWidth: 2 },
 }
 ];
