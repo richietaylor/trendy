@@ -2,7 +2,7 @@ import { MarkerType } from '@xyflow/react';
 import React from 'react';
 import { EdgeProps, getSmoothStepPath } from 'reactflow';
 
-const MandatoryExtension: React.FC<EdgeProps> = ({
+const OptionalFutureEvolution: React.FC<EdgeProps> = ({
   id,
   sourceX,
   sourceY,
@@ -29,7 +29,7 @@ const MandatoryExtension: React.FC<EdgeProps> = ({
     <>
       <path
         id={id}
-        style={{ ...style}}
+        style={{ ...style, strokeDasharray: '5,5' }}
         className="react-flow__edge-path"
         d={edgePath}
         markerEnd={`url(#${markerEndDef.type})`} // Use markerEnd type
@@ -54,7 +54,7 @@ const MandatoryExtension: React.FC<EdgeProps> = ({
           startOffset="50%"
           textAnchor="middle"
         >
-          EXT
+          CHG
         </textPath>
       </text>
       {/* Add the bottom for Quantitative */}
@@ -65,4 +65,4 @@ const MandatoryExtension: React.FC<EdgeProps> = ({
   );
 };
 
-export default MandatoryExtension;
+export default OptionalFutureEvolution;

@@ -24,7 +24,7 @@ body,
   --background: #0f172a;
   --panel-background: #1e293b;
   --panel-shadow: 0 0 8px 0 rgb(0 0 0 / 0.4);
-  --text: #fafafa;
+  --text: "black";
 }
 
 .react-flow__panel,
@@ -141,4 +141,28 @@ body,
 .node-label::placeholder {
   color: var(--text);
   opacity: 0.5;
+}
+
+/* for edge types */
+.edge-type-selector {
+  background-color: var(--panel-background);
+  box-shadow: var(--panel-shadow);
+  border-radius: 8px;
+  padding: 8px;
+  z-index: 10;
+}
+
+.edge-type-selector select {
+  background: var(--panel-background);
+  color: var(--text);
+  border: 1px solid var(--background);
+  padding: 4px;
+  border-radius: 4px;
+  outline: none;
+}
+
+.edge-type-selector label {
+  color: var(--text);
+  font-size: 12px;
+  user-select: none;
 }

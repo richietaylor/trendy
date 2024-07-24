@@ -28,13 +28,14 @@ export const defaultNodes: ShapeNode[] = [
   } 
 ];
 
-export const defaultEdges: Edge[] = [ {
+export const defaultEdges: Edge[] = [ 
+  {
   id: 'e1-2',
   source: '1',
   sourceHandle:'right',
   target: '2',
   targetHandle:"left",
-  type: 'optionalEvolution',  // Specify custom type here
+  type: 'optionalFutureEvolution',  // Specify custom type here
   animated: false,
   // markerEnd: {type: MarkerType.ArrowClosed, color: 'black'},
   style: { stroke: 'black', strokeWidth: 2 },
@@ -44,9 +45,10 @@ export const defaultEdges: Edge[] = [ {
   source: '2',
   sourceHandle:'top',
   target: '1',
-  targetHandle:'top',
-  type: 'mandatoryExtension',  // Specify custom type here
+  targetHandle:'bottom',
+  type: 'mandatoryFutureExtension',  // Specify custom type here
   animated: false,
   // markerEnd: {type: MarkerType.ArrowClosed, color: 'black'},
   style: { stroke: 'black', strokeWidth: 2 },
-}];
+}
+];

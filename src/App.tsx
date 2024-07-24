@@ -28,16 +28,20 @@ import { defaultNodes, defaultEdges } from './initial-elements';
 import ShapeNodeComponent from './components/shape-node';
 import Sidebar from './components/sidebar';
 import { ShapeNode, ShapeType } from './components/shape/types';
-import OptionalEvolution from './components/edges/OptionalEvolution';
-import MandatoryExtension from './components/edges/MandatoryExtension';
+import OptionalFutureEvolution from './components/edges/OptionalFutureEvolution';
+import MandatoryFutureExtension from './components/edges/MandatoryFutureExtension';
+import OptionalPastEvolution from './components/edges/OptionalPastEvolution';
+// import AtemporalEntity from './components/shape/types/AtemporalEntity';
+// import AtemporalAttribute from './components/shape/types/AtemporalAttribute';
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
 };
 
 const edgeTypes: EdgeTypes = {
-  optionalEvolution: OptionalEvolution,
-  mandatoryExtension: MandatoryExtension,
+  optionalFutureEvolution: OptionalFutureEvolution,
+  // OptionalFutureEvolution
+  mandatoryFutureExtension: MandatoryFutureExtension,
 };
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
@@ -59,6 +63,9 @@ const nodeStyles = {
   temporalEntity: { width: 120, height: 80 },
   temporalRelationship: { width: 120, height: 120 },
   frozenAttribute: { width: 120, height: 80 },
+  atemporalEntity: { width: 120, height: 80 },
+  atemporalAttribute: { width: 120, height: 80 },
+  atemporalRelationship: { width: 120, height: 120 },
 };
 
 function ShapesProExampleApp({
@@ -142,12 +149,13 @@ function ShapesProExampleApp({
   return (
     <div style={{ height: '100vh' }}>
       {selectedEdge && (
-        <div style={{ position: 'absolute', top: 100, left: 18, zIndex: 10 }}>
+        <div style={{ position: 'absolute', top: 150, left: 18, zIndex: 10 }}>
           <label>
             Edge Type:
             <select value={selectedEdge.type} onChange={handleChangeEdgeType}>
-              <option value="optionalEvolution">Optional Evolution</option>
-              <option value="mandatoryExtension">Mandatory Extension</option>
+              <option value="smoothstep">Default</option>
+              <option value="optionalFutureEvolution">Optional Future Evolution</option>
+              <option value="mandatoryFutureExtension">Mandatory Future Extension</option>
             </select>
           </label>
         </div>

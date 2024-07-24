@@ -15,6 +15,9 @@ import TemporalRelationship from './temporalRelationship'
 import TemporalEntity from './TemporalEntity'
 import TemporalAttribute from './TemporalAttribute'
 import FrozenAttribute from './FrozenAttribute'
+import AtemporalEntity from './AtemporalEntity';
+import AtemporalAttribute from './AtemporalAttribute'
+import AtemporalRelationship from './AtemporalRelationship'
 // here we register all the shapes that are available
 // you can add your own here
 export const ShapeComponents = {
@@ -31,7 +34,10 @@ export const ShapeComponents = {
   temporalRelationship: TemporalRelationship,
   temporalEntity: TemporalEntity,
   temporalAttribute: TemporalAttribute,
-  frozenAttribute: FrozenAttribute
+  frozenAttribute: FrozenAttribute,
+  atemporalEntity: AtemporalEntity,
+  atemporalAttribute: AtemporalAttribute,
+  atemporalRelationship: AtemporalRelationship,
   
 };
 
