@@ -31,6 +31,7 @@ import { ShapeNode, ShapeType } from './components/shape/types';
 import OptionalFutureEvolution from './components/edges/OptionalFutureEvolution';
 import MandatoryFutureExtension from './components/edges/MandatoryFutureExtension';
 import OptionalPastEvolution from './components/edges/OptionalPastEvolution';
+import { BackgroundVariant } from 'reactflow';
 // import AtemporalEntity from './components/shape/types/AtemporalEntity';
 // import AtemporalAttribute from './components/shape/types/AtemporalAttribute';
 
@@ -182,8 +183,10 @@ function ShapesProExampleApp({
         colorMode={theme}
         proOptions={proOptions}
       >
-        <Background />
-        <Panel position="top-left">
+        {/* change background colour and type if you want*/}
+        {/* <Background color="black" variant={BackgroundVariant.Dots} /> */}
+        <Background/>
+        <Panel position="top-left" >
           <Sidebar />
         </Panel>
         <Controls />
@@ -196,6 +199,8 @@ function ShapesProExampleApp({
 function ProExampleWrapper() {
   const props = useControls({
     theme: { value: 'light', options: ['dark', 'light'] },
+    // Can add it here
+    // backgroundType:{value: "dots", options:["dots", "lines", "cross"]},
     snapToGrid: true,
     panOnScroll: true,
     zoomOnDoubleClick: false,

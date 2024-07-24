@@ -2,7 +2,7 @@ import { MarkerType } from '@xyflow/react';
 import React from 'react';
 import { EdgeProps, getSmoothStepPath } from 'reactflow';
 
-const MandatoryExtension: React.FC<EdgeProps> = ({
+const MandatoryFutureExtension: React.FC<EdgeProps> = ({
   id,
   sourceX,
   sourceY,
@@ -65,4 +65,4 @@ const MandatoryExtension: React.FC<EdgeProps> = ({
   );
 };
 
-export default MandatoryExtension;
+export default MandatoryFutureExtension;

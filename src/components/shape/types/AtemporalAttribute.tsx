@@ -37,9 +37,9 @@ function AtemporalAttribute({ width, height, ...svgAttributes }: ShapeProps) {
         cy={height / 2}
         rx={width / 2 -1}
         ry={height / 2-1}
-        fill="white" // Set the center to white
-        stroke="black" // Optional: set the border color
-        strokeWidth={2} // Optional: set the border width
+        // fill="white" // Set the center to white
+        // stroke="black" // Optional: set the border color
+        // strokeWidth={2} // Optional: set the border width
       />
       {/* Position the small SVG image 5 pixels away from the left border */}
       {/* <image

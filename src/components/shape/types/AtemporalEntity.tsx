@@ -16,9 +16,9 @@ function AtemporalEntity({ width, height, ...svgAttributes }: ShapeProps) {
         y={0}
         width={width}
         height={height}
-        fill="white" // Set the center to white
-        stroke="black" // Optional: set the border color
-        strokeWidth={4} // Optional: set the border width
+        // fill="white" // Set the center to white
+        // stroke="black" // Optional: set the border color
+        strokeWidth={2} // Optional: set the border width
       />
       {/* Position the small SVG image 5 pixels away from the left border
       <image
