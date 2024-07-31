@@ -129,10 +129,27 @@ function ShapesProExampleApp({
     setEdges((eds) => eds.filter((edge) => !edge.selected));
   }, [setNodes, setEdges]);
 
+  const selectAllElements = () => {
+    setNodes((nds) => nds.map((node) => ({ ...node, selected: true })));
+    setEdges((eds) => eds.map((edge) => ({ ...edge, selected: true })));
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Delete') {
         deleteSelectedElements();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+        event.preventDefault();
+        saveToFile();
+      }
+      // if ((event.ctrlKey || event.metaKey) && event.key === 'l') {
+      //   event.preventDefault();
+      //   fileInputRef.current?.click();
+      // }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'a') {
+        event.preventDefault();
+        selectAllElements();
       }
     };
     document.addEventListener('keydown', handleKeyDown);
