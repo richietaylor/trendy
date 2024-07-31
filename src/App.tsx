@@ -25,6 +25,8 @@ import { useControls } from 'leva';
 
 import '@xyflow/react/dist/style.css';
 
+import useUndoRedo from './useUndoRedo';
+
 import { defaultNodes as initialNodes, defaultEdges as initialEdges } from './initial-elements';
 import ShapeNodeComponent from './components/shape-node';
 import Sidebar from './components/sidebar';
@@ -97,13 +99,19 @@ function ShapesProExampleApp({
   const [copiedElements, setCopiedElements] = useState<{ nodes: Node[]; edges: Edge[] } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
+
   const onDragOver = (evt: React.DragEvent<HTMLDivElement>) => {
     evt.preventDefault();
+    
     evt.dataTransfer.dropEffect = 'move';
   };
 
   const onDrop: React.DragEventHandler<HTMLDivElement> = (evt) => {
     evt.preventDefault();
+
+    takeSnapshot();
+
     const type = evt.dataTransfer.getData('application/reactflow') as ShapeType;
     const position = screenToFlowPosition({ x: evt.clientX, y: evt.clientY });
 
@@ -194,6 +202,14 @@ function ShapesProExampleApp({
       if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
         event.preventDefault();
         pasteCopiedElements();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
+        event.preventDefault();
+        undo();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'y') {
+        event.preventDefault();
+        redo();
       }
     };
     document.addEventListener('keydown', handleKeyDown);
