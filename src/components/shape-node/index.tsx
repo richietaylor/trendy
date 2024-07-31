@@ -144,7 +144,7 @@ function useNodeDimensions(id: string) {
 }
 
 function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
-  const { color, type } = data;
+  const { color, type, label } = data;
   const { setNodes } = useReactFlow();
 
   const { width, height } = useNodeDimensions(id);
@@ -236,7 +236,7 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
         />
         {/* Change it here */}
         {/* <NodeLabel placeholder={"Test" || data.type} />  */}
-        <input type='text' className='node-label' placeholder={"Add Text"} color="black"/>
+        <input type='text' className='node-label' placeholder={label} color="black"/>
       </div>
     </>
   );

@@ -32,6 +32,7 @@ import { ShapeNode, ShapeType } from './components/shape/types';
 import OptionalFutureEvolution from './components/edges/OptionalFutureEvolution';
 import MandatoryFutureExtension from './components/edges/MandatoryFutureExtension';
 import { BackgroundVariant } from 'reactflow';
+import Inheritance from './components/shape/types/inheritance';
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
@@ -64,6 +65,8 @@ const nodeStyles = {
   atemporalEntity: { width: 120, height: 80 },
   atemporalAttribute: { width: 120, height: 80 },
   atemporalRelationship: { width: 120, height: 120 },
+  inheritance: { width:120, height:80},
+  derivedAttribute: {width: 120, height: 80},
 };
 
 // const getEdgeCenter = (sourcePosition: XYPosition | undefined, targetPosition: XYPosition | undefined) => ({
@@ -110,6 +113,7 @@ function ShapesProExampleApp({
         type,
         color: 'black',
         // label '',
+        label: type === 'inheritance' ? '' : 'Add Text',
       },
       style: nodeStyles[type] || { width: 120, height: 120 },
       selected: true,
@@ -187,9 +191,9 @@ function ShapesProExampleApp({
 
   return (
     <div style={{ height: '100vh' }}>
-      <input type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', bottom: 190, right: 0, zIndex: 10 }} />
+      <input className="reactflow-button" type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', bottom: 190, right: 0, zIndex: 10 }} />
       {/* <input type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', top: 150, left: 10, zIndex: 10 }} /> */}
-      <button onClick={saveToFile} style={{ position: 'absolute', bottom: 190, right: 10, zIndex: 10 }}>
+      <button className="reactflow-button" onClick={saveToFile} style={{ position: 'absolute', bottom: 190, right: 10, zIndex: 10 }}>
         Save
       </button>
       {/* <button onClick={saveToFile} style={{ position: 'absolute', top: 150, left: 150, zIndex: 10 }}>

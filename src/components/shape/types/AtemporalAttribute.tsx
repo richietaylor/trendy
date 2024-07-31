@@ -37,6 +37,7 @@ function AtemporalAttribute({ width, height, ...svgAttributes }: ShapeProps) {
         cy={height / 2}
         rx={width / 2 -1}
         ry={height / 2-1}
+        // strokeDasharray="6,5"
         // fill="white" // Set the center to white
         // stroke="black" // Optional: set the border color
         // strokeWidth={2} // Optional: set the border width

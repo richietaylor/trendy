@@ -36,6 +36,7 @@ function SidebarItem({ type }: SidebarItemProps) {
         // height={28}
         width={56}
         height={42}
+        
       />
       
       <div className="sidebar-item-drag-image" ref={dragImageRef}>
@@ -47,6 +48,7 @@ function SidebarItem({ type }: SidebarItemProps) {
           fillOpacity={0.7}
           stroke="#3F8AE2"
           strokeWidth={2}
+          
         />
       </div>
     

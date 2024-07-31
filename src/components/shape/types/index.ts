@@ -18,6 +18,8 @@ import FrozenAttribute from './FrozenAttribute'
 import AtemporalEntity from './AtemporalEntity';
 import AtemporalAttribute from './AtemporalAttribute'
 import AtemporalRelationship from './AtemporalRelationship'
+import Inheritance from './inheritance';
+import DerivedAttribute from './DerivedAttribute'
 // here we register all the shapes that are available
 // you can add your own here
 export const ShapeComponents = {
@@ -38,6 +40,9 @@ export const ShapeComponents = {
   atemporalEntity: AtemporalEntity,
   atemporalAttribute: AtemporalAttribute,
   atemporalRelationship: AtemporalRelationship,
+  inheritance: Inheritance,
+  derivedAttribute: DerivedAttribute,
+
   
 };
 
@@ -53,4 +58,5 @@ export type ShapeComponentProps = Partial<ShapeProps> & { type: ShapeType };
 export type ShapeNode = Node<{
   type: ShapeType;
   color: string;
+  label?: string;
 }>;

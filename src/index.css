@@ -166,3 +166,40 @@ body,
   font-size: 12px;
   user-select: none;
 }
+
+
+.reactflow-button {
+  background-color: #007bff; /* Blue color similar to React Flow's accents */
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.reactflow-button:hover {
+  background-color: #0056b3; /* Darker blue for hover effect */
+  transform: scale(1.05);
+}
+
+.reactflow-button:active {
+  background-color: #003d80; /* Even darker blue for active state */
+}
+
+.reactflow-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.reactflow-sidebar-item {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.reactflow-sidebar-item-drag-image {
+  display: none;
+}
