@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ReactFlow,
   Background,
@@ -94,6 +94,8 @@ function ShapesProExampleApp({
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [selectedEdge, setSelectedEdge] = useState<Edge | null>(null);
+  const [copiedElements, setCopiedElements] = useState<{ nodes: Node[]; edges: Edge[] } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onDragOver = (evt: React.DragEvent<HTMLDivElement>) => {
     evt.preventDefault();
@@ -134,6 +136,35 @@ function ShapesProExampleApp({
     setEdges((eds) => eds.map((edge) => ({ ...edge, selected: true })));
   };
 
+  const copySelectedElements = () => {
+    const selectedNodes = nodes.filter((node) => node.selected);
+    const selectedEdges = edges.filter((edge) => edge.selected);
+    setCopiedElements({ nodes: selectedNodes, edges: selectedEdges });
+  };
+
+  const pasteCopiedElements = () => {
+    if (copiedElements) {
+      const newNodes = copiedElements.nodes.map((node) => ({
+        ...node,
+        id: `${node.id}-copy-${Date.now()}`,
+        position: { x: node.position.x + 20, y: node.position.y + 20 },
+        selected: false,
+      }));
+
+      const newEdges = copiedElements.edges.map((edge) => ({
+        ...edge,
+        id: `${edge.id}-copy-${Date.now()}`,
+        source: `${edge.source}-copy-${Date.now()}`,
+        target: `${edge.target}-copy-${Date.now()}`,
+        selected: false,
+      }));
+
+      setNodes((nds) => nds.concat(newNodes));
+      setEdges((eds) => eds.concat(newEdges));
+    }
+  };
+
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Delete') {
@@ -143,20 +174,33 @@ function ShapesProExampleApp({
         event.preventDefault();
         saveToFile();
       }
-      // if ((event.ctrlKey || event.metaKey) && event.key === 'l') {
-      //   event.preventDefault();
-      //   fileInputRef.current?.click();
-      // }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'l') {
+        event.preventDefault();
+        fileInputRef.current?.click();
+      }
       if ((event.ctrlKey || event.metaKey) && event.key === 'a') {
         event.preventDefault();
         selectAllElements();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
+        event.preventDefault();
+        copySelectedElements();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'x') {
+        event.preventDefault();
+        copySelectedElements();
+        deleteSelectedElements();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+        event.preventDefault();
+        pasteCopiedElements();
       }
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [deleteSelectedElements]);
+  }, [deleteSelectedElements, copySelectedElements, pasteCopiedElements]);
 
   const onEdgeClick = (_: React.MouseEvent, edge: Edge) => {
     setSelectedEdge(edge);
