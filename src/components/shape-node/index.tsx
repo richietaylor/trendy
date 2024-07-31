@@ -175,6 +175,24 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
   //   );
   // };
 
+  const onLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newLabel = e.target.value;
+    setNodes((nodes) =>
+      nodes.map((node) => {
+        if (node.id === id) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              label: newLabel,
+            },
+          };
+        }
+        return node;
+      })
+    );
+  };
+
   return (
     <>
       <svg width="0" height="0">
@@ -236,7 +254,7 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
         />
         {/* Change it here */}
         {/* <NodeLabel placeholder={"Test" || data.type} />  */}
-        <input type='text' className='node-label' placeholder={label} color="black"/>
+        <input type='text' className='node-label' placeholder={label} color="black" onChange={onLabelChange} />
       </div>
     </>
   );
