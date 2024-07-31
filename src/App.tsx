@@ -20,6 +20,7 @@ import {
   addEdge,
   Node,
   XYPosition,
+  OnNodeDrag,
 } from '@xyflow/react';
 import { useControls } from 'leva';
 
@@ -134,9 +135,16 @@ function ShapesProExampleApp({
     );
   };
 
+  const onNodeDragStart: OnNodeDrag = useCallback(() => {
+    // 👇 make dragging a node undoable
+    takeSnapshot();
+    // 👉 you can place your event handlers here
+  }, [takeSnapshot]);
+
   const deleteSelectedElements = useCallback(() => {
     setNodes((nds) => nds.filter((node) => !node.selected));
     setEdges((eds) => eds.filter((edge) => !edge.selected));
+    takeSnapshot();
   }, [setNodes, setEdges]);
 
   const selectAllElements = () => {
@@ -169,6 +177,8 @@ function ShapesProExampleApp({
 
       setNodes((nds) => nds.concat(newNodes));
       setEdges((eds) => eds.concat(newEdges));
+
+      takeSnapshot();
     }
   };
 
@@ -230,9 +240,14 @@ function ShapesProExampleApp({
       );
       setSelectedEdge(null); // Deselect the edge after updating its type
     }
+    takeSnapshot();
   };
 
-  const onConnect = (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds));
+  // const onConnect = (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds));
+  const onConnect = (params: Edge | Connection) => {
+    setEdges((eds) => addEdge(params, eds));
+    takeSnapshot();
+  };
 
   const selectedEdgeCenter = selectedEdge
     ? getEdgeCenter(
@@ -253,6 +268,8 @@ function ShapesProExampleApp({
       };
       reader.readAsText(file);
     }
+
+    takeSnapshot();
   };
 
   const saveToFile = () => {
@@ -304,6 +321,7 @@ function ShapesProExampleApp({
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeDragStart={onNodeDragStart}
         onConnect={onConnect}
         onEdgeClick={onEdgeClick}
         onDrop={onDrop}
