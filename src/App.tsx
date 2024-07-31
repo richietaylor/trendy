@@ -109,6 +109,7 @@ function ShapesProExampleApp({
       data: {
         type,
         color: 'black',
+        // label '',
       },
       style: nodeStyles[type] || { width: 120, height: 120 },
       selected: true,
@@ -186,10 +187,14 @@ function ShapesProExampleApp({
 
   return (
     <div style={{ height: '100vh' }}>
-      <input type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', top: 150, left: 10, zIndex: 10 }} />
-      <button onClick={saveToFile} style={{ position: 'absolute', top: 150, left: 150, zIndex: 10 }}>
+      <input type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', bottom: 190, right: 0, zIndex: 10 }} />
+      {/* <input type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', top: 150, left: 10, zIndex: 10 }} /> */}
+      <button onClick={saveToFile} style={{ position: 'absolute', bottom: 190, right: 10, zIndex: 10 }}>
         Save
       </button>
+      {/* <button onClick={saveToFile} style={{ position: 'absolute', top: 150, left: 150, zIndex: 10 }}>
+        Save
+      </button> */}
       {selectedEdge && selectedEdgeCenter && (
         <div
           style={{

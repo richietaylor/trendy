@@ -234,7 +234,9 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
           type="source"
           position={Position.Left}
         />
-        <NodeLabel placeholder={"Test" || data.type} />
+        {/* Change it here */}
+        {/* <NodeLabel placeholder={"Test" || data.type} />  */}
+        <input type='text' className='node-label' placeholder={"Add Text"} color="black"/>
       </div>
     </>
   );
