@@ -97,6 +97,7 @@ const MandatoryFutureExtension: React.FC<EdgeProps> = ({
   style = {},
   markerEnd = { type: MarkerType.ArrowClosed, color: 'black' },
   markerStart = { type: MarkerType.ArrowClosed, color: 'black' }, // Default marker start to ArrowClosed
+  data,
 }) => {
   const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
@@ -107,9 +108,25 @@ const MandatoryFutureExtension: React.FC<EdgeProps> = ({
     targetPosition,
   });
 
-  // Ensure markerEnd and markerStart are objects with type and color
-  const markerEndDef = typeof markerEnd === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerEnd;
-  const markerStartDef = typeof markerStart === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerStart;
+  // // Ensure markerEnd and markerStart are objects with type and color
+  // const markerEndDef = typeof markerEnd === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerEnd;
+  // const markerStartDef = typeof markerStart === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerStart;
+
+  const multiplicity = data?.multiplicity || 'one-to-one';
+
+  let markerStartDef: string | { type: MarkerType; color: string } | undefined = markerStart;
+  let markerEndDef: string | { type: MarkerType; color: string } | undefined = markerEnd;
+
+  const edgeLabel = data?.label || '';
+
+  if (multiplicity === 'many-to-many') {
+    markerStartDef = undefined;
+    markerEndDef = undefined;
+  } else if (multiplicity === 'many-to-one') {
+    markerStartDef = undefined;
+  }
+
+
 
   // Adjust labelY to render the label above the edge
   const adjustedLabelY = labelY - 5; // Adjust this value as needed to position the label above the edge
@@ -151,7 +168,7 @@ const MandatoryFutureExtension: React.FC<EdgeProps> = ({
             orient="auto"
             markerUnits="strokeWidth"
           >
-            <path d="M0,0 L4,4 L0,8" fill="none" stroke={markerEndDef.color} strokeWidth="1" />
+            <path d="M0,0 L4,4 L0,8" fill="none" stroke={/*markerEndDef.color ||*/ "black"} strokeWidth="1" />
           </marker>
           <marker
             id="start-arrow"
@@ -162,7 +179,7 @@ const MandatoryFutureExtension: React.FC<EdgeProps> = ({
             orient="auto"
             markerUnits="strokeWidth"
           >
-            <path d="M8,0 L4,4 L8,8" fill="none" stroke={markerStartDef.color} strokeWidth="1" />
+            <path d="M8,0 L4,4 L8,8" fill="none" stroke={/*markerStartDef.color ||*/ "black"} strokeWidth="1" />
           </marker>
         </defs>
       </svg>
@@ -172,8 +189,10 @@ const MandatoryFutureExtension: React.FC<EdgeProps> = ({
         style={{ ...style , zIndex: 11}}
         className="react-flow__edge-path"
         d={edgePath}
-        markerStart="url(#start-arrow)" // Use start open arrow marker
-        markerEnd="url(#open-arrow)" // Use end open arrow marker
+        // markerStart="url(#start-arrow)" // Use start open arrow marker
+        // markerEnd="url(#open-arrow)" // Use end open arrow marker
+        markerStart={markerStartDef ? 'url(#start-arrow)' : undefined}
+        markerEnd={markerEndDef ? 'url(#open-arrow)' : undefined}
       />
       {/* <text x={adjustedLabelX} y={adjustedLabelY} style={{ fontSize: 12, zIndex:11 }} textAnchor="middle">
         EXT
@@ -185,7 +204,7 @@ const MandatoryFutureExtension: React.FC<EdgeProps> = ({
         textAnchor="middle"
         transform={`rotate(${angle}, ${labelX}, ${labelY})`}
       >
-        EXT
+        {edgeLabel}
       </text>
       {/* Add the bottom for Quantitative */}
       {/* <foreignObject x={labelX + 20} y={labelY - 10} width="40" height="20">

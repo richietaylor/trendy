@@ -46,6 +46,7 @@ const edgeTypes: EdgeTypes = {
   mandatoryFutureExtension: MandatoryFutureExtension,
 };
 
+//change this eventually!
 const defaultEdgeOptions: DefaultEdgeOptions = {
   type: 'smoothstep',
   style: { stroke: 'black', strokeWidth: 2 },
@@ -221,6 +222,10 @@ function ShapesProExampleApp({
         event.preventDefault();
         redo();
       }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'q') {
+        event.preventDefault();
+        setSelectedEdge(null);
+      }     
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => {
@@ -242,6 +247,34 @@ function ShapesProExampleApp({
     }
     takeSnapshot();
   };
+
+  const handleChangeMultiplicity = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newMultiplicity = event.target.value;
+    if (selectedEdge) {
+      setEdges((eds) =>
+        eds.map((edge) => 
+          edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, multiplicity: newMultiplicity } } : edge
+        )
+      );
+      setSelectedEdge(null);
+    }
+    takeSnapshot();
+  };
+
+
+  const handleChangeEdgeLabel = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLabel = event.target.value;
+    if (selectedEdge) {
+      setEdges((eds) =>
+        eds.map((edge) => 
+          edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, label: newLabel } } : edge
+        )
+      );
+      setSelectedEdge((prevEdge) => prevEdge ? { ...prevEdge, data: { ...prevEdge.data, label: newLabel } } : null);
+    }
+    takeSnapshot();
+  };
+
 
   // const onConnect = (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds));
   const onConnect = (params: Edge | Connection) => {
@@ -314,6 +347,24 @@ function ShapesProExampleApp({
               <option value="mandatoryFutureExtension">Mandatory Future Extension</option>
             </select>
           </label>
+          <label>
+          Multiplicity:
+            <select value={String(selectedEdge.data?.multiplicity) || 'one-to-one'} onChange={handleChangeMultiplicity}>
+              <option value="many-to-one">Many-to-one</option>
+              <option value="one-to-one">One-to-one</option>
+              <option value="many-to-many">Many-to-many</option>
+            </select>
+          </label>
+          <label>
+          Edge Label:
+            <select value={String(selectedEdge.data?.label) || 'none'} onChange={handleChangeEdgeLabel}>
+              <option value="">None</option>
+              <option value="chg">chg</option>
+              <option value="ext">ext</option>
+              <option value="CHG">CHG</option>
+              <option value="EXT">EXT</option>
+            </select>
+          </label>          
         </div>
       )}
       <ReactFlow
