@@ -80,6 +80,35 @@ body,
   user-select: none;
 }
 
+/* begin */
+
+.sidebar {
+  width: 250px; /* Adjust the width as needed */
+  transition: width 0.3s;
+}
+
+.sidebar.collapsed {
+  width: 100px; /* Adjust the collapsed width as needed */
+}
+
+.sidebar-toggle-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.sidebar-toggle-button:hover {
+  background-color: #0056b3;
+}
+
+.sidebar-label, .sidebar-items {
+  margin-top: 10px;
+}
+/* end */
+
 .sidebar-items {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

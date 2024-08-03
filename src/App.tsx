@@ -21,6 +21,7 @@ import {
   Node,
   XYPosition,
   OnNodeDrag,
+  useViewport,
 } from '@xyflow/react';
 import { useControls } from 'leva';
 
@@ -100,6 +101,7 @@ function ShapesProExampleApp({
   const [selectedEdge, setSelectedEdge] = useState<Edge | null>(null);
   const [copiedElements, setCopiedElements] = useState<{ nodes: Node[]; edges: Edge[] } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { zoom, x: viewportX, y: viewportY } = useViewport();
 
   const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
 
@@ -145,6 +147,7 @@ function ShapesProExampleApp({
   const deleteSelectedElements = useCallback(() => {
     setNodes((nds) => nds.filter((node) => !node.selected));
     setEdges((eds) => eds.filter((edge) => !edge.selected));
+    setSelectedEdge(null)
     takeSnapshot();
   }, [setNodes, setEdges]);
 
@@ -243,7 +246,7 @@ function ShapesProExampleApp({
       setEdges((eds) =>
         eds.map((edge) => (edge.id === selectedEdge.id ? { ...edge, type: newType } : edge))
       );
-      setSelectedEdge(null); // Deselect the edge after updating its type
+      // setSelectedEdge(null); // Deselect the edge after updating its type
     }
     takeSnapshot();
   };
@@ -256,7 +259,7 @@ function ShapesProExampleApp({
           edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, multiplicity: newMultiplicity } } : edge
         )
       );
-      setSelectedEdge(null);
+      // setSelectedEdge(null);
     }
     takeSnapshot();
   };
@@ -270,7 +273,7 @@ function ShapesProExampleApp({
           edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, label: newLabel } } : edge
         )
       );
-      setSelectedEdge((prevEdge) => prevEdge ? { ...prevEdge, data: { ...prevEdge.data, label: newLabel } } : null);
+      // setSelectedEdge((psrevEdge) => prevEdge ? { ...prevEdge, data: { ...prevEdge.data, label: newLabel } } : null);
     }
     takeSnapshot();
   };
@@ -286,8 +289,21 @@ function ShapesProExampleApp({
     ? getEdgeCenter(
         nodes.find((node) => node.id === selectedEdge.source)?.position,
         nodes.find((node) => node.id === selectedEdge.target)?.position
+      
       )
     : null;
+
+  const transformPosition = (position: XYPosition) => ({
+    x: position.x * zoom + viewportX,
+    y: position.y * zoom + viewportY,
+  });
+
+  
+  const onPaneClick = () => {
+    setSelectedEdge(null);
+  };
+  
+    
 
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -330,8 +346,8 @@ function ShapesProExampleApp({
         <div
           style={{
             position: 'absolute',
-            top: selectedEdgeCenter.y +120,
-            left: selectedEdgeCenter.x +150,
+            top: transformPosition(selectedEdgeCenter).y,
+            left: transformPosition(selectedEdgeCenter).x,
             zIndex: 10,
             background: 'white',
             padding: '5px',
@@ -375,6 +391,7 @@ function ShapesProExampleApp({
         onNodeDragStart={onNodeDragStart}
         onConnect={onConnect}
         onEdgeClick={onEdgeClick}
+        onPaneClick={onPaneClick}
         onDrop={onDrop}
         onDragOver={onDragOver}
         connectionLineType={ConnectionLineType.SmoothStep}
