@@ -1,6 +1,6 @@
 import { ShapeComponents, type ShapeComponentProps } from './types';
 
-function Shape({ type, width, height, label, ...svgAttributes }: ShapeComponentProps) {
+function Shape({ type, width, height, ...svgAttributes }: ShapeComponentProps) {
   const ShapeComponent = ShapeComponents[type];
 
   if (!ShapeComponent || !width || !height) {
