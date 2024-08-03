@@ -29,11 +29,17 @@ function Diamond({ width, height, ...svgAttributes }: ShapeProps) {
       <path d={diamondPath} fill="white" stroke="black" fillOpacity={1} />
       {/* Position the small SVG image 5 pixels away from the left border */}
       <image
+        // href={SmallImage}
+        // x={offsetX}
+        // y={centerY}
+        // width={imageSize}
+        // height={imageSize}
+        
         href={SmallImage}
-        x={offsetX}
-        y={centerY}
-        width={imageSize}
-        height={imageSize}
+        x={width-width/3.2}
+        y={height/2 - (height/4/2)}
+        width={width/4}
+        height={height/4}
       />
     </svg>
   );

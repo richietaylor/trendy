@@ -25,6 +25,10 @@ function SidebarItem({ type }: SidebarItemProps) {
     }
   };
 
+  const isInheritanceType = type === 'inheritance';
+  const width = isInheritanceType ? 32 : 112;
+  const height = isInheritanceType ? 32 : 64
+
   return (
     <>
     <div className="sidebar-item" draggable onDragStart={onDragStart} data-tooltip-id="my-tooltip" data-tooltip-content={camelCaseToRegular(`${type}`)}>
@@ -34,16 +38,16 @@ function SidebarItem({ type }: SidebarItemProps) {
         strokeWidth={1}
         // width={28}
         // height={28}
-        width={56}
-        height={42}
+        width={width}
+        height={height}
         
       />
       
       <div className="sidebar-item-drag-image" ref={dragImageRef}>
         <Shape
           type={type}
-          width={56}
-          height={42}
+          width={width}
+          height={height}
           fill="white"
           fillOpacity={0.7}
           stroke="#3F8AE2"

@@ -64,12 +64,12 @@ type ExampleProps = {
 const nodeStyles = {
   temporalAttribute: { width: 120, height: 80 },
   temporalEntity: { width: 120, height: 80 },
-  temporalRelationship: { width: 120, height: 100 },
+  temporalRelationship: { width: 120, height: 80 },
   frozenAttribute: { width: 120, height: 80 },
   atemporalEntity: { width: 120, height: 80 },
   atemporalAttribute: { width: 120, height: 80 },
-  atemporalRelationship: { width: 120, height: 100 },
-  inheritance: { width:120, height:80},
+  atemporalRelationship: { width: 120, height: 80 },
+  inheritance: { width:40, height:40},
   derivedAttribute: {width: 120, height: 80},
 };
 

@@ -44,10 +44,10 @@ function Circle({ width, height, ...svgAttributes }: ShapeProps) {
       {/* Position the small SVG image 5 pixels away from the left border */}
       <image
         href={SmallImage}
-        x={offsetX}
-        y={centerY}
-        width={imageSize}
-        height={imageSize}
+        x={width-width/4}
+        y={height/2 - (height/4/2)}
+        width={width/4}
+        height={height/4}
       />
     </svg>
   );
