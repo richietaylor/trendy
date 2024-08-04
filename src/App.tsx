@@ -37,6 +37,7 @@ import OptionalFutureEvolution from './components/edges/OptionalFutureEvolution'
 import TemporalEdge from './components/edges/TemporalEdge';
 import { BackgroundVariant } from 'reactflow';
 import Inheritance from './components/shape/types/inheritance';
+import AtemporalEdge from  './components/edges/AtemporalEdge'
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
@@ -45,6 +46,7 @@ const nodeTypes: NodeTypes = {
 const edgeTypes: EdgeTypes = {
   optionalFutureEvolution: OptionalFutureEvolution,
   temporalEdge: TemporalEdge,
+  atemporalEdge: AtemporalEdge
 };
 
 //change this eventually!
@@ -378,24 +380,25 @@ function ShapesProExampleApp({
           <label>
             Edge Type:
             <select value={selectedEdge.type} onChange={handleChangeEdgeType}>
-              <option value="smoothstep">Default</option>
-              <option value="optionalFutureEvolution">Optional Future Evolution</option>
+              <option value="atemporalEdge">Atemporal</option>
+              {/* <option value="optionalFutureEvolution">Optional Future Evolution</option> */}
               <option value="temporalEdge">Temporal</option>
             </select>
           </label>
 
-          {selectedEdge.type === 'temporalEdge' && (
+
+        {selectedEdge.type === 'temporalEdge' && (
             <>
               <label>
-                Optionality:
-                <select
-                  value={String(selectedEdge.data?.optional) || 'Mandatory'}
-                  onChange={handleChangeOptional}
-                >
-                  <option value="Mandatory">Mandatory</option>
-                  <option value="Optional">Optional</option>
-                  
-                </select>
+                  Optional?:
+                  <select
+                    value={String(selectedEdge.data?.optional) || 'Mandatory'}
+                    onChange={handleChangeOptional}
+                  >
+                    <option value="Mandatory">Mandatory</option>
+                    <option value="Optional">Optional</option>
+                    
+                  </select>
               </label>
               <label>
                 Edge Label:
