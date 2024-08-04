@@ -33,7 +33,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   // let markerStartDef: string | { type: MarkerType; color: string } | undefined = markerStart;
   // let markerEndDef: string | { type: MarkerType; color: string } | undefined = markerEnd;
 
-  const edgeLabel = data?.label || '';
+  const edgeLabel = data?.label || 'chg';
   const optional = data?.optional || 'Mandatory';
 
   // if (multiplicity === 'many-to-many') {

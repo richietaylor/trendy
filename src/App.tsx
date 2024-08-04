@@ -49,7 +49,7 @@ const edgeTypes: EdgeTypes = {
 
 //change this eventually!
 const defaultEdgeOptions: DefaultEdgeOptions = {
-  type: 'smoothstep',
+  type: 'temporalEdge',
   style: { stroke: 'black', strokeWidth: 2 },
 };
 
