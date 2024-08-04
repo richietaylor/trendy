@@ -34,7 +34,7 @@ import ShapeNodeComponent from './components/shape-node';
 import Sidebar from './components/sidebar';
 import { ShapeNode, ShapeType } from './components/shape/types';
 import OptionalFutureEvolution from './components/edges/OptionalFutureEvolution';
-import MandatoryFutureExtension from './components/edges/MandatoryFutureExtension';
+import TemporalEdge from './components/edges/TemporalEdge';
 import { BackgroundVariant } from 'reactflow';
 import Inheritance from './components/shape/types/inheritance';
 
@@ -44,7 +44,7 @@ const nodeTypes: NodeTypes = {
 
 const edgeTypes: EdgeTypes = {
   optionalFutureEvolution: OptionalFutureEvolution,
-  mandatoryFutureExtension: MandatoryFutureExtension,
+  temporalEdge: TemporalEdge,
 };
 
 //change this eventually!
@@ -247,19 +247,39 @@ function ShapesProExampleApp({
         eds.map((edge) => (edge.id === selectedEdge.id ? { ...edge, type: newType } : edge))
       );
       // setSelectedEdge(null); // Deselect the edge after updating its type
+      setSelectedEdge((prevEdge) => prevEdge ? { ...prevEdge, type: newType } : null);
     }
     takeSnapshot();
   };
 
-  const handleChangeMultiplicity = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newMultiplicity = event.target.value;
+  // const handleChangeMultiplicity = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const newMultiplicity = event.target.value;
+  //   if (selectedEdge) {
+  //     setEdges((eds) =>
+  //       eds.map((edge) => 
+  //         edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, multiplicity: newMultiplicity } } : edge
+  //       )
+  //     );
+  //     // setSelectedEdge(null);
+  //   }
+  //   takeSnapshot();
+  // };
+
+  const handleChangeOptional = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newOptional = event.target.value;
     if (selectedEdge) {
       setEdges((eds) =>
-        eds.map((edge) => 
-          edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, multiplicity: newMultiplicity } } : edge
+        eds.map((edge) =>
+          edge.id === selectedEdge.id
+            ? { ...edge, data: { ...edge.data, optional: newOptional } }
+            : edge
         )
       );
-      // setSelectedEdge(null);
+      setSelectedEdge((prevEdge) =>
+        prevEdge
+          ? { ...prevEdge, data: { ...prevEdge.data, optional: newOptional } }
+          : null
+      );
     }
     takeSnapshot();
   };
@@ -360,27 +380,35 @@ function ShapesProExampleApp({
             <select value={selectedEdge.type} onChange={handleChangeEdgeType}>
               <option value="smoothstep">Default</option>
               <option value="optionalFutureEvolution">Optional Future Evolution</option>
-              <option value="mandatoryFutureExtension">Mandatory Future Extension</option>
+              <option value="temporalEdge">Temporal</option>
             </select>
           </label>
-          <label>
-          Multiplicity:
-            <select value={String(selectedEdge.data?.multiplicity) || 'one-to-one'} onChange={handleChangeMultiplicity}>
-              <option value="many-to-one">Many-to-one</option>
-              <option value="one-to-one">One-to-one</option>
-              <option value="many-to-many">Many-to-many</option>
-            </select>
-          </label>
-          <label>
-          Edge Label:
-            <select value={String(selectedEdge.data?.label) || 'none'} onChange={handleChangeEdgeLabel}>
-              <option value="">None</option>
-              <option value="chg">chg</option>
-              <option value="ext">ext</option>
-              <option value="CHG">CHG</option>
-              <option value="EXT">EXT</option>
-            </select>
-          </label>          
+
+          {selectedEdge.type === 'temporalEdge' && (
+            <>
+              <label>
+                Optionality:
+                <select
+                  value={String(selectedEdge.data?.optional) || 'Mandatory'}
+                  onChange={handleChangeOptional}
+                >
+                  <option value="Mandatory">Mandatory</option>
+                  <option value="Optional">Optional</option>
+                  
+                </select>
+              </label>
+              <label>
+                Edge Label:
+                <select value={String(selectedEdge.data?.label) || 'none'} onChange={handleChangeEdgeLabel}>
+                  <option value="chg">chg</option>
+                  <option value="ext">ext</option>
+                  <option value="CHG">CHG</option>
+                  <option value="EXT">EXT</option>
+                </select>
+              </label>
+            </>
+          )}
+
         </div>
       )}
       <ReactFlow
