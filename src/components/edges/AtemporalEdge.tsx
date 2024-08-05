@@ -120,8 +120,8 @@ const TemporalEdge: React.FC<EdgeProps> = ({
         // strokeWidth={10}
         // markerStart="url(#start-arrow)" // Use start open arrow marker
         // markerEnd="url(#open-arrow)" // Use end open arrow marker
-        markerStart={markerStartDef ? 'url(#start-arrow)' : undefined}
-        markerEnd={markerEndDef ? 'url(#open-arrow)' : undefined}
+        // markerStart={markerStartDef ? 'url(#start-arrow)' : undefined}
+        // markerEnd={markerEndDef ? 'url(#open-arrow)' : undefined}
       />
 
 

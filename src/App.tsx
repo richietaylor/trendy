@@ -42,6 +42,8 @@ import AtemporalEdge from  './components/edges/AtemporalEdge'
 
 import EdgeVerbalization from './components/Verbalization/EdgeVerbalization';
 
+import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
+
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
 };
@@ -54,7 +56,7 @@ const edgeTypes: EdgeTypes = {
 
 //change this eventually!
 const defaultEdgeOptions: DefaultEdgeOptions = {
-  type: 'temporalEdge',
+  type: 'atemporalEdge',
   style: { stroke: 'black', strokeWidth: 2 },
 };
 
@@ -111,6 +113,8 @@ function ShapesProExampleApp({
   const { zoom, x: viewportX, y: viewportY } = useViewport();
 
   const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
+
+  const [errors, setErrors] = useState<string[]>([]);
 
   const onDragOver = (evt: React.DragEvent<HTMLDivElement>) => {
     evt.preventDefault();
@@ -346,10 +350,31 @@ function ShapesProExampleApp({
 
 
   // const onConnect = (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds));
+  // const onConnect = (params: Edge | Connection) => {
+  //   setEdges((eds) => addEdge(params, eds));
+  //   takeSnapshot();
+  // };
   const onConnect = (params: Edge | Connection) => {
-    setEdges((eds) => addEdge(params, eds));
+    const sourceNode = nodes.find((node) => node.id === params.source);
+    const targetNode = nodes.find((node) => node.id === params.target);
+  
+    if ((params as Edge).type === 'temporalEdge' && !isValidTemporalEdgeConnection(sourceNode, targetNode)) {
+      const error = `Invalid temporal edge between ${sourceNode?.data.label} and ${targetNode?.data.label}`;
+      setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, error } } as Edge, eds));
+    } else {
+      setEdges((eds) => addEdge(params, eds));
+    }
+  
     takeSnapshot();
   };
+  
+
+  useEffect(() => {
+    const { edges: validatedEdges, errors: validationErrors } = validateEdges(nodes, edges);
+    setEdges(validatedEdges);
+    setErrors(validationErrors);
+  }, [nodes, edges]);
+
 
   const selectedEdgeCenter = selectedEdge
     ? getEdgeCenter(
@@ -437,6 +462,9 @@ function ShapesProExampleApp({
             padding: '5px',
             border: '1px solid #ccc',
             borderRadius: '4px',
+            transform: `scale(${zoom/1.5})`, // Adjust size according to zoom level
+            transformOrigin: 'top left'  // Make sure the scale is from the top left corner
+
           }}
         >
           <label>
@@ -477,8 +505,8 @@ function ShapesProExampleApp({
                   value={String(selectedEdge.data?.quantitative) || 'false'}
                   onChange={handleChangeQuantitative}
                 >
-                  <option value="true">True</option>
                   <option value="false">False</option>
+                  <option value="true">True</option>
                 </select>
               </label>
               {selectedEdge.data?.quantitative && (
@@ -490,6 +518,11 @@ function ShapesProExampleApp({
                     onChange={handleChangeQuantitativeValue}
                   />
                 </label>
+              )}
+              {selectedEdge.data?.error && (
+                <div style={{ color: 'red', marginTop: '5px' }}>
+                  {selectedEdge.data.error}
+                </div>
               )}
             </>
           )}
@@ -523,6 +556,7 @@ function ShapesProExampleApp({
         zoomOnDoubleClick={zoomOnDoubleClick}
         colorMode={theme}
         proOptions={proOptions}
+        // connectOnDrop={false} 
       >
         {/* <Background /> */}
         <Background color="white" variant={BackgroundVariant.Lines} />
@@ -532,6 +566,34 @@ function ShapesProExampleApp({
         <Controls />
         <MiniMap />
       </ReactFlow>
+      {/* {errors.length > 0 && selectedEdge && (
+        <div style={{ position: 'absolute', bottom: 10, left: 10, color: 'red' }}>
+          {errors.map((error, index) => (
+            <div key={index}>{error}</div>
+          ))}
+        </div>
+      )} */}
+      {/* {errors.length > 0 && selectedEdge && selectedEdgeCenter && (
+        <div
+          style={{
+            position: 'absolute',
+            top: transformPosition(selectedEdgeCenter).y + 30, // Position below the label
+            left: transformPosition(selectedEdgeCenter).x,
+            zIndex: 10,
+            background: 'white',
+            // padding: '5px',
+            // border: '1px solid #ccc',
+            // borderRadius: '4px',
+            color: 'red',
+            transform: `scale(${zoom})`, // Adjust size according to zoom level
+            transformOrigin: 'top left'  // Make sure the scale is from the top left corner
+          }}
+        >
+          {errors.map((error, index) => (
+            <div key={index}>{error}</div>
+          ))}
+        </div>
+      )} */}
     </div>
   );
 }
