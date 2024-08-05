@@ -22,6 +22,7 @@ import {
   XYPosition,
   OnNodeDrag,
   useViewport,
+  OnConnectStartParams
 } from '@xyflow/react';
 import { useControls } from 'leva';
 
@@ -38,6 +39,8 @@ import TemporalEdge from './components/edges/TemporalEdge';
 import { BackgroundVariant } from 'reactflow';
 import Inheritance from './components/shape/types/inheritance';
 import AtemporalEdge from  './components/edges/AtemporalEdge'
+
+import EdgeVerbalization from './components/Verbalization/EdgeVerbalization';
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
@@ -62,6 +65,7 @@ type ExampleProps = {
   snapToGrid?: boolean;
   panOnScroll?: boolean;
   zoomOnDoubleClick?: boolean;
+  verbalization?: boolean;
 };
 
 const nodeStyles = {
@@ -96,6 +100,7 @@ function ShapesProExampleApp({
   snapToGrid = true,
   panOnScroll = true,
   zoomOnDoubleClick = false,
+  verbalization = true,
 }: ExampleProps) {
   const { screenToFlowPosition } = useReactFlow<ShapeNode>();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -324,7 +329,25 @@ function ShapesProExampleApp({
   const onPaneClick = () => {
     setSelectedEdge(null);
   };
-  
+
+
+  // const onConnectStart = (_: React.MouseEvent, { edgeType }: OnConnectStartParams) => {
+  //   setConnectEdgeType(edgeType);
+  // };
+
+
+  // const validateConnection = (connection: Connection) => {
+  //   const sourceNode = nodes.find((node) => node.id === connection.source);
+  //   const targetNode = nodes.find((node) => node.id === connection.target);
+
+  //   if (sourceNode && targetNode) {
+  //     const isTemporalEdge = connectEdgeType === 'temporalEdge';
+  //     if (isTemporalEdge) {
+  //       return sourceNode.type === targetNode.type;
+  //     }
+  //   }
+  //   return true;
+  // };  
     
 
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -414,6 +437,10 @@ function ShapesProExampleApp({
 
         </div>
       )}
+      {/* <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} />  */}
+      {selectedEdge && selectedEdge.type === 'temporalEdge' && verbalization && (
+        <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} />
+      )}
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -456,6 +483,7 @@ function ProExampleWrapper() {
     snapToGrid: true,
     panOnScroll: true,
     zoomOnDoubleClick: false,
+    verbalization: { value: true, label: 'Verbalization' },
   });
 
   return (
