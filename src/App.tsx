@@ -305,6 +305,45 @@ function ShapesProExampleApp({
     takeSnapshot();
   };
 
+  const handleChangeQuantitative = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newQuantitative = event.target.value === 'true';
+    if (selectedEdge) {
+      setEdges((eds) =>
+        eds.map((edge) =>
+          edge.id === selectedEdge.id
+            ? { ...edge, data: { ...edge.data, quantitative: newQuantitative, value: '' } }
+            : edge
+        )
+      );
+      setSelectedEdge((prevEdge) =>
+        prevEdge
+          ? { ...prevEdge, data: { ...prevEdge.data, quantitative: newQuantitative, value: '' } }
+          : null
+      );
+    }
+    takeSnapshot();
+  };
+
+  const handleChangeQuantitativeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    if (selectedEdge) {
+      setEdges((eds) =>
+        eds.map((edge) =>
+          edge.id === selectedEdge.id
+            ? { ...edge, data: { ...edge.data, value: newValue } }
+            : edge
+        )
+      );
+      setSelectedEdge((prevEdge) =>
+        prevEdge
+          ? { ...prevEdge, data: { ...prevEdge.data, value: newValue } }
+          : null
+      );
+    }
+    takeSnapshot();
+  };
+
+
 
   // const onConnect = (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds));
   const onConnect = (params: Edge | Connection) => {
@@ -432,6 +471,26 @@ function ShapesProExampleApp({
                   <option value="EXT">EXT</option>
                 </select>
               </label>
+              <label>
+                Quantitative?:
+                <select
+                  value={String(selectedEdge.data?.quantitative) || 'false'}
+                  onChange={handleChangeQuantitative}
+                >
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
+              </label>
+              {selectedEdge.data?.quantitative && (
+                <label>
+                  Value:
+                  <input
+                    type="number"
+                    value={String(selectedEdge.data?.value) || ''}
+                    onChange={handleChangeQuantitativeValue}
+                  />
+                </label>
+              )}
             </>
           )}
 

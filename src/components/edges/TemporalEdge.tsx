@@ -35,6 +35,8 @@ const TemporalEdge: React.FC<EdgeProps> = ({
 
   const edgeLabel = data?.label || 'chg';
   const optional = data?.optional || 'Mandatory';
+  const quantitative = data?.quantitative || false;
+  const value = data?.value || '';
 
   // if (multiplicity === 'many-to-many') {
   //   markerStartDef = undefined;
@@ -140,6 +142,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
         transform={`rotate(${angle}, ${labelX}, ${labelY})`}
       >
         {edgeLabel}
+        {quantitative && ` ${value}`}
       </text>
       {/* Add the bottom for Quantitative */}
       {/* <foreignObject x={labelX + 20} y={labelY - 10} width="40" height="20">
