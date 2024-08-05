@@ -347,6 +347,18 @@ function ShapesProExampleApp({
     takeSnapshot();
   };
 
+  const handleChangePersistent = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newPersistent = event.target.value === 'true';
+    if (selectedEdge) {
+      setEdges((eds) =>
+        eds.map((edge) =>
+          edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, persistent: newPersistent } } : edge
+        )
+      );
+      setSelectedEdge((prevEdge) => (prevEdge ? { ...prevEdge, data: { ...prevEdge.data, persistent: newPersistent } } : null));
+    }
+    takeSnapshot();
+  };
 
 
   // const onConnect = (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds));
@@ -519,6 +531,14 @@ function ShapesProExampleApp({
                   />
                 </label>
               )}
+              <label>
+                Persistent?:
+                <select value={String(selectedEdge.data?.persistent) || 'false'} onChange={handleChangePersistent}>
+                  <option value="false">False</option>
+                  <option value="true">True</option>
+                </select>
+              </label>
+
               {selectedEdge.data?.error && (
                 <div style={{ color: 'red', marginTop: '5px' }}>
                   {selectedEdge.data.error}

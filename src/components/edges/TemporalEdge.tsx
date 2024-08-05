@@ -1,6 +1,8 @@
 import { MarkerType } from '@xyflow/react';
 import React from 'react';
-import { EdgeProps, getSmoothStepPath } from 'reactflow';
+import { EdgeProps, getSmoothStepPath, getBezierPath, getSimpleBezierPath } from 'reactflow';
+import PinIcon from '../../../public/pin.svg';
+
 
 const TemporalEdge: React.FC<EdgeProps> = ({
   id,
@@ -15,7 +17,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   // markerStart = { type: MarkerType.ArrowClosed, color: 'black' }, // Default marker start to ArrowClosed
   data,
 }) => {
-  const [edgePath, labelX, labelY] = getSmoothStepPath({
+  const [edgePath, labelX, labelY] = getSimpleBezierPath({
     sourceX,
     sourceY,
     sourcePosition,
@@ -37,6 +39,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   const optional = data?.optional || 'Mandatory';
   const quantitative = data?.quantitative || false;
   const value = data?.value || '';
+  const persistent = data?.persistent || false;
 
   // if (multiplicity === 'many-to-many') {
   //   markerStartDef = undefined;
@@ -48,30 +51,30 @@ const TemporalEdge: React.FC<EdgeProps> = ({
 
 
   // Adjust labelY to render the label above the edge
-  const adjustedLabelY = labelY - 5; // Adjust this value as needed to position the label above the edge
-  const adjustedLabelX = labelX -0;
+  // const adjustedLabelY = labelY - 5; // Adjust this value as needed to position the label above the edge
+  // const adjustedLabelX = labelX -0;
 
-  // Calculate angle of the edge
-  const dx = targetX - sourceX;
-  const dy = targetY - sourceY;
-  let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+  // // Calculate angle of the edge
+  // const dx = targetX - sourceX;
+  // const dy = targetY - sourceY;
+  // let angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-  // Round the angle to the nearest multiple of 90 degrees
-  // console.log(angle)
-  if (angle < 5)
-  {
-    angle = Math.floor(angle / 90) * 90;
-  }
-  else if (angle > 5)
-  {
-    angle = Math.ceil(angle / 90) * 90;
-    // angle=0
-  }
-  else
-  {
-    angle = Math.round(angle / 90) * 90;
-    // angle = 0
-  }
+  // // Round the angle to the nearest multiple of 90 degrees
+  // // console.log(angle)
+  // if (angle < 5)
+  // {
+  //   angle = Math.floor(angle / 90) * 90;
+  // }
+  // else if (angle > 5)
+  // {
+  //   angle = Math.ceil(angle / 90) * 90;
+  //   // angle=0
+  // }
+  // else
+  // {
+  //   angle = Math.round(angle / 90) * 90;
+  //   // angle = 0
+  // }
   // console.log("----")
   // console.log(angle)
  
@@ -128,7 +131,20 @@ const TemporalEdge: React.FC<EdgeProps> = ({
         // markerStart={markerStartDef ? 'url(#start-arrow)' : undefined}
         markerEnd={markerEndDef ? 'url(#open-arrow)' : undefined}
       />
-
+      {persistent && (
+        <image
+        // href={SmallImage}
+        // x={offsetX}
+        // y={centerY}
+        // width={imageSize}
+        // height={imageSize}
+        href={PinIcon}
+        x={labelX+10}
+        y={labelY-30}
+        width={20}
+        height={20}
+      />
+      )}
 
       
       {/* <text x={adjustedLabelX} y={adjustedLabelY} style={{ fontSize: 12, zIndex:11 }} textAnchor="middle">
@@ -139,7 +155,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
         y={labelY-5}
         style={{ fontSize: 13, zIndex: 10, position: 'relative'}}
         textAnchor="middle"
-        transform={`rotate(${angle}, ${labelX}, ${labelY})`}
+        // transform={`rotate(${angle}, ${labelX}, ${labelY})`}
       >
         {edgeLabel}
         {quantitative && ` ${value}`}
