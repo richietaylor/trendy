@@ -70,6 +70,13 @@ type ExampleProps = {
   verbalization?: boolean;
 };
 
+interface ShapeNodeData {
+  type: string;
+  color: string;
+  label?: string;
+  primary?: boolean; // Add the primary property here
+}
+
 const nodeStyles = {
   temporalAttribute: { width: 120, height: 80 },
   temporalEntity: { width: 120, height: 80 },
@@ -139,6 +146,7 @@ function ShapesProExampleApp({
         color: 'black',
         // label '',
         label: type === 'inheritance' ? '' : 'Add Text',
+        primary: false,
       },
       style: nodeStyles[type] || { width: 120, height: 120 },
       selected: true,
@@ -406,6 +414,18 @@ function ShapesProExampleApp({
     setSelectedEdge(null);
   };
 
+  const togglePrimary = (nodeId: string) => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === nodeId && node.data.type === 'atemporalAttribute') {
+          return { ...node, data: { ...node.data, primary: !node.data.primary } };
+        }
+        return node;
+      })
+    );
+    takeSnapshot();
+  };
+
 
   // const onConnectStart = (_: React.MouseEvent, { edgeType }: OnConnectStartParams) => {
   //   setConnectEdgeType(edgeType);
@@ -586,34 +606,6 @@ function ShapesProExampleApp({
         <Controls />
         <MiniMap />
       </ReactFlow>
-      {/* {errors.length > 0 && selectedEdge && (
-        <div style={{ position: 'absolute', bottom: 10, left: 10, color: 'red' }}>
-          {errors.map((error, index) => (
-            <div key={index}>{error}</div>
-          ))}
-        </div>
-      )} */}
-      {/* {errors.length > 0 && selectedEdge && selectedEdgeCenter && (
-        <div
-          style={{
-            position: 'absolute',
-            top: transformPosition(selectedEdgeCenter).y + 30, // Position below the label
-            left: transformPosition(selectedEdgeCenter).x,
-            zIndex: 10,
-            background: 'white',
-            // padding: '5px',
-            // border: '1px solid #ccc',
-            // borderRadius: '4px',
-            color: 'red',
-            transform: `scale(${zoom})`, // Adjust size according to zoom level
-            transformOrigin: 'top left'  // Make sure the scale is from the top left corner
-          }}
-        >
-          {errors.map((error, index) => (
-            <div key={index}>{error}</div>
-          ))}
-        </div>
-      )} */}
     </div>
   );
 }

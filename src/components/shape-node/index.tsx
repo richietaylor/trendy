@@ -144,7 +144,7 @@ function useNodeDimensions(id: string) {
 }
 
 function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
-  const { color, type, label } = data;
+  const { color, type, label, primary } = data;
   const { setNodes } = useReactFlow();
 
   const { width, height } = useNodeDimensions(id);
@@ -187,6 +187,17 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
               label: newLabel,
             },
           };
+        }
+        return node;
+      })
+    );
+  };
+
+  const togglePrimary = () => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id && node.data.type === 'atemporalAttribute') {
+          return { ...node, data: { ...node.data, primary: !node.data.primary } };
         }
         return node;
       })
@@ -254,7 +265,19 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
         />
         {/* Change it here */}
         {/* <NodeLabel placeholder={"Test" || data.type} />  */}
-        <input type='text' className='node-label' placeholder={label} color="black" onChange={onLabelChange} />
+        {/* <input type='text' className='node-label' placeholder={label} color="black" onChange={onLabelChange} /> */}
+        <input
+          type='text'
+          className='node-label'
+          placeholder={label}
+          style={{ textDecoration: primary ? 'underline' : 'none' }}
+          onChange={onLabelChange}
+        />
+        {selected && type === 'atemporalAttribute' && (
+          <button onClick={togglePrimary}>
+            {primary ? 'Unset Primary' : 'Set Primary'}
+          </button>
+        )}
       </div>
     </>
   );
