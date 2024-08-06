@@ -169,7 +169,8 @@ body,
 
 .node-label::placeholder {
   color: var(--text);
-  opacity: 0.5;
+  /* opacity:0.5; */
+  opacity: 1;
 }
 
 /* for edge types */

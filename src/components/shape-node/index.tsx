@@ -118,7 +118,7 @@
 // }
 
 // export default ShapeNode;
-
+import React, { useEffect, useRef } from 'react';
 import {
   NodeResizer,
   type NodeProps,
@@ -144,9 +144,10 @@ function useNodeDimensions(id: string) {
 }
 
 function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
-  const { color, type, label, primary } = data;
+  const { color, type, label, primary, disjoint } = data;
   const { setNodes } = useReactFlow();
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  
   const { width, height } = useNodeDimensions(id);
   const shiftKeyPressed = useKeyPress('Shift');
   const handleStyle = {
@@ -204,6 +205,32 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
     );
   };
 
+  const toggleDisjoint = () => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id && node.data.type === 'inheritance') {
+          // console.log(`Set Disjoint to ${disjoint}`)
+          return { ...node, data: { ...node.data, disjoint: !node.data.disjoint } };
+          
+        }
+        return node;
+      })
+    );
+  };
+
+  const getPlaceholder = () => {
+    if (type === 'inheritance') {
+      return disjoint ? 'd' : '';
+    }
+    return label;
+  };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.style.opacity = getPlaceholder() === 'Add Text' ? '0.5' : '1';
+    }
+  }, [label, disjoint]);
+
   return (
     <>
       <svg width="0" height="0">
@@ -228,6 +255,7 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
       {/* <div style={{ position: 'relative', overflow: 'visible', padding: '10px', margin: '-10px' }}> */}
       <div style={{  overflow: 'visible'}}>
         <div style={{ filter: 'url(#drop-shadow)' }}>
+          
           <Shape
             type={type}
             width={width}
@@ -269,15 +297,24 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
         <input
           type='text'
           className='node-label'
-          placeholder={label}
+          ref={inputRef}
+          // placeholder={label}
+          placeholder={getPlaceholder()}
           style={{ textDecoration: primary ? 'underline' : 'none' }}
           onChange={onLabelChange}
+          disabled={type === 'inheritance'}
         />
         {selected && type === 'atemporalAttribute' && (
           <button onClick={togglePrimary}>
             {primary ? 'Unset Primary' : 'Set Primary'}
           </button>
         )}
+        {selected && type === 'inheritance' && (
+          <button onClick={toggleDisjoint}>
+            {disjoint ? 'Unset Disjoint' : 'Set Disjoint'}
+          </button>
+        )}
+
       </div>
     </>
   );
