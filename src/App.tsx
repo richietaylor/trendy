@@ -416,37 +416,11 @@ function ShapesProExampleApp({
     setSelectedEdge(null);
   };
 
-  const togglePrimary = (nodeId: string) => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === nodeId && node.data.type === 'atemporalAttribute') {
-          return { ...node, data: { ...node.data, primary: !node.data.primary } };
-        }
-        return node;
-      })
-    );
-    takeSnapshot();
+  const isBothEntities = (sourceNode: Node | undefined, targetNode: Node | undefined) => {
+    const entityTypes = ['temporalEntity', 'atemporalEntity'];
+    return entityTypes.includes(String(sourceNode?.data.type)) && entityTypes.includes(targetNode?.data.type);
   };
-
-
-  // const onConnectStart = (_: React.MouseEvent, { edgeType }: OnConnectStartParams) => {
-  //   setConnectEdgeType(edgeType);
-  // };
-
-
-  // const validateConnection = (connection: Connection) => {
-  //   const sourceNode = nodes.find((node) => node.id === connection.source);
-  //   const targetNode = nodes.find((node) => node.id === connection.target);
-
-  //   if (sourceNode && targetNode) {
-  //     const isTemporalEdge = connectEdgeType === 'temporalEdge';
-  //     if (isTemporalEdge) {
-  //       return sourceNode.type === targetNode.type;
-  //     }
-  //   }
-  //   return true;
-  // };  
-    
+  
 
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -474,6 +448,10 @@ function ShapesProExampleApp({
     a.click();
     URL.revokeObjectURL(url);
   };
+
+  const sourceNode = selectedEdge ? nodes.find((node) => node.id === selectedEdge.source) : undefined;
+  const targetNode = selectedEdge ? nodes.find((node) => node.id === selectedEdge.target) : undefined;
+  const bothEntities = isBothEntities(sourceNode, targetNode);
 
   return (
     <div style={{ height: '100vh' }}>
@@ -533,25 +511,22 @@ function ShapesProExampleApp({
                   <option value="EXT">EXT</option>
                 </select>
               </label>
-              <label>
-                Quantitative?:
-                <select
-                  value={String(selectedEdge.data?.quantitative) || 'false'}
-                  onChange={handleChangeQuantitative}
-                >
-                  <option value="false">False</option>
-                  <option value="true">True</option>
-                </select>
-              </label>
-              {selectedEdge.data?.quantitative && (
-                <label>
-                  Value:
-                  <input
-                    type="number"
-                    value={String(selectedEdge.data?.value) || ''}
-                    onChange={handleChangeQuantitativeValue}
-                  />
-                </label>
+              {(bothEntities) && (
+                <>
+                  <label>
+                    Quantitative?:
+                    <select value={String(selectedEdge.data?.quantitative) || 'false'} onChange={handleChangeQuantitative}>
+                      <option value="false">False</option>
+                      <option value="true">True</option>
+                    </select>
+                  </label>
+                  {selectedEdge.data?.quantitative && (
+                    <label>
+                      Value:
+                      <input type="number" value={String(selectedEdge.data?.value) || ''} onChange={handleChangeQuantitativeValue} />
+                    </label>
+                  )}
+                </>
               )}
               <label>
                 Persistent?:
