@@ -144,7 +144,7 @@ function useNodeDimensions(id: string) {
 }
 
 function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
-  const { color, type, label, primary, disjoint } = data;
+  const { color, type, label, identifier, disjoint } = data;
   const { setNodes } = useReactFlow();
   const inputRef = useRef<HTMLInputElement>(null);
   
@@ -194,11 +194,11 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
     );
   };
 
-  const togglePrimary = () => {
+  const toggleIdentifier = () => {
     setNodes((nds) =>
       nds.map((node) => {
-        if (node.id === id && node.data.type === 'atemporalAttribute') {
-          return { ...node, data: { ...node.data, primary: !node.data.primary } };
+        if (node.id === id && (node.data.type === 'atemporalAttribute' || node.data.type === 'frozenAttribute')) {
+          return { ...node, data: { ...node.data, identifier: !node.data.identifier } };
         }
         return node;
       })
@@ -300,13 +300,13 @@ function ShapeNode({ id, selected, data }: NodeProps<ShapeNode>) {
           ref={inputRef}
           // placeholder={label}
           placeholder={getPlaceholder()}
-          style={{ textDecoration: primary ? 'underline' : 'none' }}
+          style={{ textDecoration: identifier ? 'underline' : 'none' }}
           onChange={onLabelChange}
           disabled={type === 'inheritance'}
         />
-        {selected && type === 'atemporalAttribute' && (
-          <button onClick={togglePrimary}>
-            {primary ? 'Unset Primary' : 'Set Primary'}
+        {selected && (type === 'atemporalAttribute' || type === 'frozenAttribute') && (
+          <button onClick={toggleIdentifier}>
+            {identifier ? 'Unset Identifier' : 'Set Identifier'}
           </button>
         )}
         {selected && type === 'inheritance' && (

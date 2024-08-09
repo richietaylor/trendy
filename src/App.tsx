@@ -37,7 +37,6 @@ import { ShapeNode, ShapeType } from './components/shape/types';
 import OptionalFutureEvolution from './components/edges/OptionalFutureEvolution';
 import TemporalEdge from './components/edges/TemporalEdge';
 import { BackgroundVariant } from 'reactflow';
-import Inheritance from './components/shape/types/inheritance';
 import AtemporalEdge from  './components/edges/AtemporalEdge'
 
 import EdgeVerbalization from './components/Verbalization/EdgeVerbalization';
@@ -74,7 +73,7 @@ interface ShapeNodeData {
   type: string;
   color: string;
   label?: string;
-  primary?: boolean; // Add the primary property here
+  identifier?: boolean; // Add the identifier property here
 }
 
 const nodeStyles = {
@@ -146,8 +145,8 @@ function ShapesProExampleApp({
         color: 'black',
         // label '',
         label: type === 'inheritance' ? '' : 'Add Text',
-        // primary: false,
-        primary: type === 'atemporalAttribute' ? false : undefined,
+        identifier: false, //umm is this okay?
+        // identifier: type === 'atemporalAttribute' ? false : undefined,
         disjoint: type === 'inheritance' ? false : undefined,
       },
       style: nodeStyles[type] || { width: 120, height: 120 },
@@ -482,16 +481,13 @@ function ShapesProExampleApp({
           <label>
             Edge Type:
             <select value={selectedEdge.type} onChange={handleChangeEdgeType}>
-              <option value="atemporalEdge">Atemporal</option>
+              {/* <option value="atemporalEdge">Atemporal</option> */}
+              <option value="atemporalEdge">Default</option>
               {/* <option value="optionalFutureEvolution">Optional Future Evolution</option> */}
               <option value="temporalEdge">Temporal</option>
             </select>
           </label>
-
-
-        {selectedEdge.type === 'temporalEdge' && (
-            <>
-              <label>
+          <label>
                   Optional?:
                   <select
                     value={String(selectedEdge.data?.optional) || 'Mandatory'}
@@ -502,6 +498,21 @@ function ShapesProExampleApp({
                     
                   </select>
               </label>
+
+
+        {selectedEdge.type === 'temporalEdge' && (
+            <>
+              {/* <label>
+                  Optional?:
+                  <select
+                    value={String(selectedEdge.data?.optional) || 'Mandatory'}
+                    onChange={handleChangeOptional}
+                  >
+                    <option value="Mandatory">Mandatory</option>
+                    <option value="Optional">Optional</option>
+                    
+                  </select>
+              </label> */}
               <label>
                 Edge Label:
                 <select value={String(selectedEdge.data?.label) || 'none'} onChange={handleChangeEdgeLabel}>

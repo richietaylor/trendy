@@ -24,23 +24,13 @@ const TemporalEdge: React.FC<EdgeProps> = ({
     targetPosition,
   });
 
-  // // Ensure markerEnd and markerStart are objects with type and color
-  // const markerEndDef = typeof markerEnd === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerEnd;
-  // const markerStartDef = typeof markerStart === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerStart;
 
-  const multiplicity = data?.multiplicity || 'one-to-one';
+  //Multiplicity should be called Cardinality
+//   const multiplicity = data?.multiplicity || 'one-to-one';
+  const optional = data?.optional || 'Mandatory';
 
-  let markerStartDef: string | { type: MarkerType; color: string } | undefined = markerStart;
-  let markerEndDef: string | { type: MarkerType; color: string } | undefined = markerEnd;
 
   const edgeLabel = data?.label || '';
-
-  if (multiplicity === 'many-to-many') {
-    markerStartDef = undefined;
-    markerEndDef = undefined;
-  } else if (multiplicity === 'many-to-one') {
-    markerStartDef = undefined;
-  }
 
 
 

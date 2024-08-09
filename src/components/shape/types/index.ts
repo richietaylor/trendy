@@ -59,6 +59,6 @@ export type ShapeNode = Node<{
   type: ShapeType;
   color: string;
   label?: string;
-  primary?: boolean;
+  identifier?: boolean;
   disjoint?: boolean;
 }>;
