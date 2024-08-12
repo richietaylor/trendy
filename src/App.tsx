@@ -39,7 +39,7 @@ import TemporalEdge from './components/edges/TemporalEdge';
 import { BackgroundVariant } from 'reactflow';
 import AtemporalEdge from  './components/edges/AtemporalEdge'
 
-import EdgeVerbalization from './components/Verbalization/EdgeVerbalization';
+import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
 
