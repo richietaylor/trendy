@@ -34,23 +34,24 @@ import { defaultNodes as initialNodes, defaultEdges as initialEdges } from './in
 import ShapeNodeComponent from './components/shape-node';
 import Sidebar from './components/sidebar';
 import { ShapeNode, ShapeType } from './components/shape/types';
-import OptionalFutureEvolution from './components/edges/OptionalFutureEvolution';
-import TemporalEdge from './components/edges/TemporalEdge';
 import { BackgroundVariant } from 'reactflow';
+
 import AtemporalEdge from  './components/edges/AtemporalEdge'
+import InheritanceEdge from './components/edges/inheritanceEdge';
+import TemporalEdge from './components/edges/TemporalEdge';
 
 import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
-
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
+
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
 };
 
 const edgeTypes: EdgeTypes = {
-  optionalFutureEvolution: OptionalFutureEvolution,
   temporalEdge: TemporalEdge,
-  atemporalEdge: AtemporalEdge
+  atemporalEdge: AtemporalEdge,
+  inheritanceEdge: InheritanceEdge
 };
 
 //change this eventually!
@@ -421,7 +422,18 @@ function ShapesProExampleApp({
     takeSnapshot();
   };
   
-
+  const handleInheritanceTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newType = event.target.value;
+    if (selectedEdge) {
+      const updatedEdge = {
+        ...selectedEdge,
+        data: { ...selectedEdge.data, inheritanceType: newType },
+      };
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+      setSelectedEdge(updatedEdge); // Update selected edge to trigger re-render
+    }
+    takeSnapshot();
+  };
 
   const onConnect = (params: Edge | Connection) => {
     const sourceNode = nodes.find((node) => node.id === params.source);
@@ -533,10 +545,12 @@ function ShapesProExampleApp({
               <option value="atemporalEdge">Default</option>
               {/* <option value="optionalFutureEvolution">Optional Future Evolution</option> */}
               <option value="temporalEdge">Temporal</option>
+              <option value="inheritanceEdge">Inheritance</option>
             </select>
           </label>
-          <label>
-                  Optional?:
+          {(selectedEdge.type === 'temporalEdge' || selectedEdge.type === 'atemporalEdge') && (
+              <label>
+                  Optional:
                   <select
                     value={String(selectedEdge.data?.optional) || 'Mandatory'}
                     onChange={handleChangeOptional}
@@ -546,21 +560,20 @@ function ShapesProExampleApp({
                     
                   </select>
               </label>
+          )}
 
+        {selectedEdge.type === 'inheritanceEdge' && (
+          <label>
+            Inheritance Type:
+            <select value={String(selectedEdge.data?.inheritanceType) || 'Subsumption'} onChange={handleInheritanceTypeChange}>
+              <option value="Subsumption">Subsumption</option>
+              <option value="Cover">Cover</option>
+            </select>
+          </label>
+        )}
 
         {selectedEdge.type === 'temporalEdge' && (
             <>
-              {/* <label>
-                  Optional?:
-                  <select
-                    value={String(selectedEdge.data?.optional) || 'Mandatory'}
-                    onChange={handleChangeOptional}
-                  >
-                    <option value="Mandatory">Mandatory</option>
-                    <option value="Optional">Optional</option>
-                    
-                  </select>
-              </label> */}
               <label>
                 Edge Label:
                 <select value={String(selectedEdge.data?.label) || 'none'} onChange={handleChangeEdgeLabel}>
