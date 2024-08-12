@@ -260,27 +260,46 @@ function ShapesProExampleApp({
     setSelectedEdge(edge);
   };
 
+  // const handleChangeEdgeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const newType = event.target.value;
+  //   if (selectedEdge) {
+  //     setEdges((eds) =>
+  //       eds.map((edge) => (edge.id === selectedEdge.id ? { ...edge, type: newType } : edge))
+  //     );
+  //     // setSelectedEdge(null); // Deselect the edge after updating its type
+  //     setSelectedEdge((prevEdge) => prevEdge ? { ...prevEdge, type: newType } : null);
+      
+  //   }
+  //   takeSnapshot();
+  // };
+
   const handleChangeEdgeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newType = event.target.value;
     if (selectedEdge) {
-      setEdges((eds) =>
-        eds.map((edge) => (edge.id === selectedEdge.id ? { ...edge, type: newType } : edge))
-      );
-      // setSelectedEdge(null); // Deselect the edge after updating its type
-      setSelectedEdge((prevEdge) => prevEdge ? { ...prevEdge, type: newType } : null);
+      const updatedEdge = { ...selectedEdge, type: newType };
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+      setSelectedEdge(updatedEdge);  // This line was added
     }
     takeSnapshot();
   };
+  
 
-  // const handleChangeMultiplicity = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const newMultiplicity = event.target.value;
+
+  // const handleChangeOptional = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const newOptional = event.target.value;
   //   if (selectedEdge) {
   //     setEdges((eds) =>
-  //       eds.map((edge) => 
-  //         edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, multiplicity: newMultiplicity } } : edge
+  //       eds.map((edge) =>
+  //         edge.id === selectedEdge.id
+  //           ? { ...edge, data: { ...edge.data, optional: newOptional } }
+  //           : edge
   //       )
   //     );
-  //     // setSelectedEdge(null);
+  //     setSelectedEdge((prevEdge) =>
+  //       prevEdge
+  //         ? { ...prevEdge, data: { ...prevEdge.data, optional: newOptional } }
+  //         : null
+  //     );
   //   }
   //   takeSnapshot();
   // };
@@ -288,93 +307,122 @@ function ShapesProExampleApp({
   const handleChangeOptional = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newOptional = event.target.value;
     if (selectedEdge) {
-      setEdges((eds) =>
-        eds.map((edge) =>
-          edge.id === selectedEdge.id
-            ? { ...edge, data: { ...edge.data, optional: newOptional } }
-            : edge
-        )
-      );
-      setSelectedEdge((prevEdge) =>
-        prevEdge
-          ? { ...prevEdge, data: { ...prevEdge.data, optional: newOptional } }
-          : null
-      );
+      const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, optional: newOptional } };
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+      setSelectedEdge(updatedEdge);  // This line was added
     }
     takeSnapshot();
   };
+  
 
+
+  // const handleChangeEdgeLabel = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const newLabel = event.target.value;
+  //   if (selectedEdge) {
+  //     setEdges((eds) =>
+  //       eds.map((edge) => 
+  //         edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, label: newLabel } } : edge
+  //       )
+  //     );
+  //     // setSelectedEdge((psrevEdge) => prevEdge ? { ...prevEdge, data: { ...prevEdge.data, label: newLabel } } : null);
+  //   }
+  //   takeSnapshot();
+  // };
 
   const handleChangeEdgeLabel = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newLabel = event.target.value;
     if (selectedEdge) {
-      setEdges((eds) =>
-        eds.map((edge) => 
-          edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, label: newLabel } } : edge
-        )
-      );
-      // setSelectedEdge((psrevEdge) => prevEdge ? { ...prevEdge, data: { ...prevEdge.data, label: newLabel } } : null);
+      const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, label: newLabel } };
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+      setSelectedEdge(updatedEdge);  // This line was added
     }
     takeSnapshot();
   };
+  
 
+  // const handleChangeQuantitative = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const newQuantitative = event.target.value === 'true';
+  //   if (selectedEdge) {
+  //     setEdges((eds) =>
+  //       eds.map((edge) =>
+  //         edge.id === selectedEdge.id
+  //           ? { ...edge, data: { ...edge.data, quantitative: newQuantitative, value: '' } }
+  //           : edge
+  //       )
+  //     );
+  //     setSelectedEdge((prevEdge) =>
+  //       prevEdge
+  //         ? { ...prevEdge, data: { ...prevEdge.data, quantitative: newQuantitative, value: '' } }
+  //         : null
+  //     );
+  //   }
+  //   takeSnapshot();
+  // };
   const handleChangeQuantitative = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newQuantitative = event.target.value === 'true';
     if (selectedEdge) {
-      setEdges((eds) =>
-        eds.map((edge) =>
-          edge.id === selectedEdge.id
-            ? { ...edge, data: { ...edge.data, quantitative: newQuantitative, value: '' } }
-            : edge
-        )
-      );
-      setSelectedEdge((prevEdge) =>
-        prevEdge
-          ? { ...prevEdge, data: { ...prevEdge.data, quantitative: newQuantitative, value: '' } }
-          : null
-      );
+      const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, quantitative: newQuantitative } };
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+      setSelectedEdge(updatedEdge);  // This line was added
     }
     takeSnapshot();
   };
+  
 
+  // const handleChangeQuantitativeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newValue = event.target.value;
+  //   if (selectedEdge) {
+  //     setEdges((eds) =>
+  //       eds.map((edge) =>
+  //         edge.id === selectedEdge.id
+  //           ? { ...edge, data: { ...edge.data, value: newValue } }
+  //           : edge
+  //       )
+  //     );
+  //     setSelectedEdge((prevEdge) =>
+  //       prevEdge
+  //         ? { ...prevEdge, data: { ...prevEdge.data, value: newValue } }
+  //         : null
+  //     );
+  //   }
+  //   takeSnapshot();
+  // };
   const handleChangeQuantitativeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     if (selectedEdge) {
-      setEdges((eds) =>
-        eds.map((edge) =>
-          edge.id === selectedEdge.id
-            ? { ...edge, data: { ...edge.data, value: newValue } }
-            : edge
-        )
-      );
-      setSelectedEdge((prevEdge) =>
-        prevEdge
-          ? { ...prevEdge, data: { ...prevEdge.data, value: newValue } }
-          : null
-      );
+      const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, value: newValue } };
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+      setSelectedEdge(updatedEdge);  // This line was added
     }
     takeSnapshot();
   };
+  
+
+  // const handleChangePersistent = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const newPersistent = event.target.value === 'true';
+  //   if (selectedEdge) {
+  //     setEdges((eds) =>
+  //       eds.map((edge) =>
+  //         edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, persistent: newPersistent } } : edge
+  //       )
+  //     );
+  //     setSelectedEdge((prevEdge) => (prevEdge ? { ...prevEdge, data: { ...prevEdge.data, persistent: newPersistent } } : null));
+  //   }
+  //   takeSnapshot();
+  // };
 
   const handleChangePersistent = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newPersistent = event.target.value === 'true';
     if (selectedEdge) {
-      setEdges((eds) =>
-        eds.map((edge) =>
-          edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, persistent: newPersistent } } : edge
-        )
-      );
-      setSelectedEdge((prevEdge) => (prevEdge ? { ...prevEdge, data: { ...prevEdge.data, persistent: newPersistent } } : null));
+      const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, persistent: newPersistent } };
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+      setSelectedEdge(updatedEdge);  // This line was added
     }
     takeSnapshot();
   };
+  
 
 
-  // const onConnect = (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds));
-  // const onConnect = (params: Edge | Connection) => {
-  //   setEdges((eds) => addEdge(params, eds));
-  //   takeSnapshot();
-  // };
   const onConnect = (params: Edge | Connection) => {
     const sourceNode = nodes.find((node) => node.id === params.source);
     const targetNode = nodes.find((node) => node.id === params.target);

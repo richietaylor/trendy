@@ -84,7 +84,7 @@ export const validateEdges = (nodes: Node[], edges: Edge[]) => {
         const targetNode = nodes.find(node => node.id === edge.target);
     
         if (edge.type === 'temporalEdge' && !isValidTemporalEdgeConnection(sourceNode, targetNode)) {
-        validatedEdges.push({ ...edge, style: { ...edge.style, stroke: 'red' }, data: { ...edge.data, error: `Temporal Connections must be between only entity types or only relationship types` } });
+        validatedEdges.push({ ...edge, style: { ...edge.style, stroke: 'red' }, data: { ...edge.data, error: `Temporal Connections must only be between ` } });
         } else {
         validatedEdges.push({ ...edge, style: { ...edge.style, stroke: 'black' }, data: { ...edge.data, error: undefined } });
         }

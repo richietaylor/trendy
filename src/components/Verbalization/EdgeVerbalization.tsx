@@ -20,7 +20,7 @@ const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nod
   
   // Extract edge properties
   const { type: edgeType, data, style } = selectedEdge;
-  const { label: edgeLabel, optional, persistent, quantitative, value } = data || {};
+  const { label: edgeLabel="chg", optional='Mandatory', persistent=false, quantitative=false, value } = data || {};
 
   // Extract source and target node properties
   const sourceNodeType = sourceNode.data.type;
@@ -58,45 +58,45 @@ const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nod
     // verbalization += ` Both of the nodes are entities.`;
     console.log('isEntity:', isEntity, 'optional:', optional, 'quantitative:', quantitative, 'edgeLabel:', edgeLabel);
     
-    if(quantitative === false)
+    if(quantitative === undefined || quantitative === false)
     {
         if(optional === 'Optional')
             {
                 if(edgeLabel === 'chg')
                     {
-                        verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now.`
-                        console.log(`${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now.`)
+                        verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now`
+                        console.log(`${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now`)
                     }
                     else if(edgeLabel === 'CHG')
                     {
-                        verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may evolve to become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel} .`
+                        verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may evolve to become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}`
                     }
                     else if(edgeLabel === 'ext')
                     {
-                        verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before.`
+                        verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before`
                     }
                     else if(edgeLabel === 'EXT')
                     {
-                        verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} .`
+                        verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel}`
                     }
             }
             else if(optional === 'Mandatory')
             {
                 if(edgeLabel === 'chg')
                     {
-                        verbalization += `Each ${sourceNodeLabel} was ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now.`
+                        verbalization += `Each ${sourceNodeLabel} was ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now`
                     }
                     else if(edgeLabel === 'CHG')
                     {
-                        verbalization += `Each ${sourceNodeLabel} must evolve to ${targetNodeLabel} ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}.`
+                        verbalization += `Each ${sourceNodeLabel} must evolve to ${targetNodeLabel} ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}`
                     }
                     else if(edgeLabel === 'ext')
                     {
-                        verbalization += `Each ${sourceNodeLabel} was already ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel}.`
+                        verbalization += `Each ${sourceNodeLabel} was already ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel}`
                     }
                     else if(edgeLabel === 'EXT')
                     {
-                        verbalization += `Each ${sourceNodeLabel} also has to become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel}.`
+                        verbalization += `Each ${sourceNodeLabel} also has to become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel}`
                     }
             }
     }
@@ -106,88 +106,131 @@ const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nod
                 {
                     if(edgeLabel === 'chg')
                         {
-                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before for a period of ${maybe}${value} ${quanta}, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now.`
+                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before for a period of ${maybe}${value} ${quanta}, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now`
                         }
                         else if(edgeLabel === 'CHG')
                         {
-                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may progress to ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta}, ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}.`
+                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may progress to ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta}, ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}`
                         }
                         else if(edgeLabel === 'ext')
                         {
-                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may already be ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} for ${maybe}${value} ${quanta} since ${value} ${quanta}.`
+                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may already be ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} for ${maybe}${value} ${quanta} since ${value} ${quanta}`
                         }
                         else if(edgeLabel === 'EXT')
                         {
-                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta}.`
+                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta}`
                         }
                 }
                 else if(optional === 'Mandatory')
                 {
                     if(edgeLabel === 'chg')
                         {
-                            verbalization += `Each ${sourceNodeLabel} was ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before for a period of ${maybe}${value} ${quanta}, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now.`
+                            verbalization += `Each ${sourceNodeLabel} was ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before for a period of ${maybe}${value} ${quanta}, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now`
                         }
                         else if(edgeLabel === 'CHG')
                         {
-                            verbalization += `Each ${sourceNodeLabel} must progress to ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta} , ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}.`
+                            verbalization += `Each ${sourceNodeLabel} must progress to ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta} , ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}`
                         }
                         else if(edgeLabel === 'ext')
                         {
-                            verbalization += `Each ${sourceNodeLabel} was already ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} for ${maybe}${value} ${quanta} since ${value} ${quanta} .`
+                            verbalization += `Each ${sourceNodeLabel} was already ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} for ${maybe}${value} ${quanta} since ${value} ${quanta}`
                         }
                         else if(edgeLabel === 'EXT')
                         {
-                            verbalization += `Each ${sourceNodeLabel} will also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta}.`
+                            verbalization += `Each ${sourceNodeLabel} will also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta}`
                         }
                 }
         }
   }
-
   if (isRelationship) {
     // verbalization += ` Both of the nodes are relationships.`;
     if(optional === 'Optional')
         {
             if(edgeLabel === 'chg')
                 {
-                    verbalization += `..C1.. ..R1.. ..C2.. may have been preceded by ..C1.. ..R2.. ..C2.. and they are not in that ..C1.. ..R2.. ..C2.. relation now.`
+                    verbalization += `${sourceNodeLabel} may have been preceded by ${targetNodeLabel} and they are not in that ${targetNodeLabel} relation now`
                 }
                 else if(edgeLabel === 'CHG')
                 {
-                    verbalization += `..C1.. ..R1.. ..C2.. may be followed by ..C1.. ..R2.. ..C2.. , ending ..C1.. ..R1.. ..C2..`
+                    verbalization += `${sourceNodeLabel} may be followed by ${targetNodeLabel}, ending ${sourceNodeLabel}`
                 }
                 else if(edgeLabel === 'ext')
                 {
-                    verbalization += `${sourceNodeLabel} ..R1.. ..C2.. may be preceded by ..C1.. ..R2.. ..C2.. some time earlier.`
+                    verbalization += `${sourceNodeLabel} may be preceded by ${targetNodeLabel} some time earlier`
                 }
                 else if(edgeLabel === 'EXT')
                 {
-                    verbalization += `..C1.. ..R1.. ..C2.. may be followed by ..C1.. ..R2.. ..C2.. some time later.`
+                    verbalization += `${sourceNodeLabel} may be followed by ${targetNodeLabel} some time later`
                 }
         }
-        else if(optional === 'Madatory')
+        else if(optional === 'Mandatory')
         {
             if(edgeLabel === 'chg')
                 {
-                    verbalization += `Each ..C1.. ..R1.. ..C2.. must have been preceded by ..C1.. ..R2.. ..C2.., and terminating that ..C1.. ..R2.. ..C2.. relation.`
+                    verbalization += `Each ${sourceNodeLabel} must have been preceded by ${targetNodeLabel}, and terminating that ${targetNodeLabel} relation`
                 }
                 else if(edgeLabel === 'CHG')
                 {
-                    verbalization += `Each ..C1.. ..R1.. ..C2.. will be followed by ..C1.. ..R2.. ..C2.. , terminating the ..C1.. ..R1.. ..C2.. relation.`
+                    verbalization += `Each ${sourceNodeLabel} will be followed by ${targetNodeLabel}, terminating the ${sourceNodeLabel} relation`
                 }
                 else if(edgeLabel === 'ext')
                 {
-                    verbalization += `Each ..C1.. ..R1.. ..C2.. was preceded by ..C1.. ..R2.. ..C2.. some time earlier.`
+                    verbalization += `Each ${sourceNodeLabel} was preceded by ${targetNodeLabel} some time earlier`
                 }
                 else if(edgeLabel === 'EXT')
                 {
-                    verbalization += `Each ..C1.. ..R1.. ..C2.. will be followed by ..C1.. ..R2.. ..C2.. .`
+                    verbalization += `Each ${sourceNodeLabel} will be followed by ${targetNodeLabel}`
                 }
         }
   }
+//   if (isRelationship) {
+//     // verbalization += ` Both of the nodes are relationships.`;
+//     if(optional === 'Optional')
+//         {
+//             if(edgeLabel === 'chg')
+//                 {
+//                     verbalization += `..C1.. ..R1.. ..C2.. may have been preceded by ..C1.. ..R2.. ..C2.. and they are not in that ..C1.. ..R2.. ..C2.. relation now`
+//                 }
+//                 else if(edgeLabel === 'CHG')
+//                 {
+//                     verbalization += `..C1.. ..R1.. ..C2.. may be followed by ..C1.. ..R2.. ..C2.. , ending ..C1.. ..R1.. ..C2..`
+//                 }
+//                 else if(edgeLabel === 'ext')
+//                 {
+//                     verbalization += `${sourceNodeLabel} ..R1.. ..C2.. may be preceded by ..C1.. ..R2.. ..C2.. some time earlier`
+//                 }
+//                 else if(edgeLabel === 'EXT')
+//                 {
+//                     verbalization += `..C1.. ..R1.. ..C2.. may be followed by ..C1.. ..R2.. ..C2.. some time later`
+//                 }
+//         }
+//         else if(optional === 'Mandatory')
+//         {
+//             if(edgeLabel === 'chg')
+//                 {
+//                     verbalization += `Each ..C1.. ..R1.. ..C2.. must have been preceded by ..C1.. ..R2.. ..C2.., and terminating that ..C1.. ..R2.. ..C2.. relation`
+//                 }
+//                 else if(edgeLabel === 'CHG')
+//                 {
+//                     verbalization += `Each ..C1.. ..R1.. ..C2.. will be followed by ..C1.. ..R2.. ..C2.. , terminating the ..C1.. ..R1.. ..C2.. relation`
+//                 }
+//                 else if(edgeLabel === 'ext')
+//                 {
+//                     verbalization += `Each ..C1.. ..R1.. ..C2.. was preceded by ..C1.. ..R2.. ..C2.. some time earlier`
+//                 }
+//                 else if(edgeLabel === 'EXT')
+//                 {
+//                     verbalization += `Each ..C1.. ..R1.. ..C2.. will be followed by ..C1.. ..R2.. ..C2..`
+//                 }
+//         }
+//   }
 
   if(persistent)
   {
-    verbalization += ` and this remains so indefinitely.`
+    verbalization += `, and this remains so indefinitely.`
+  }
+  else{
+    verbalization += '.'
   }
 //else fullstop - remove all other fullstops
 
