@@ -11,13 +11,14 @@
     "generate-js": "npx tsc --jsx preserve -t es2020 --outDir srcJs --noEmit false && npx prettier srcJs --write && npx shx cp src/*.css srcJs"
   },
   "dependencies": {
-    "@xyflow/react": "^12.0.2",
+    "@xyflow/react": "^12.0.4",
     "html-to-image": "^1.11.11",
     "leva": "^0.9.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-tooltip": "^5.27.1",
-    "reactflow": "^11.10.1"
+    "reactflow": "^11.10.1",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

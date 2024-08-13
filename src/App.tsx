@@ -43,7 +43,7 @@ import TemporalEdge from './components/edges/TemporalEdge';
 import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
 
-import DownloadButton from './components/DownloadButton';
+// import DownloadButton from './components/DownloadButton';
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
@@ -438,6 +438,30 @@ function ShapesProExampleApp({
     takeSnapshot();
   };
 
+  const handleChangeCardinalityStart = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    if (!selectedEdge) {
+      return;
+    }
+  
+    const newCardinalityStart = event.target.value;
+    const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityStart: newCardinalityStart } };
+    setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+    setSelectedEdge(updatedEdge);
+    takeSnapshot();
+  };
+  
+  const handleChangeCardinalityEnd = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    if (!selectedEdge) {
+      return;
+    }
+  
+    const newCardinalityEnd = event.target.value;
+    const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityEnd: newCardinalityEnd } };
+    setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+    setSelectedEdge(updatedEdge);
+    takeSnapshot();
+  };
+
   const onConnect = (params: Edge | Connection) => {
     const sourceNode = nodes.find((node) => node.id === params.source);
     const targetNode = nodes.find((node) => node.id === params.target);
@@ -564,7 +588,39 @@ function ShapesProExampleApp({
                   </select>
               </label>
           )}
+{selectedEdge.type === 'atemporalEdge' && (
+          <>
+            <label>
+              Cardinality (start):
+              <select
+                value={String(selectedEdge.data?.cardinalityStart) || 'None'}
+                onChange={handleChangeCardinalityStart}
+              >
+                <option value="None">None</option>
+                <option value="1">1</option>
+                <option value="0..1">0..1</option>
+                <option value="1..n">1..n</option>
+                <option value="0..n">0..n</option>
+                
+              </select>
+            </label>
 
+            <label>
+              Cardinality (end):
+              <select
+                value={String(selectedEdge.data?.cardinalityEnd) || 'None'}
+                onChange={handleChangeCardinalityEnd}
+              >
+                <option value="None">None</option>
+                <option value="1">1</option>
+                <option value="0..1">0..1</option>
+                <option value="1..n">1..n</option>
+                <option value="0..n">0..n</option>
+                
+              </select>
+            </label>
+          </>
+        )}
         {selectedEdge.type === 'inheritanceEdge' && (
           <label>
             Inheritance Type:
@@ -650,6 +706,7 @@ function ShapesProExampleApp({
         proOptions={proOptions}
         // connectOnDrop={false} 
       >
+        {/* <DownloadButton/> */}
         {/* <Background /> */}
         <Background color="white" variant={BackgroundVariant.Lines} />
         <Panel position="top-left">
@@ -657,7 +714,7 @@ function ShapesProExampleApp({
         </Panel>
         <Controls />
         <MiniMap />
-        <DownloadButton/>
+        
       </ReactFlow>
     </div>
   );
