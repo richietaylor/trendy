@@ -4,9 +4,10 @@ import { Edge, Node } from '@xyflow/react';
 type EdgeVerbalizationProps = {
   selectedEdge: Edge | null;
   nodes: Node[];
+  timeQuanta?: 'day' | 'year';
 };
 
-const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nodes }) => {
+const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nodes, timeQuanta }) => {
   if (!selectedEdge) {
     return null;
   }
@@ -106,38 +107,38 @@ const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nod
                 {
                     if(edgeLabel === 'chg')
                         {
-                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before for a period of ${maybe}${value} ${quanta}, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now`
+                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may have been ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before for a period of ${maybe}${value} ${timeQuanta}s, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now`
                         }
                         else if(edgeLabel === 'CHG')
                         {
-                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may progress to ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta}, ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}`
+                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may progress to ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${timeQuanta}s, ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}`
                         }
                         else if(edgeLabel === 'ext')
                         {
-                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may already be ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} for ${maybe}${value} ${quanta} since ${value} ${quanta}`
+                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may already be ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} for ${maybe}${value} ${timeQuanta}s since ${value} ${timeQuanta}s`
                         }
                         else if(edgeLabel === 'EXT')
                         {
-                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta}`
+                            verbalization += `${capitalizeFirstLetter(getIndefiniteArticle(String(sourceNodeLabel)))} ${sourceNodeLabel} may also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${timeQuanta}s`
                         }
                 }
                 else if(optional === 'Mandatory')
                 {
                     if(edgeLabel === 'chg')
                         {
-                            verbalization += `Each ${sourceNodeLabel} was ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before for a period of ${maybe}${value} ${quanta}, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now`
+                            verbalization += `Each ${sourceNodeLabel} was ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} before for a period of ${maybe}${value} ${timeQuanta}s, but is not ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} now`
                         }
                         else if(edgeLabel === 'CHG')
                         {
-                            verbalization += `Each ${sourceNodeLabel} must progress to ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta} , ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}`
+                            verbalization += `Each ${sourceNodeLabel} must progress to ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${timeQuanta}s, ceasing to be ${getIndefiniteArticle(String(sourceNodeLabel))} ${sourceNodeLabel}`
                         }
                         else if(edgeLabel === 'ext')
                         {
-                            verbalization += `Each ${sourceNodeLabel} was already ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} for ${maybe}${value} ${quanta} since ${value} ${quanta}`
+                            verbalization += `Each ${sourceNodeLabel} was already ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} for ${maybe}${value} ${timeQuanta}s since ${value} ${timeQuanta}s`
                         }
                         else if(edgeLabel === 'EXT')
                         {
-                            verbalization += `Each ${sourceNodeLabel} will also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${quanta}`
+                            verbalization += `Each ${sourceNodeLabel} will also become ${getIndefiniteArticle(String(targetNodeLabel))} ${targetNodeLabel} after ${maybe}${value} ${timeQuanta}s`
                         }
                 }
         }

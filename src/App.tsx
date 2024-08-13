@@ -37,12 +37,13 @@ import { ShapeNode, ShapeType } from './components/shape/types';
 import { BackgroundVariant } from 'reactflow';
 
 import AtemporalEdge from  './components/edges/AtemporalEdge'
-import InheritanceEdge from './components/edges/inheritanceEdge';
+import InheritanceEdge from './components/edges/InheritanceEdge';
 import TemporalEdge from './components/edges/TemporalEdge';
 
 import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
 
+import DownloadButton from './components/DownloadButton';
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
@@ -63,11 +64,12 @@ const defaultEdgeOptions: DefaultEdgeOptions = {
 const proOptions = { account: 'paid-pro', hideAttribution: true };
 
 type ExampleProps = {
-  theme?: 'light' | 'dark';
+  // theme?: 'light' | 'dark';
   snapToGrid?: boolean;
   panOnScroll?: boolean;
   zoomOnDoubleClick?: boolean;
   verbalization?: boolean;
+  timeQuanta?: 'day' | 'year';
 };
 
 interface ShapeNodeData {
@@ -105,11 +107,12 @@ const getEdgeCenter = (sourcePosition: XYPosition | undefined, targetPosition: X
 };
 
 function ShapesProExampleApp({
-  theme = 'light',
+  // theme = 'light',
   snapToGrid = true,
   panOnScroll = true,
   zoomOnDoubleClick = false,
   verbalization = true,
+  timeQuanta = 'day',
 }: ExampleProps) {
   const { screenToFlowPosition } = useReactFlow<ShapeNode>();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -620,7 +623,7 @@ function ShapesProExampleApp({
       )}
       {/* <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} />  */}
       {selectedEdge && selectedEdge.type === 'temporalEdge' && verbalization && (
-        <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} />
+        <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} timeQuanta={timeQuanta}/>
       )}
       <ReactFlow
         nodes={nodes}
@@ -643,7 +646,7 @@ function ShapesProExampleApp({
         fitView
         panOnScroll={panOnScroll}
         zoomOnDoubleClick={zoomOnDoubleClick}
-        colorMode={theme}
+        // colorMode={theme}
         proOptions={proOptions}
         // connectOnDrop={false} 
       >
@@ -654,6 +657,7 @@ function ShapesProExampleApp({
         </Panel>
         <Controls />
         <MiniMap />
+        <DownloadButton/>
       </ReactFlow>
     </div>
   );
@@ -661,11 +665,12 @@ function ShapesProExampleApp({
 
 function ProExampleWrapper() {
   const props = useControls({
-    theme: { value: 'light', options: ['dark', 'light'] },
+    // theme: { value: 'light', options: ['dark', 'light'] },
     snapToGrid: true,
     panOnScroll: true,
     zoomOnDoubleClick: false,
     verbalization: { value: true, label: 'Verbalization' },
+    timeQuanta: { value: 'day', options: ['day', 'year'], label: 'Time Quanta' },
   });
 
   return (
