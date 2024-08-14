@@ -59,13 +59,13 @@ const InheritanceEdge: React.FC<EdgeProps> = ({
           {/* Render the double line for other types */}
           <path
             id={`${id}-outer`}
-            style={{ stroke: 'black', strokeWidth: 4, zIndex: 1 }}
+            style={{ stroke: 'black', strokeWidth: 5, zIndex: 1 }}
             className="react-flow__edge-path"
             d={edgePath}
           />
           <path
             id={`${id}-inner`}
-            style={{ stroke: 'white', strokeWidth: 2 }}
+            style={{ stroke: '#f8fafc', strokeWidth: 2 }}
             className="react-flow__edge-path"
             d={edgePath}
           />

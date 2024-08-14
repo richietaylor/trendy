@@ -1,16 +1,6 @@
 import { SVGAttributes } from 'react';
 import type { Node } from '@xyflow/react';
 
-// import Circle from './TemporalAttribute';
-// import RoundRectangle from './round-rectangle';
-// import Rectangle from './TemporalEntity';
-// import Hexagon from './hexagon';
-// import Diamond from './diamond';
-// import ArrowRectangle from './arrow-rectangle';
-// import Cylinder from './cylinder';
-// import Triangle from './triangle';
-// import Parallelogram from './parallelogram';
-// import Plus from './plus';
 import TemporalRelationship from './temporalRelationship'
 import TemporalEntity from './TemporalEntity'
 import TemporalAttribute from './TemporalAttribute'
@@ -20,19 +10,12 @@ import AtemporalAttribute from './AtemporalAttribute'
 import AtemporalRelationship from './AtemporalRelationship'
 import Inheritance from './inheritance';
 import DerivedAttribute from './DerivedAttribute'
+import WeakEntity from './WeakEntity'
+import WeakRelationship from './WeakRelationship'
 // here we register all the shapes that are available
 // you can add your own here
 export const ShapeComponents = {
-  // circle: Circle,
-  // 'round-rectangle': RoundRectangle,
-  // rectangle: Rectangle,
-  // hexagon: Hexagon,
-  // diamond: Diamond,
-  // 'arrow-rectangle': ArrowRectangle,
-  // cylinder: Cylinder,
-  // triangle: Triangle,
-  // parallelogram: Parallelogram,
-  // plus: Plus,
+
   temporalRelationship: TemporalRelationship,
   temporalEntity: TemporalEntity,
   temporalAttribute: TemporalAttribute,
@@ -42,8 +25,9 @@ export const ShapeComponents = {
   atemporalRelationship: AtemporalRelationship,
   inheritance: Inheritance,
   derivedAttribute: DerivedAttribute,
+  weakEntity: WeakEntity,
+  weakRelationship: WeakRelationship,
 
-  
 };
 
 export type ShapeType = keyof typeof ShapeComponents;

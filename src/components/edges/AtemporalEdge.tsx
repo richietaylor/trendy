@@ -95,12 +95,45 @@ const TemporalEdge: React.FC<EdgeProps> = ({
           </marker>
         </defs>
       </svg>
-      <path
+      {/* <path
         id={id}
         style={{ ...style, strokeDasharray: optional === 'Optional' ? '5,5' : undefined, zIndex: 11 }}
         className="react-flow__edge-path"
         d={edgePath}
-      />
+      /> */}
+      {optional === 'Optional' ? (
+        // Render a single black line for Subsumption
+        <path
+          id={id}
+          style={{ stroke: 'black', strokeWidth: 2, zIndex: 1 }}
+          className="react-flow__edge-path"
+          d={edgePath}
+          markerEnd="url(#arrow)"
+        />
+      ) : (
+        <>
+          {/* Render the double line for other types */}
+          <path
+            id={`${id}-outer`}
+            style={{ stroke: 'black', strokeWidth: 5, zIndex: 1 }}
+            className="react-flow__edge-path"
+            d={edgePath}
+          />
+          <path
+            id={`${id}-inner`}
+            style={{ stroke: 'white', strokeWidth: 2 }}
+            className="react-flow__edge-path"
+            d={edgePath}
+          />
+          <path
+            id={id}
+            style={{ ...style, stroke: 'none', pointerEvents: 'none', zIndex: 12 }} // Make this transparent to render the marker over it
+            className="react-flow__edge-path"
+            d={edgePath}
+            markerEnd="url(#arrow)"
+          />
+        </>
+      )}
 
       <text
         x={labelX}

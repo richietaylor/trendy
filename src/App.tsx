@@ -42,6 +42,7 @@ import TemporalEdge from './components/edges/TemporalEdge';
 
 import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
+import WeakEntity from './components/shape/types/WeakEntity';
 
 // import DownloadButton from './components/DownloadButton';
 
@@ -89,6 +90,8 @@ const nodeStyles = {
   atemporalRelationship: { width: 120, height: 80 },
   inheritance: { width:40, height:40},
   derivedAttribute: {width: 120, height: 80},
+  weakEntity: {width: 120, height: 80},
+  weakRelationship: { width: 120, height: 80},
 };
 
 // const getEdgeCenter = (sourcePosition: XYPosition | undefined, targetPosition: XYPosition | undefined) => ({
@@ -486,13 +489,13 @@ function ShapesProExampleApp({
   };
 
   const isEntityNode = (node: Node) => {
-    const entityTypes = ['temporalEntity', 'atemporalEntity'];
+    const entityTypes = ['temporalEntity', 'atemporalEntity', "weakEntity"];
     return node && entityTypes.includes(node.data.type as string);
   };
 
   const isEntityToRelationship = (sourceNode: Node | undefined, targetNode: Node | undefined) => {
-    const entityTypes = ['temporalEntity', 'atemporalEntity'];
-    const relationshipTypes = ['temporalRelationship', 'atemporalRelationship'];
+    const entityTypes = ['temporalEntity', 'atemporalEntity', "weakEntity"];
+    const relationshipTypes = ['temporalRelationship', 'atemporalRelationship', "weakRelationship"];
 
     return (
       (sourceNode && entityTypes.includes(sourceNode.data.type as string) && targetNode && relationshipTypes.includes(targetNode.data.type as string)) ||
@@ -541,7 +544,7 @@ function ShapesProExampleApp({
   };
 
   const isBothEntities = (sourceNode: Node | undefined, targetNode: Node | undefined) => {
-    const entityTypes = ['temporalEntity', 'atemporalEntity'];
+    const entityTypes = ['temporalEntity', 'atemporalEntity', 'weakEntity'];
     return entityTypes.includes(String(sourceNode?.data.type)) && entityTypes.includes(targetNode?.data.type);
   };
   
@@ -613,9 +616,9 @@ const sendToDriver = () => {
       <button
         className="reactflow-button"
         onClick={sendToDriver}
-        style={{ position: 'absolute', bottom: 250, right: 115, zIndex: 10 }}
+        style={{ position: 'absolute', bottom: 215, right: 115, zIndex: 10 }}
       >
-        Generate Schema in Driver
+        Generate Schema
       </button>
       <input className="reactflow-button" type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', bottom: 190, right: 0, zIndex: 10 }} />
       {/* <input type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', top: 150, left: 10, zIndex: 10 }} /> */}
@@ -658,9 +661,8 @@ const sendToDriver = () => {
                     value={String(selectedEdge.data?.optional) || 'Mandatory'}
                     onChange={handleChangeOptional}
                   >
-                    <option value="Mandatory">Mandatory</option>
                     <option value="Optional">Optional</option>
-                    
+                    <option value="Mandatory">Mandatory</option>
                   </select>
               </label>
           )}
