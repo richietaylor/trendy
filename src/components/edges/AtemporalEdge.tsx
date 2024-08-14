@@ -25,7 +25,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   });
 
 
-  const optional = data?.optional || 'Mandatory';
+  const optional = data?.optional || 'Optional';
   const edgeLabel = data?.label || '';
   const cardinalityStart = data?.cardinalityStart || 'None';
   const cardinalityEnd = data?.cardinalityEnd || 'None';
@@ -121,7 +121,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
           />
           <path
             id={`${id}-inner`}
-            style={{ stroke: 'white', strokeWidth: 2 }}
+            style={{ stroke: '#f8fafc', strokeWidth: 2 }}
             className="react-flow__edge-path"
             d={edgePath}
           />

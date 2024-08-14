@@ -55,8 +55,8 @@ const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nod
 
 //   if sourceNodeType = 
 
-  const isEntity = ['temporalEntity', 'atemporalEntity'].includes(String(sourceNodeType)) && ['temporalEntity', 'atemporalEntity'].includes(String(targetNodeType));
-  const isRelationship = ['temporalRelationship', 'atemporalRelationship'].includes(String(sourceNodeType)) && ['temporalRelationship', 'atemporalRelationship'].includes(String(targetNodeType));
+  const isEntity = ['temporalEntity', 'atemporalEntity', 'weakEntity'].includes(String(sourceNodeType)) && ['temporalEntity', 'atemporalEntity', 'weakEntity'].includes(String(targetNodeType));
+  const isRelationship = ['temporalRelationship', 'atemporalRelationship', 'weakRelationship'].includes(String(sourceNodeType)) && ['temporalRelationship', 'atemporalRelationship', 'weakRelationship'].includes(String(targetNodeType));
 
 
   if (isEntity) {
@@ -240,7 +240,7 @@ const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nod
 //else fullstop - remove all other fullstops
 
   return (
-    <div style={{ position: 'absolute', bottom: 50, left: 20, background: 'white', padding: '10px', border: '1px solid #ccc', borderRadius: '4px', zIndex: 10 }}>
+    <div style={{ position: 'absolute', bottom: 15, left: 70, background: 'white', padding: '10px', border: '1px solid #ccc', borderRadius: '4px', zIndex: 10 }}>
       <p>{verbalization}</p>
     </div>
   );

@@ -42,7 +42,6 @@ import TemporalEdge from './components/edges/TemporalEdge';
 
 import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
-import WeakEntity from './components/shape/types/WeakEntity';
 
 // import DownloadButton from './components/DownloadButton';
 
@@ -60,6 +59,7 @@ const edgeTypes: EdgeTypes = {
 const defaultEdgeOptions: DefaultEdgeOptions = {
   type: 'atemporalEdge',
   style: { stroke: 'black', strokeWidth: 2 },
+  // data: {Optonal: 'Optional'},
 };
 
 const proOptions = { account: 'paid-pro', hideAttribution: true };
