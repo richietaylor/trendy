@@ -12,8 +12,12 @@ const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nod
     return null;
   }
 
-  const sourceNode = nodes.find(node => node.id === selectedEdge.source);
-  const targetNode = nodes.find(node => node.id === selectedEdge.target);
+//   SWAPPED SOURCE AND TARGET LABELS BECAUSE I DID IT WORNG ORINGIALLY
+//   const sourceNode = nodes.find(node => node.id === selectedEdge.source);
+//   const targetNode = nodes.find(node => node.id === selectedEdge.target);
+  const targetNode = nodes.find(node => node.id === selectedEdge.source);
+  const sourceNode = nodes.find(node => node.id === selectedEdge.target);
+
 
   if (!sourceNode || !targetNode) {
     return null;

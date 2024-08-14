@@ -648,7 +648,7 @@ const sendToDriver = () => {
               <option value="atemporalEdge">Default</option>
               {/* <option value="optionalFutureEvolution">Optional Future Evolution</option> */}
               <option value="temporalEdge">Temporal</option>
-              <option value="inheritanceEdge">Inheritance</option>
+              <option value="inheritanceEdge">Subsumption</option>
             </select>
           </label>
           {(selectedEdge.type === 'temporalEdge' || selectedEdge.type === 'atemporalEdge') && (
@@ -713,15 +713,16 @@ const sendToDriver = () => {
                 <option value="0..1">0..1</option>
                 <option value="1..n">1..n</option>
                 <option value="0..n">0..n</option>
+                <option value="n..m">0..n</option>
               </select>
             </label>
           )}
         {selectedEdge.type === 'inheritanceEdge' && (
           <label>
-            Inheritance Type:
+            Cover:
             <select value={String(selectedEdge.data?.inheritanceType) || 'Subsumption'} onChange={handleInheritanceTypeChange}>
-              <option value="Subsumption">Subsumption</option>
-              <option value="Cover">Cover</option>
+              <option value="Subsumption">False</option>
+              <option value="Cover">True</option>
             </select>
           </label>
         )}
