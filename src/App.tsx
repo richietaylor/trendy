@@ -540,20 +540,29 @@ function ShapesProExampleApp({
     
   // }
 
-  const generateSchema = () => {
-    const content = JSON.stringify({ nodes, edges }, null, 2);
-    const blob = new Blob([content], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
+//   const generateSchema = () => {
+//     const content = JSON.stringify({ nodes, edges }, null, 2);
+//     const blob = new Blob([content], { type: 'application/json' });
+//     const url = URL.createObjectURL(blob);
     
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'flow-schema.json';
-    a.click();
-    URL.revokeObjectURL(url);
+//     const a = document.createElement('a');
+//     a.href = url;
+//     a.download = 'flow-schema.json';
+//     a.click();
+//     URL.revokeObjectURL(url);
 
-    console.log('Schema generated and file downloaded.');
+//     console.log('Schema generated and file downloaded.');
+// };
+const sendToDriver = () => {
+  const event = new CustomEvent('nodesAndEdgesData', {
+    detail: {
+      nodes,
+      edges,
+    },
+  });
+  document.dispatchEvent(event);
+  // console.log('Event dispatched:', { nodes, edges });
 };
-
 
 
   const sourceNode = selectedEdge ? nodes.find((node) => node.id === selectedEdge.source) : undefined;
@@ -562,8 +571,12 @@ function ShapesProExampleApp({
 
   return (
     <div style={{ height: '100vh' }}>
-      <button className="reactflow-button" onClick={generateSchema} style={{ position: 'absolute', bottom: 220, right: 115, zIndex: 10 }}>
-        Generate Schema
+      <button
+        className="reactflow-button"
+        onClick={sendToDriver}
+        style={{ position: 'absolute', bottom: 250, right: 115, zIndex: 10 }}
+      >
+        Generate Schema in Driver
       </button>
       <input className="reactflow-button" type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', bottom: 190, right: 0, zIndex: 10 }} />
       {/* <input type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', top: 150, left: 10, zIndex: 10 }} /> */}
