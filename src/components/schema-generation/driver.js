@@ -27,7 +27,7 @@ document.addEventListener('nodesAndEdgesData', async function(event) {
     console.log('Received Nodes:', Nodes);
     console.log('Received Edges:', Edges);
 
-    if (Nodes >0 && Edges>0 ) {
+    if (Nodes >0 || Edges>0 ) {
         await processGraph();
     } else {
         console.error('Nodes or Edges are missing.');
