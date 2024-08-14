@@ -6,8 +6,6 @@ class SerialProcessor {
     constructor(nodes,edges) {
         this.nodes = nodes;
         this.edges = edges;
-        console.log(nodes);
-        console.log(edges);
     }
 
     async getNodes() {
@@ -30,14 +28,12 @@ class SerialProcessor {
             };
             newNodes.push(nodeObject);
         });
-        console.log(newNodes);
         return newNodes;
     }
 
     async getEdges() {
         var newEdges = [];
         this.edges.forEach(edge => {
-            console.log(edge);
             var edgeType = this.getEdgeType(edge);
             var edgeObject = {
                 "source": edge.source,
@@ -56,7 +52,6 @@ class SerialProcessor {
             };
             newEdges.push(edgeObject);
         });
-        console.log(newEdges);
         return newEdges;
     }
 
@@ -87,12 +82,22 @@ class SerialProcessor {
         switch (edge.type) {
             case "atemporalEdge":
                 var cardinality = "";
-                if (Object.hasOwn(edge.data,"cardinality")) {
-                    cardinality = edge.data.cardinality;
+                if (Object.hasOwn(edge.data,"cardinalityStart")) {
+                    cardinality = edge.data.cardinalityStart;
                 }
-                return {"double":false,"dashed":Object.hasOwn(edge.data,"optional"),"parent":false,"curved":false,"type":"","duration":0,"pinned":false,"chronon":"YEAR", "source_arrow": false, "dest_arrow": false, "cardinality": cardinality}
+                return {"double":false,"dashed":Object.hasOwn(edge.data,"optional"),"parent":false,"curved":false,"type":"","duration":0,"pinned":false,"chronon":"YEAR", "source_arrow": false, "dest_arrow": false, "cardinality": cardinality};
             case "inheritanceEdge":
-                return {"double":edge.data.inheritanceType === "cover","dashed":false,"parent":false,"curved":false,"type":"","duration":0,"pinned":false,"chronon":"YEAR", "source_arrow": false, "dest_arrow": true}    
+                return {"double":edge.data.inheritanceType === "cover","dashed":false,"parent":true,"curved":false,"type":"","duration":0,"pinned":false,"chronon":"YEAR", "source_arrow": false, "dest_arrow": true};   
+            case "temporalEdge":
+                var label = "chg";
+                var value = 0;
+                if (Object.hasOwn(edge.data,"cardinalityStart")) {
+                    label = edge.data.label;
+                }
+                if (Object.hasOwn(edge.data,"value")) {
+                    value = edge.data.value;
+                }
+                return {"double":false,"dashed":Object.hasOwn(edge.data,"optional"),"parent":false,"curved":true,"type":label,"duration":value,"pinned":Object.hasOwn(edge.data,"persistent"),"chronon":"YEAR", "source_arrow": false, "dest_arrow": true, "cardinality": ""};
         }
     }
 

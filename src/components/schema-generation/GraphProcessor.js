@@ -267,6 +267,11 @@ class GraphProcessor {
             if (this.attributes[edge.source] && this.attributes[edge.destination]) {
                 this.attributes[edge.source].addAttribute(this.attributes[edge.destination]);
                 this.attributes[edge.destination].addAttribute(this.attributes[edge.source]);
+            } // I now also check for inheritance edges
+            if (this.entities[edge.source] && this.entities[edge.destination] && edge.parent) {
+                this.isa_list[edge.source+"_"+edge.parent] = new Isa(edge.source+"_"+edge.parent,false,false);
+                this.entities[edge.source].isaID = edge.source+"_"+edge.parent;
+                this.isa_list[edge.source+"_"+edge.parent].addParent(this.entities[edge.destination]);
             }
         });
 
@@ -408,6 +413,7 @@ class GraphProcessor {
                             }
                         }
                     } else if (this.isa_list[edge.destination]) {
+                        this.isa_list[edge.destination].complete = edge.double;
                         if (edge.parent) { // if the entity is the parent
                             this.isa_list[edge.destination].addParent(this.entities[edge.source]);
                             if (this.isa_list[edge.destination].disjoint && this.isa_list[edge.destination].complete) {
@@ -447,6 +453,7 @@ class GraphProcessor {
                             }
                         }
                     } else if (this.isa_list[edge.source]) {
+                        this.isa_list[edge.source].complete = edge.double;
                         if (edge.parent) { // if the entity is the parent
                             this.isa_list[edge.source].addParent(this.entities[edge.destination]);
                             if (this.isa_list[edge.source].disjoint && this.isa_list[edge.source].complete) {
@@ -492,7 +499,7 @@ class GraphProcessor {
                 }
             } else if (node.type === "isa") {
                 if (!this.isa_list[node.id]) {
-                    this.isa_list[node.id] = new isa(node.id,node.disjoint,node.complete);
+                    this.isa_list[node.id] = new Isa(node.id,node.disjoint,node.complete);
                 }
             } else {    
                 console.log(`Unknown node type: "${node.type}", ID: ${node.id}`);
