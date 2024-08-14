@@ -438,28 +438,66 @@ function ShapesProExampleApp({
     takeSnapshot();
   };
 
-  const handleChangeCardinalityStart = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  // const handleChangeCardinalityStart = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   if (!selectedEdge) {
+  //     return;
+  //   }
+  
+  //   const newCardinalityStart = event.target.value;
+  //   const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityStart: newCardinalityStart } };
+  //   setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+  //   setSelectedEdge(updatedEdge);
+  //   takeSnapshot();
+  // };
+  
+  // const handleChangeCardinalityEnd = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   if (!selectedEdge) {
+  //     return;
+  //   }
+  
+  //   const newCardinalityEnd = event.target.value;
+  //   const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityEnd: newCardinalityEnd } };
+  //   setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+  //   setSelectedEdge(updatedEdge);
+  //   takeSnapshot();
+  // };
+  const handleChangeCardinality = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (!selectedEdge) {
       return;
     }
-  
-    const newCardinalityStart = event.target.value;
-    const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityStart: newCardinalityStart } };
-    setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
-    setSelectedEdge(updatedEdge);
+
+    const newCardinality = event.target.value;
+
+    const sourceNode = nodes.find((node) => node.id === selectedEdge.source);
+    const targetNode = nodes.find((node) => node.id === selectedEdge.target);
+
+    // Update the label on the entity side (either source or target)
+    if (sourceNode && isEntityNode(sourceNode)) {
+      const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityStart: newCardinality } };
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+      setSelectedEdge(updatedEdge);
+    } else if (targetNode && isEntityNode(targetNode)) {
+      const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityEnd: newCardinality } };
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+      setSelectedEdge(updatedEdge);
+    }
+
     takeSnapshot();
   };
-  
-  const handleChangeCardinalityEnd = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!selectedEdge) {
-      return;
-    }
-  
-    const newCardinalityEnd = event.target.value;
-    const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityEnd: newCardinalityEnd } };
-    setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
-    setSelectedEdge(updatedEdge);
-    takeSnapshot();
+
+  const isEntityNode = (node: Node) => {
+    const entityTypes = ['temporalEntity', 'atemporalEntity'];
+    return node && entityTypes.includes(node.data.type as string);
+  };
+
+  const isEntityToRelationship = (sourceNode: Node | undefined, targetNode: Node | undefined) => {
+    const entityTypes = ['temporalEntity', 'atemporalEntity'];
+    const relationshipTypes = ['temporalRelationship', 'atemporalRelationship'];
+
+    return (
+      (sourceNode && entityTypes.includes(sourceNode.data.type as string) && targetNode && relationshipTypes.includes(targetNode.data.type as string)) ||
+      (targetNode && entityTypes.includes(targetNode.data.type as string) && sourceNode && relationshipTypes.includes(sourceNode.data.type as string))
+    );
   };
 
   const onConnect = (params: Edge | Connection) => {
@@ -568,6 +606,7 @@ const sendToDriver = () => {
   const sourceNode = selectedEdge ? nodes.find((node) => node.id === selectedEdge.source) : undefined;
   const targetNode = selectedEdge ? nodes.find((node) => node.id === selectedEdge.target) : undefined;
   const bothEntities = isBothEntities(sourceNode, targetNode);
+  const showCardinalitySelect = isEntityToRelationship(sourceNode, targetNode);
 
   return (
     <div style={{ height: '100vh' }}>
@@ -625,7 +664,7 @@ const sendToDriver = () => {
                   </select>
               </label>
           )}
-{selectedEdge.type === 'atemporalEdge' && (
+{/* {selectedEdge.type === 'atemporalEdge' && (
           <>
             <label>
               Cardinality (start):
@@ -657,7 +696,26 @@ const sendToDriver = () => {
               </select>
             </label>
           </>
-        )}
+        )} */}
+        {showCardinalitySelect && (
+            <label>
+              Cardinality:
+              <select
+                value={
+                  String(
+                    selectedEdge.data?.cardinalityStart || selectedEdge.data?.cardinalityEnd
+                  ) || 'None'
+                }
+                onChange={handleChangeCardinality}
+              >
+                <option value="None">None</option>
+                <option value="1">1</option>
+                <option value="0..1">0..1</option>
+                <option value="1..n">1..n</option>
+                <option value="0..n">0..n</option>
+              </select>
+            </label>
+          )}
         {selectedEdge.type === 'inheritanceEdge' && (
           <label>
             Inheritance Type:
