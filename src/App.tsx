@@ -535,12 +535,36 @@ function ShapesProExampleApp({
     URL.revokeObjectURL(url);
   };
 
+  // const generateSchema: React.MouseEventHandler<HTMLButtonElement> | undefined(){
+  //   console.log("Success"),
+    
+  // }
+
+  const generateSchema = () => {
+    const content = JSON.stringify({ nodes, edges }, null, 2);
+    const blob = new Blob([content], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'flow-schema.json';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    console.log('Schema generated and file downloaded.');
+};
+
+
+
   const sourceNode = selectedEdge ? nodes.find((node) => node.id === selectedEdge.source) : undefined;
   const targetNode = selectedEdge ? nodes.find((node) => node.id === selectedEdge.target) : undefined;
   const bothEntities = isBothEntities(sourceNode, targetNode);
 
   return (
     <div style={{ height: '100vh' }}>
+      <button className="reactflow-button" onClick={generateSchema} style={{ position: 'absolute', bottom: 220, right: 115, zIndex: 10 }}>
+        Generate Schema
+      </button>
       <input className="reactflow-button" type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', bottom: 190, right: 0, zIndex: 10 }} />
       {/* <input type="file" accept=".json" onChange={loadFile} style={{ position: 'absolute', top: 150, left: 10, zIndex: 10 }} /> */}
       <button className="reactflow-button" onClick={saveToFile} style={{ position: 'absolute', bottom: 190, right: 10, zIndex: 10 }}>
