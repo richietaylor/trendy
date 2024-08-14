@@ -10,3 +10,5 @@ class isa {
         this.parentEntity = entity;
     }
 }
+
+export default isa;

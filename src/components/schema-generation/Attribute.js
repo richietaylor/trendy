@@ -105,3 +105,5 @@ class Attribute {
         return text;
     }
 }
+
+export default Attribute;

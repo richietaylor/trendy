@@ -1,8 +1,16 @@
 // Driver class for other classes
 // Stephan Maree
 // 05/08/2024
-// import GraphProcessor from './GraphProcessor.js';
-// import SQL_Writer from './SQL_Writer.js';
+
+import SerialProcessor from './SerialProcessor.js';
+import Attribute from './Attribute.js';
+import Entity from './Entity.js';
+import GraphProcessor from './GraphProcessor.js';
+import Isa from './Isa.js';
+import Relation from './Relation.js';
+import SortingUtils from './SortingUtils.js';
+import SQL_Writer from './SQL_Writer.js';
+import Trigger from './Trigger.js';
 
 let Nodes = null;
 let Edges = null;
@@ -27,7 +35,7 @@ document.addEventListener('nodesAndEdgesData', async function(event) {
     console.log('Received Nodes:', Nodes);
     console.log('Received Edges:', Edges);
 
-    if (Nodes >0 || Edges>0 ) {
+    if (Nodes.length > 0 || Edges.length > 0 ) {
         await processGraph();
     } else {
         console.error('Nodes or Edges are missing.');
@@ -39,7 +47,10 @@ document.addEventListener('nodesAndEdgesData', async function(event) {
 async function processGraph() {
     if (Nodes && Edges) {
         try {
-            const graph = new GraphProcessor(Nodes, Edges);
+            const file = new SerialProcessor(Nodes,Edges);
+            const fileNodes = await file.getNodes(); 
+            const fileEdges = await file.getEdges(); 
+            const graph = new GraphProcessor(fileNodes, fileEdges);
             await graph.process();
             const entities = graph.getEntities();
             const relations = graph.getRelations();
@@ -47,6 +58,7 @@ async function processGraph() {
             const triggers = graph.getTriggers();
             const sqlWriter = new SQL_Writer(entities, relations, attributes, triggers);
             const sqlText = await sqlWriter.writeSQL();
+
             const blob = new Blob([sqlText], { type: 'text/plain' });
             const a = document.createElement('a');
             a.download = 'output.sql';
@@ -60,36 +72,3 @@ async function processGraph() {
         console.error('No nodes and edges data available.');
     }
 }
-
-// "Main Method"
-document.getElementById('downloadButton').addEventListener('click', async function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        try {
-            fileContent = await readFileContent(file);
-            serialProcessor = new SerialProcessor(fileContent);
-            Nodes = serialProcessor.getNodes();
-            Edges = serialProcessor.getEdges();
-        } catch (error) {
-            console.error('Failed to read file:', error);
-        }
-    }
-    if (Nodes && Edges) {
-        graph = new GraphProcessor(Nodes, Edges);
-        await graph.process();
-        entities = graph.getEntities();
-        relations = graph.getRelations();
-        attributes = graph.getAttributes();
-        triggers = graph.getTriggers();
-        sqlwriter = new SQL_Writer(entities,relations,attributes,triggers);
-        SQL_Text = await sqlwriter.writeSQL();
-        var blob = new Blob([SQL_Text], { type: 'text/plain' });
-            var a = document.createElement('a');
-            a.download = 'output.sql';
-            a.href = window.URL.createObjectURL(blob);
-            a.click();
-            window.URL.revokeObjectURL(a.href);
-    } else {
-        console.error('No file content available. Please upload a file first.');
-    }
-});

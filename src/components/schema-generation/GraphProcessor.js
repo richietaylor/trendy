@@ -2,6 +2,13 @@
 // Stephan Maree
 // 30/04/2024
 
+import Attribute from './Attribute.js';
+import Entity from './Entity.js';
+import Isa from './Isa.js';
+import Relation from './Relation.js';
+import SortingUtils from './SortingUtils.js';
+import Trigger from './Trigger.js';
+
 class GraphProcessor {
     constructor(nodes, edges) {
         this.nodes = nodes;
@@ -495,6 +502,8 @@ class GraphProcessor {
 
     getCardinality(cardinality) {
         switch(cardinality) {
+            case null:
+                return "N";
             case "1..n":
                 return "N";
             case "0..n":
@@ -524,3 +533,5 @@ class GraphProcessor {
         return this.trigger_list;
     }
 }
+
+export default GraphProcessor;

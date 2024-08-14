@@ -34,3 +34,5 @@ class SortingUtils {
         return this.merge(this.sort(left), this.sort(right));
     }
 }
+
+export default SortingUtils;
