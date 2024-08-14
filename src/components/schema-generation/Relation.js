@@ -118,3 +118,5 @@ class Relation {
         return text;
     }
 }
+
+export default Relation;

@@ -42,3 +42,5 @@ class SQL_Writer {
         return text;
     }
 }
+
+export default SQL_Writer;

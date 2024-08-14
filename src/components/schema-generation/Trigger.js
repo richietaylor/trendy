@@ -994,3 +994,5 @@ class Trigger {
         return text;
     }
 }
+
+export default Trigger;

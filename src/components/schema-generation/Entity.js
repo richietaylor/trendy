@@ -226,3 +226,5 @@ class Entity {
         return text;
     }
 }
+
+export default Entity;
