@@ -6,6 +6,10 @@ class SerialProcessor {
     constructor(nodes,edges) {
         this.nodes = nodes;
         this.edges = edges;
+        console.log("Got edges:");
+        console.log(edges);
+        console.log("Got nodes:");
+        console.log(nodes);
     }
 
     async getNodes() {
@@ -28,6 +32,8 @@ class SerialProcessor {
             };
             newNodes.push(nodeObject);
         });
+        console.log("newNodes");
+        console.log(newNodes);
         return newNodes;
     }
 
@@ -52,6 +58,8 @@ class SerialProcessor {
             };
             newEdges.push(edgeObject);
         });
+        console.log("newEdges");
+        console.log(newEdges);
         return newEdges;
     }
 
@@ -75,6 +83,11 @@ class SerialProcessor {
                 return {"type":"relation","temporal":false,"pinned":false,"double":false,"optional":false,"disjoint":false,"complete": false, "datatype": ""};
             case "derivedAttribute":
                 return {"type":"attribute","temporal":false,"pinned":false,"double":false,"optional":true,"disjoint":false,"complete": false, "datatype": ""};
+            case "weakEntity":
+                return {"type":"entity","temporal":false,"pinned":false,"double":true,"optional":false,"disjoint":false,"complete": false, "datatype": ""};
+            case "weakRelationship":
+                return {"type":"relation","temporal":false,"pinned":false,"double":true,"optional":false,"disjoint":false,"complete": false, "datatype": ""};
+
         }
     }
 
@@ -87,17 +100,21 @@ class SerialProcessor {
                 }
                 return {"double":false,"dashed":Object.hasOwn(edge.data,"optional"),"parent":false,"curved":false,"type":"","duration":0,"pinned":false,"chronon":"YEAR", "source_arrow": false, "dest_arrow": false, "cardinality": cardinality};
             case "inheritanceEdge":
-                return {"double":edge.data.inheritanceType === "cover","dashed":false,"parent":true,"curved":false,"type":"","duration":0,"pinned":false,"chronon":"YEAR", "source_arrow": false, "dest_arrow": true};   
+                return {"double":edge.data.inheritanceType === "Cover","dashed":false,"parent":true,"curved":false,"type":"","duration":0,"pinned":false,"chronon":"YEAR", "source_arrow": false, "dest_arrow": true};   
             case "temporalEdge":
                 var label = "chg";
                 var value = 0;
+                var dashed = false;
                 if (Object.hasOwn(edge.data,"cardinalityStart")) {
                     label = edge.data.label;
                 }
                 if (Object.hasOwn(edge.data,"value")) {
                     value = edge.data.value;
                 }
-                return {"double":false,"dashed":Object.hasOwn(edge.data,"optional"),"parent":false,"curved":true,"type":label,"duration":value,"pinned":Object.hasOwn(edge.data,"persistent"),"chronon":"YEAR", "source_arrow": false, "dest_arrow": true, "cardinality": ""};
+                if (Object.hasOwn(edge.data,"optional")) {
+                    dashed = edge.data.optional === "Optional";
+                }
+                return {"double":false,"dashed":dashed,"parent":false,"curved":true,"type":label,"duration":value,"pinned":Object.hasOwn(edge.data,"persistent"),"chronon":"YEAR", "source_arrow": false, "dest_arrow": true, "cardinality": ""};
         }
     }
 

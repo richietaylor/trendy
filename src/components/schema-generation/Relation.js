@@ -55,12 +55,20 @@ class Relation {
     }
     
     writeSQL() {
+        var same_entity = false;
+        if (this.connects[0].id === this.connects[1].id) { // checks if both ends of the table are the same
+            same_entity = true; 
+        }
         var text = "";
         text += "CREATE OR REPLACE TABLE " + this.name + " (\n";
         // We need all the primary keys of all the entities it connects as attributes.
         for (var i = 0; i < this.connects.length; i++) {
             for (var j = 0; j < this.connects[i].primaryKey.length; j++)   {
-                text += "\t" + this.connects[i].name + "_" + this.connects[i].primaryKey[j] + " NOT NULL,\n";
+                if (same_entity) {
+                    text += "\t" + this.connects[i].name + "_" + (i+1).toString() + "_" + this.connects[i].primaryKey[j] + " NOT NULL,\n";
+                } else {
+                    text += "\t" + this.connects[i].name + "_" + this.connects[i].primaryKey[j] + " NOT NULL,\n";
+                }
             }
         }
         for (var i = 0; i < this.attributes.length; i++) {
@@ -77,7 +85,11 @@ class Relation {
         text += "\tPRIMARY KEY (";
         for (var i = 0; i < this.connects.length; i++) {
             for (var j = 0; j < this.connects[i].primaryKey.length; j++)   {
-                text += this.connects[i].name + "_" + this.connects[i].primaryKey[j].split(" ")[0];
+                if (same_entity) {
+                    text += this.connects[i].name + "_" + (i+1).toString() + "_" + this.connects[i].primaryKey[j].split(" ")[0];
+                } else {
+                    text += this.connects[i].name + "_" + this.connects[i].primaryKey[j].split(" ")[0];
+                }
                 if (j !== this.connects[i].primaryKey.length - 1) {
                     text += ", ";
                 }
@@ -95,10 +107,18 @@ class Relation {
         for (var i = 0; i < this.connects.length; i++) {
             if (this.connects[i].hasTable) { // if the other entity doesn't have table, can't enforce foreign key
                 text += ",\n";
-                text += "\tCONSTRAINT `" + this.name + "_" + this.connects[i].name + "_foreign_key`\n";
+                if (same_entity) {
+                    text += "\tCONSTRAINT `" + this.name + "_" + (i+1).toString() + "_" + this.connects[i].name + "_foreign_key`\n";
+                } else {
+                    text += "\tCONSTRAINT `" + this.name + "_" + this.connects[i].name + "_foreign_key`\n";
+                }
                 text += "\tFOREIGN KEY (";
                 for (var j = 0; j < this.connects[i].primaryKey.length; j++)   {
-                    text += this.connects[i].name + "_" + this.connects[i].primaryKey[j].split(" ")[0];
+                    if (same_entity) {
+                        text += this.connects[i].name + "_" + (i+1).toString() + "_" + this.connects[i].primaryKey[j].split(" ")[0];
+                    } else {
+                        text += this.connects[i].name + "_" + this.connects[i].primaryKey[j].split(" ")[0];
+                    }
                     if (j !== this.connects[i].primaryKey.length - 1) {
                         text += ", ";
                     }
