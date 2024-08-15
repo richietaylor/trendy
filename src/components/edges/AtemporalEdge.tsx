@@ -108,7 +108,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
           style={{ stroke: 'black', strokeWidth: 2, zIndex: 1 }}
           className="react-flow__edge-path"
           d={edgePath}
-          markerEnd="url(#arrow)"
+          // markerEnd="url(#arrow)"
         />
       ) : (
         <>
@@ -130,7 +130,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
             style={{ ...style, stroke: 'none', pointerEvents: 'none', zIndex: 12 }} // Make this transparent to render the marker over it
             className="react-flow__edge-path"
             d={edgePath}
-            markerEnd="url(#arrow)"
+            // markerEnd="url(#arrow)"
           />
         </>
       )}
