@@ -599,6 +599,7 @@ const sendToDriver = () => {
     detail: {
       nodes,
       edges,
+      timeQuanta,
     },
   });
   document.dispatchEvent(event);
@@ -793,7 +794,7 @@ const sendToDriver = () => {
         connectionLineType={ConnectionLineType.SmoothStep}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        // defaultEdgeOptions={defaultEdgeOptions}
+        defaultEdgeOptions={defaultEdgeOptions}
         connectionMode={ConnectionMode.Loose}
         snapToGrid={snapToGrid}
         snapGrid={[20, 20]}

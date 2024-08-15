@@ -1,6 +1,5 @@
 import { MarkerType, type Edge } from '@xyflow/react';
 import { type ShapeNode } from './components/shape/types';
-import ArrowRectangle from './components/shape/types/arrow-rectangle';
 
 // export const defaultNodes: ShapeNode[] = []
 // export const defaultEdges: Edge[] = []

@@ -29,11 +29,12 @@ async function readFileContent(file) {
 }
 
 document.addEventListener('nodesAndEdgesData', async function(event) {
-    const { nodes, edges } = event.detail;
+    const { nodes, edges, timeQuanta } = event.detail;
     Nodes = nodes;
     Edges = edges;
     console.log('Received Nodes:', Nodes);
     console.log('Received Edges:', Edges);
+    console.log('Recieved Quanta Value', timeQuanta)
 
     if (Nodes.length > 0 || Edges.length > 0 ) {
         await processGraph();
