@@ -10,7 +10,7 @@ class Entity {
         this.temporal = temporal; // is it temporal? i.e. does it have a clock icon?
         /** @type {string[]} */
         this.primaryKey = primaryKey; // which of the attributes are primary keys?
-        /** @type {Entity} */
+        /** @type {Entity[]} */
         this.parent = []; // parent
         /** @type {Entity[]} */
         this.foreignKey = [];

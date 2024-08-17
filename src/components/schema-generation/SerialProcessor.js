@@ -3,9 +3,10 @@
 // 05/08/2024
 
 class SerialProcessor {
-    constructor(nodes,edges) {
+    constructor(nodes,edges,chronon) {
         this.nodes = nodes;
         this.edges = edges;
+        this.chronon = chronon.toUpperCase();
         console.log("Got edges:");
         console.log(edges);
         console.log("Got nodes:");
@@ -98,9 +99,9 @@ class SerialProcessor {
                 if (Object.hasOwn(edge.data,"cardinalityStart")) {
                     cardinality = edge.data.cardinalityStart;
                 }
-                return {"double":false,"dashed":Object.hasOwn(edge.data,"optional"),"parent":false,"curved":false,"type":"","duration":0,"pinned":false,"chronon":"YEAR", "source_arrow": false, "dest_arrow": false, "cardinality": cardinality};
+                return {"double":false,"dashed":Object.hasOwn(edge.data,"optional"),"parent":false,"curved":false,"type":"","duration":0,"pinned":false,"chronon":this.chronon, "source_arrow": false, "dest_arrow": false, "cardinality": cardinality};
             case "inheritanceEdge":
-                return {"double":edge.data.inheritanceType === "Cover","dashed":false,"parent":true,"curved":false,"type":"","duration":0,"pinned":false,"chronon":"YEAR", "source_arrow": false, "dest_arrow": true};   
+                return {"double":edge.data.inheritanceType === "Cover","dashed":false,"parent":true,"curved":false,"type":"","duration":0,"pinned":false,"chronon":this.chronon, "source_arrow": false, "dest_arrow": true, "cardinality": ""};   
             case "temporalEdge":
                 var label = "chg";
                 var value = 0;
@@ -114,7 +115,7 @@ class SerialProcessor {
                 if (Object.hasOwn(edge.data,"optional")) {
                     dashed = edge.data.optional === "Optional";
                 }
-                return {"double":false,"dashed":dashed,"parent":false,"curved":true,"type":label,"duration":value,"pinned":Object.hasOwn(edge.data,"persistent"),"chronon":"YEAR", "source_arrow": false, "dest_arrow": true, "cardinality": ""};
+                return {"double":false,"dashed":dashed,"parent":false,"curved":true,"type":label,"duration":value,"pinned":Object.hasOwn(edge.data,"persistent"),"chronon":this.chronon, "source_arrow": false, "dest_arrow": true, "cardinality": ""};
         }
     }
 

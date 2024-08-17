@@ -14,6 +14,7 @@ import Trigger from './Trigger.js';
 
 let Nodes = null;
 let Edges = null;
+var chronon = "YEAR";
 
 async function readFileContent(file) {
     return new Promise((resolve, reject) => {
@@ -32,9 +33,11 @@ document.addEventListener('nodesAndEdgesData', async function(event) {
     const { nodes, edges, timeQuanta } = event.detail;
     Nodes = nodes;
     Edges = edges;
+    chronon = timeQuanta;
     console.log('Received Nodes:', Nodes);
     console.log('Received Edges:', Edges);
-    console.log('Recieved Quanta Value', timeQuanta)
+    console.log('Recieved Quanta Value', timeQuanta);
+    console.log(chronon);
 
     if (Nodes.length > 0 || Edges.length > 0 ) {
         await processGraph();
@@ -48,7 +51,7 @@ document.addEventListener('nodesAndEdgesData', async function(event) {
 async function processGraph() {
     if (Nodes && Edges) {
         try {
-            const file = new SerialProcessor(Nodes,Edges);
+            const file = new SerialProcessor(Nodes,Edges,chronon);
             const fileNodes = await file.getNodes(); 
             const fileEdges = await file.getEdges(); 
             const graph = new GraphProcessor(fileNodes, fileEdges);

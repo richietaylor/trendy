@@ -12,7 +12,7 @@ class Trigger {
         this.duration = duration;
         /** @type {string} */
         this.attributeName = null;
-        /** @type {int} */
+        /** @type {string} */
         this.unit = unit;
         /** @type {boolean} */
         this.pinned = pinned;

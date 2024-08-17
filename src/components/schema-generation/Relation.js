@@ -4,7 +4,7 @@ class Relation {
         this.id = id;
         /** @type {string} */
         this.name = name; // Name of relationship
-        /** @type {(string,string)[]} */
+        /** @type {string[]} */
         this.attributes = attributes; // additional attributes of relationship
         /** @type {Entity[]} */
         this.connects = connects; // the entities it connects. Should be at least 2.
