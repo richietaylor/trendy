@@ -31,8 +31,7 @@ class GraphProcessor {
         await this.inheritance();
         await this.priorities();
         const sorter = new SortingUtils();
-        this.entities_write = sorter.sort(this.entities_write); // sort the entities
-
+        this.entities_write = sorter.sort(this.entities_write); // sort the entitiess
     }
 
     async inheritance() {
@@ -295,7 +294,7 @@ class GraphProcessor {
                     } else {
                         console.log("Cannot have temporal transitions between non-temporal entities");
                     }
-                } else if (this.relations[edge.source] && relations[edge.destination]) {
+                } else if (this.relations[edge.source] && this.relations[edge.destination]) {
                     if (edge.source_arrow) {
                         initial_entity = this.relations[edge.destination];
                         final_entity = this.relations[edge.source];

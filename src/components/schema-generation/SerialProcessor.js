@@ -96,17 +96,24 @@ class SerialProcessor {
         switch (edge.type) {
             case "atemporalEdge":
                 var cardinality = "";
+                var double = false;
                 if (Object.hasOwn(edge.data,"cardinalityStart")) {
                     cardinality = edge.data.cardinalityStart;
                 }
-                return {"double":false,"dashed":Object.hasOwn(edge.data,"optional"),"parent":false,"curved":false,"type":"","duration":0,"pinned":false,"chronon":this.chronon, "source_arrow": false, "dest_arrow": false, "cardinality": cardinality};
+                if (Object.hasOwn(edge.data,"cardinalityEnd")) {
+                    cardinality = edge.data.cardinalityEnd;
+                }
+                if (Object.hasOwn(edge.data,"optional")) {
+                    double = edge.data.optional === "Mandatory";
+                }
+                return {"double":double,"dashed":false,"parent":false,"curved":false,"type":"","duration":0,"pinned":false,"chronon":this.chronon, "source_arrow": false, "dest_arrow": false, "cardinality": cardinality};
             case "inheritanceEdge":
                 return {"double":edge.data.inheritanceType === "Cover","dashed":false,"parent":true,"curved":false,"type":"","duration":0,"pinned":false,"chronon":this.chronon, "source_arrow": false, "dest_arrow": true, "cardinality": ""};   
             case "temporalEdge":
                 var label = "chg";
                 var value = 0;
                 var dashed = false;
-                if (Object.hasOwn(edge.data,"cardinalityStart")) {
+                if (Object.hasOwn(edge.data,"label")) {
                     label = edge.data.label;
                 }
                 if (Object.hasOwn(edge.data,"value")) {
