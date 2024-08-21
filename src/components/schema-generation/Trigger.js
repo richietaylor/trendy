@@ -45,6 +45,7 @@ class Trigger {
                     text += "FOR EACH ROW\n";
                     text += "BEGIN\n";
                     text += "\tDECLARE initial_exists INT;\n";
+                    text += "\tDECLARE overlap_count INT;\n";
                     text += "\tSELECT COUNT(*)\n";
                     text += "\tINTO initial_exists\n";
                     text += "\tFROM " + this.initialEntity.name + "\n";
@@ -58,9 +59,32 @@ class Trigger {
                         text += "\t\t)\n";
                     }
                     text += "\t\tAND NEW." + this.finalEntity.name + "_start >= " + this.initialEntity.name + "_end;\n";
+                    text += "\tSELECT COUNT(*)\n";
+                    text += "\tINTO overlap_count\n";
+                    text += "\tFROM " + this.initialEntity.name + "\n";
+                    if (this.initialEntity.getPrimaryKey().length === 1) {
+                        text += "\tWHERE NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + "\n";
+                    } else if (this.initialEntity.getPrimaryKey().length === 2){
+                        text += "\tWHERE (\n";
+                        text += "\t\t(NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + ")\n";
+                        text += "\t\tOR\n";
+                        text += "\t\t(NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
+                        text += "\t\t)\n";
+                    }         
+                    text += "\t\tAND (\n";
+                    text += "\t\t\t(NEW." + this.finalEntity.name + "_end > " + this.initialEntity.name + "_start AND NEW." + this.finalEntity.name + "_start <= " + this.initialEntity.name +"_start)\n";
+                    text += "\t\t\tOR\n";
+                    text += "\t\t\t(NEW." + this.finalEntity.name + "_end >= " + this.initialEntity.name + "_end AND NEW." + this.finalEntity.name + "_start < " + this.initialEntity.name +"_end)\n";
+                    text += "\t\t\tOR\n";
+                    text += "\t\t\t(NEW." + this.finalEntity.name + "_start >= " + this.initialEntity.name + "_start AND NEW." + this.finalEntity.name + "_end <= " + this.initialEntity.name +"_end)\n";
+                    text += "\t\t);\n";   
                     text += "\tIF initial_exists = 0 THEN\n";
                     text += "\t\tSIGNAL SQLSTATE '45000'\n";
                     text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must have been in " + this.initialEntity.name + " before.';\n";
+                    text += "\tEND IF;\n";
+                    text += "\tIF overlap_count > 0 THEN\n";
+                    text += "\t\tSIGNAL SQLSTATE '45000'\n";
+                    text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " cannot overlap with " + this.initialEntity.name + ".';\n";
                     text += "\tEND IF;\n";
                     text += "END;\n//\n\n";
                     if (!this.pinned) {
@@ -146,6 +170,8 @@ class Trigger {
                         text += "\t\t\t(NEW." + this.finalEntity.name + "_end > " + this.initialEntity.name + "_start AND NEW." + this.finalEntity.name + "_start <= " + this.initialEntity.name +"_start)\n";
                         text += "\t\t\tOR\n";
                         text += "\t\t\t(NEW." + this.finalEntity.name + "_end >= " + this.initialEntity.name + "_end AND NEW." + this.finalEntity.name + "_start < " + this.initialEntity.name +"_end)\n";
+                        text += "\t\t\tOR\n";
+                        text += "\t\t\t(NEW." + this.finalEntity.name + "_start >= " + this.initialEntity.name + "_start AND NEW." + this.finalEntity.name + "_end <= " + this.initialEntity.name +"_end)\n";
                         text += "\t\t);\n";                      
                         text += "\tIF initial_exists > 0 THEN\n";
                         text += "\t\tSIGNAL SQLSTATE '45000'\n";
@@ -174,6 +200,8 @@ class Trigger {
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end > " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_start <= " + this.finalEntity.name +"_start)\n";
                         text += "\t\t\tOR\n";
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end >= " + this.finalEntity.name + "_end AND NEW." + this.initialEntity.name + "_start < " + this.finalEntity.name +"_end)\n";
+                        text += "\t\t\tOR\n";
+                        text += "\t\t\t(NEW." + this.initialEntity.name + "_start >= " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_end <= " + this.finalEntity.name +"_end)\n";
                         text += "\t\t);\n";                    
                         text += "\tIF initial_exists > 0 THEN\n";
                         text += "\t\tSIGNAL SQLSTATE '45000'\n";
@@ -355,6 +383,8 @@ class Trigger {
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end > " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_start <= " + this.finalEntity.name +"_start)\n";
                         text += "\t\t\tOR\n";
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end >= " + this.finalEntity.name + "_end AND NEW." + this.initialEntity.name + "_start < " + this.finalEntity.name +"_end)\n";
+                        text += "\t\t\tOR\n";
+                        text += "\t\t\t(NEW." + this.initialEntity.name + "_start >= " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_end <= " + this.finalEntity.name +"_end)\n";
                         text += "\t\t);\n";                    
                         text += "\tIF initial_exists > 0 THEN\n";
                         text += "\t\tSIGNAL SQLSTATE '45000'\n";
@@ -516,6 +546,8 @@ class Trigger {
                     text += "\t\t\t(NEW." + this.finalEntity.name + "_end > " + this.initialEntity.name + "_start AND NEW." + this.finalEntity.name + "_start <= " + this.initialEntity.name +"_start)\n";
                     text += "\t\t\tOR\n";
                     text += "\t\t\t(NEW." + this.finalEntity.name + "_end >= " + this.initialEntity.name + "_end AND NEW." + this.finalEntity.name + "_start < " + this.initialEntity.name +"_end)\n";
+                    text += "\t\t\tOR\n";
+                    text += "\t\t\t(NEW." + this.finalEntity.name + "_start >= " + this.initialEntity.name + "_start AND NEW." + this.finalEntity.name + "_end <= " + this.initialEntity.name +"_end)\n";
                     text += "\t\t);\n";                      
                     text += "\tIF initial_exists > 0 THEN\n";
                     text += "\t\tSIGNAL SQLSTATE '45000'\n";
@@ -545,6 +577,8 @@ class Trigger {
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end > " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_start <= " + this.finalEntity.name +"_start)\n";
                         text += "\t\t\tOR\n";
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end >= " + this.finalEntity.name + "_end AND NEW." + this.initialEntity.name + "_start < " + this.finalEntity.name +"_end)\n";
+                        text += "\t\t\tOR\n";
+                        text += "\t\t\t(NEW." + this.initialEntity.name + "_start >= " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_end <= " + this.finalEntity.name +"_end)\n";
                         text += "\t\t);\n";                    
                         text += "\tIF initial_exists > 0 THEN\n";
                         text += "\t\tSIGNAL SQLSTATE '45000'\n";
@@ -671,6 +705,8 @@ class Trigger {
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end > " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_start <= " + this.finalEntity.name +"_start)\n";
                         text += "\t\t\tOR\n";
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end >= " + this.finalEntity.name + "_end AND NEW." + this.initialEntity.name + "_start < " + this.finalEntity.name +"_end)\n";
+                        text += "\t\t\tOR\n";
+                        text += "\t\t\t(NEW." + this.initialEntity.name + "_start >= " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_end <= " + this.finalEntity.name +"_end)\n";
                         text += "\t\t);\n";                    
                         text += "\tIF initial_exists > 0 THEN\n";
                         text += "\t\tSIGNAL SQLSTATE '45000'\n";
