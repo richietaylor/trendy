@@ -86,6 +86,8 @@ class Trigger {
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end > " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_start <= " + this.finalEntity.name +"_start)\n";
                         text += "\t\t\tOR\n";
                         text += "\t\t\t(NEW." + this.initialEntity.name + "_end >= " + this.finalEntity.name + "_end AND NEW." + this.initialEntity.name + "_start < " + this.finalEntity.name +"_end)\n";
+                        text += "\t\t\tOR\n";
+                        text += "\t\t\t(NEW." + this.initialEntity.name + "_start >= " + this.finalEntity.name + "_start AND NEW." + this.initialEntity.name + "_end <= " + this.finalEntity.name +"_end)\n";
                         text += "\t\t);\n";                    
                         text += "\tIF initial_exists > 0 THEN\n";
                         text += "\t\tSIGNAL SQLSTATE '45000'\n";

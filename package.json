@@ -31,5 +31,9 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
-  }
+  },
+  "description": "This pro example shows how to implement an editor for flowcharts and diagrams. It contains a resizable custom node component that can render different shapes as well as common editor ui components such as a sidebar and interactive minimap.",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }
