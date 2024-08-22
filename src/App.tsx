@@ -4,7 +4,7 @@ import {
   Background,
   ReactFlowProvider,
   ConnectionLineType,
-  MarkerType,
+  // MarkerType,
   ConnectionMode,
   Panel,
   NodeTypes,
@@ -22,7 +22,7 @@ import {
   XYPosition,
   OnNodeDrag,
   useViewport,
-  OnConnectStartParams
+  // OnConnectStartParams
 } from '@xyflow/react';
 import { useControls } from 'leva';
 
@@ -125,9 +125,9 @@ function ShapesProExampleApp({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { zoom, x: viewportX, y: viewportY } = useViewport();
 
-  const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
+  const { undo, redo,  takeSnapshot } = useUndoRedo();
 
-  const [errors, setErrors] = useState<string[]>([]);
+  const [ setErrors] = useState<string[]>([]);
 
   const onDragOver = (evt: React.DragEvent<HTMLDivElement>) => {
     evt.preventDefault();

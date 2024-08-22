@@ -11,9 +11,8 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   sourcePosition,
   targetPosition,
   style = {},
-  markerEnd = { type: MarkerType.ArrowClosed, color: 'black' },
-  markerStart = { type: MarkerType.ArrowClosed, color: 'black' }, // Default marker start to ArrowClosed
   data,
+  selected,
 }) => {
   const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
@@ -30,6 +29,10 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   const cardinalityStart = data?.cardinalityStart || 'None';
   const cardinalityEnd = data?.cardinalityEnd || 'None';
 
+  //something to add in at a later stage
+  const edgeStyle = selected
+    ? { stroke: 'blue', strokeWidth: 3 }  // Thicker and blue when selected
+    : { stroke: 'black', strokeWidth: 2 }; // Default style
 
   // const startLabelX = sourcePosition === Position.Left ? sourceX - 10 : sourcePosition === Position.Right ? sourceX + 10 : sourceX;
   // const startLabelY = sourcePosition === Position.Top ? sourceY - 10 : sourcePosition === Position.Bottom ? sourceY + 10 : sourceY;
@@ -66,6 +69,8 @@ const TemporalEdge: React.FC<EdgeProps> = ({
       sourceY -= 6
    }
 
+   
+
   return (
     <>
       <svg width="0" height="0">
@@ -95,6 +100,12 @@ const TemporalEdge: React.FC<EdgeProps> = ({
           </marker>
         </defs>
       </svg>
+
+      <path
+        className="react-flow__edge-path"
+        style={{ strokeWidth: 30, stroke: "initial" }}
+        d={edgePath}
+      />
       {/* <path
         id={id}
         style={{ ...style, strokeDasharray: optional === 'Optional' ? '5,5' : undefined, zIndex: 11 }}
