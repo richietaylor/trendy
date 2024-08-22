@@ -125,9 +125,9 @@ function ShapesProExampleApp({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { zoom, x: viewportX, y: viewportY } = useViewport();
 
-  const { undo, redo,  takeSnapshot } = useUndoRedo();
+  const { undo, redo, takeSnapshot } = useUndoRedo();
 
-  const [ setErrors] = useState<string[]>([]);
+  const [, setErrors] = useState<string[]>([]);
 
   const onDragOver = (evt: React.DragEvent<HTMLDivElement>) => {
     evt.preventDefault();
