@@ -34,7 +34,7 @@ import { defaultNodes as initialNodes, defaultEdges as initialEdges } from './in
 import ShapeNodeComponent from './components/shape-node';
 import Sidebar from './components/sidebar';
 import { ShapeNode, ShapeType } from './components/shape/types';
-import { BackgroundVariant } from 'reactflow';
+import { BackgroundVariant, NodeProps } from 'reactflow';
 
 import AtemporalEdge from  './components/edges/AtemporalEdge'
 import InheritanceEdge from './components/edges/InheritanceEdge';
@@ -45,8 +45,12 @@ import { validateEdges, isValidTemporalEdgeConnection } from './components/edges
 
 // import DownloadButton from './components/DownloadButton';
 
+// const nodeTypes: NodeTypes = {
+//   shape: ShapeNodeComponent,
+// };
+
 const nodeTypes: NodeTypes = {
-  shape: ShapeNodeComponent,
+  shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
 };
 
 const edgeTypes: EdgeTypes = {
@@ -518,7 +522,7 @@ function ShapesProExampleApp({
   // };
   const onConnect = (params: Edge | Connection) => {
     if ('data' in params) {
-      setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, error } } as Edge, eds));
+      setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, Error } } as Edge, eds));
     } else {
       setEdges((eds) => addEdge(params, eds));
     }
@@ -526,9 +530,10 @@ function ShapesProExampleApp({
   };
 
   useEffect(() => {
-    const { edges: validatedEdges, errors: validationErrors } = validateEdges(nodes, edges);
+    // const { edges: validatedEdges, errors: validationErrors } = validateEdges(nodes, edges);
+    const { edges: validatedEdges,} = validateEdges(nodes, edges);
     setEdges(validatedEdges);
-    setErrors(validationErrors);
+    // setErrors(validationErrors);
   }, [nodes, edges]);
 
 
@@ -552,7 +557,7 @@ function ShapesProExampleApp({
 
   const isBothEntities = (sourceNode: Node | undefined, targetNode: Node | undefined) => {
     const entityTypes = ['temporalEntity', 'atemporalEntity', 'weakEntity'];
-    return entityTypes.includes(String(sourceNode?.data.type)) && entityTypes.includes(targetNode?.data.type);
+    return entityTypes.includes(String(sourceNode?.data.type)) && entityTypes.includes(String(targetNode?.data.type));
   };
   
 
@@ -775,7 +780,7 @@ const sendToDriver = () => {
 
               {selectedEdge.data?.error && (
                 <div style={{ color: 'red', marginTop: '5px' }}>
-                  {selectedEdge.data.error}
+                  {String(selectedEdge.data.error)}
                 </div>
               )}
             </>
