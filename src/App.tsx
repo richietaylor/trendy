@@ -73,12 +73,12 @@ type ExampleProps = {
   timeQuanta?: 'day' | 'year';
 };
 
-interface ShapeNodeData {
-  type: string;
-  color: string;
-  label?: string;
-  identifier?: boolean; // Add the identifier property here
-}
+// interface ShapeNodeData {
+//   type: string;
+//   color: string;
+//   label?: string;
+//   identifier?: boolean; // Add the identifier property here
+// }
 
 const nodeStyles = {
   temporalAttribute: { width: 120, height: 80 },
