@@ -503,20 +503,27 @@ function ShapesProExampleApp({
     );
   };
 
-  const onConnect = (params: Edge | Connection) => {
-    const sourceNode = nodes.find((node) => node.id === params.source);
-    const targetNode = nodes.find((node) => node.id === params.target);
+  // const onConnect = (params: Edge | Connection) => {
+  //   const sourceNode = nodes.find((node) => node.id === params.source);
+  //   const targetNode = nodes.find((node) => node.id === params.target);
   
-    if ((params as Edge).type === 'temporalEdge' && !isValidTemporalEdgeConnection(sourceNode, targetNode)) {
-      const error = `Invalid temporal edge between ${sourceNode?.data.label} and ${targetNode?.data.label}`;
+  //   if ((params as Edge).type === 'temporalEdge' && !isValidTemporalEdgeConnection(sourceNode, targetNode)) {
+  //     const error = `Invalid temporal edge between ${sourceNode?.data.label} and ${targetNode?.data.label}`;
+  //     setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, error } } as Edge, eds));
+  //   } else {
+  //     setEdges((eds) => addEdge(params, eds));
+  //   }
+  
+  //   takeSnapshot();
+  // };
+  const onConnect = (params: Edge | Connection) => {
+    if ('data' in params) {
       setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, error } } as Edge, eds));
     } else {
       setEdges((eds) => addEdge(params, eds));
     }
-  
     takeSnapshot();
   };
-  
 
   useEffect(() => {
     const { edges: validatedEdges, errors: validationErrors } = validateEdges(nodes, edges);

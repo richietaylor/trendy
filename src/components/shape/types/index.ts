@@ -45,4 +45,5 @@ export type ShapeNode = Node<{
   label?: string;
   identifier?: boolean;
   disjoint?: boolean;
+  selected: boolean;
 }>;
