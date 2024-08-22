@@ -40,7 +40,7 @@ import AtemporalEdge from  './components/edges/AtemporalEdge'
 import InheritanceEdge from './components/edges/InheritanceEdge';
 import TemporalEdge from './components/edges/TemporalEdge';
 
-import EdgeVerbalization from './components/verbalization/EdgeVerbalization.tsx';
+import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
 
 // import DownloadButton from './components/DownloadButton';
