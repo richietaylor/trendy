@@ -59,7 +59,7 @@ export type ShapeComponentProps = Partial<ShapeProps> & { type: ShapeType };
 
 export type ShapeNodeData = {
   type: ShapeType;
-  color: string;
+  // color: string;
   label?: string;
   identifier?: boolean;
   disjoint?: boolean;
@@ -67,9 +67,9 @@ export type ShapeNodeData = {
 
 export type ShapeNode = Node<ShapeNodeData> & {
   id: string;
-  // position: XYPosition;
-  xPos?: number;  
-  yPos?: number; 
+  position: XYPosition;
+  // xPos?: number;  
+  // yPos?: number; 
   style?: React.CSSProperties;
   selected: boolean;
 };

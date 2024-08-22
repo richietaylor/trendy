@@ -25,7 +25,7 @@ function useNodeDimensions(id: string) {
 }
 
 function ShapeNode({ id, selected = false, data }: NodeProps<ShapeNode>) {
-  const { color, type, label, identifier, disjoint } = data;
+  const { type, label, identifier, disjoint } = data;
   const { setNodes } = useReactFlow();
   const inputRef = useRef<HTMLInputElement>(null);
   
@@ -112,7 +112,7 @@ function ShapeNode({ id, selected = false, data }: NodeProps<ShapeNode>) {
 
       {/* <ShapeNodeToolbar onColorChange={onColorChange} activeColor={color} /> */}
       <NodeResizer
-        color={color}
+        color={"black"}
         keepAspectRatio={shiftKeyPressed}
         isVisible={selected}
       />

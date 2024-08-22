@@ -45,13 +45,18 @@ import { validateEdges, isValidTemporalEdgeConnection } from './components/edges
 
 // import DownloadButton from './components/DownloadButton';
 
+const nodeTypes: NodeTypes = {
+  shape: ShapeNodeComponent,
+};
+
 // const nodeTypes: NodeTypes = {
-//   shape: ShapeNodeComponent,
+//   shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
 // };
 
-const nodeTypes: NodeTypes = {
-  shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
-};
+// const nodeTypes: NodeTypes = {
+//   shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
+// };
+
 
 const edgeTypes: EdgeTypes = {
   temporalEdge: TemporalEdge,
@@ -153,7 +158,7 @@ function ShapesProExampleApp({
       position,
       data: {
         type,
-        color: 'black',
+        // color: 'black',
         // label '',
         label: type === 'inheritance' ? '' : 'Add Text',
         identifier: false, //umm is this okay?
