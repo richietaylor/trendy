@@ -35,6 +35,7 @@ class GraphProcessor {
     }
 
     async inheritance() {
+        console.log(this.entities);
         for (const key in this.entities) {
             var entity = this.entities[key];
             if (entity.isaID !== null) {
@@ -200,9 +201,9 @@ class GraphProcessor {
                         }
         
                         if (relation.edges[1].source === relation.id) {
-                            other_entity = this.entities[relation.edges[1].source];
-                        } else {
                             other_entity = this.entities[relation.edges[1].destination];
+                        } else {
+                            other_entity = this.entities[relation.edges[1].source];
                         }
                         const entity_package = { // Packages all the information needed about the other entity for the writeSQL function
                             entity: other_entity,
@@ -290,6 +291,8 @@ class GraphProcessor {
                     if (final_entity.temporal && initial_entity.temporal) {
                         trigger.setInitial(initial_entity);
                         trigger.setFinal(final_entity);
+                        initial_entity.hasTrigger = true;
+                        final_entity.hasTrigger = true;
                         this.trigger_list.push(trigger);
                     } else {
                         console.log("Cannot have temporal transitions between non-temporal entities");
@@ -320,6 +323,7 @@ class GraphProcessor {
                     if (final_entity.temporal && initial_entity.temporal) {
                         trigger.setInitial(initial_entity);
                         trigger.setFinal(final_entity);
+                        console.log(trigger);
                         this.trigger_list.push(trigger);
                     } else {
                         console.log("Cannot have temporal transitions between non-temporal entities");
@@ -332,6 +336,9 @@ class GraphProcessor {
                 if (this.relations[edge.source]) { // If the "source" attribute is a relation
                     if (this.attributes[edge.destination]) { // If the edge signifies an attribute
                         if (!this.attributes[edge.destination].derived) { 
+                            if (this.attribute_tables[edge.destination]) {
+                                this.attribute_tables[edge.destination].addEntity(this.relations[edge.source]);
+                            }
                             if (!edge.dashed) {
                                 this.relations[edge.source].addAttributeArray(this.attributes[edge.destination].getName());
                             }
@@ -359,6 +366,9 @@ class GraphProcessor {
                 else if (this.relations[edge.destination]) { // If the "destination" attribute is the relation
                     if (this.attributes[edge.source]) { // If the edge signifies an attribute
                         if (!this.attributes[edge.source].derived) {
+                            if (this.attribute_tables[edge.source]) {
+                                this.attribute_tables[edge.source].addEntity(this.relations[edge.destination]);
+                            }
                             if (!edge.dashed) {
                                 this.relations[edge.destination].addAttributeArray(this.attributes[edge.source].getName());
                             }
