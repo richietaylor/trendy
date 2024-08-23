@@ -1,5 +1,5 @@
 import { SVGAttributes } from 'react';
-import type { Node } from '@xyflow/react';
+import type { Node, XYPosition } from '@xyflow/react';
 
 import TemporalRelationship from './temporalRelationship'
 import TemporalEntity from './TemporalEntity'
@@ -39,10 +39,37 @@ export type ShapeProps = {
 
 export type ShapeComponentProps = Partial<ShapeProps> & { type: ShapeType };
 
-export type ShapeNode = Node<{
+
+
+// export type ShapeNode = {
+//   id: string;
+//   position: XYPosition;
+//   type: string;
+//   data: {
+//     type: ShapeType; // Adjust according to your ShapeType enum or union
+//     color: string;
+//     label?: string;
+//     identifier?: boolean;
+//     disjoint?: boolean;
+//   };
+//   style?: React.CSSProperties;
+//   selected: boolean;
+// };
+
+
+export type ShapeNodeData = {
   type: ShapeType;
-  color: string;
+  // color: string;
   label?: string;
   identifier?: boolean;
   disjoint?: boolean;
-}>;
+};
+
+export type ShapeNode = Node<ShapeNodeData> & {
+  id: string;
+  position: XYPosition;
+  // xPos?: number;  
+  // yPos?: number; 
+  style?: React.CSSProperties;
+  selected: boolean;
+};

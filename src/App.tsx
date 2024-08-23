@@ -4,7 +4,7 @@ import {
   Background,
   ReactFlowProvider,
   ConnectionLineType,
-  MarkerType,
+  // MarkerType,
   ConnectionMode,
   Panel,
   NodeTypes,
@@ -22,7 +22,7 @@ import {
   XYPosition,
   OnNodeDrag,
   useViewport,
-  OnConnectStartParams
+  // OnConnectStartParams
 } from '@xyflow/react';
 import { useControls } from 'leva';
 
@@ -34,7 +34,7 @@ import { defaultNodes as initialNodes, defaultEdges as initialEdges } from './in
 import ShapeNodeComponent from './components/shape-node';
 import Sidebar from './components/sidebar';
 import { ShapeNode, ShapeType } from './components/shape/types';
-import { BackgroundVariant } from 'reactflow';
+import { BackgroundVariant, NodeProps } from 'reactflow';
 
 import AtemporalEdge from  './components/edges/AtemporalEdge'
 import InheritanceEdge from './components/edges/InheritanceEdge';
@@ -48,6 +48,15 @@ import { validateEdges, isValidTemporalEdgeConnection } from './components/edges
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
 };
+
+// const nodeTypes: NodeTypes = {
+//   shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
+// };
+
+// const nodeTypes: NodeTypes = {
+//   shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
+// };
+
 
 const edgeTypes: EdgeTypes = {
   temporalEdge: TemporalEdge,
@@ -73,12 +82,12 @@ type ExampleProps = {
   timeQuanta?: 'day' | 'year';
 };
 
-interface ShapeNodeData {
-  type: string;
-  color: string;
-  label?: string;
-  identifier?: boolean; // Add the identifier property here
-}
+// interface ShapeNodeData {
+//   type: string;
+//   color: string;
+//   label?: string;
+//   identifier?: boolean; // Add the identifier property here
+// }
 
 const nodeStyles = {
   temporalAttribute: { width: 120, height: 80 },
@@ -125,9 +134,9 @@ function ShapesProExampleApp({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { zoom, x: viewportX, y: viewportY } = useViewport();
 
-  const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
+  const { undo, redo, takeSnapshot } = useUndoRedo();
 
-  const [errors, setErrors] = useState<string[]>([]);
+  const [, setErrors] = useState<string[]>([]);
 
   const onDragOver = (evt: React.DragEvent<HTMLDivElement>) => {
     evt.preventDefault();
@@ -149,7 +158,7 @@ function ShapesProExampleApp({
       position,
       data: {
         type,
-        color: 'black',
+        // color: 'black',
         // label '',
         label: type === 'inheritance' ? '' : 'Add Text',
         identifier: false, //umm is this okay?
@@ -503,25 +512,33 @@ function ShapesProExampleApp({
     );
   };
 
-  const onConnect = (params: Edge | Connection) => {
-    const sourceNode = nodes.find((node) => node.id === params.source);
-    const targetNode = nodes.find((node) => node.id === params.target);
+  // const onConnect = (params: Edge | Connection) => {
+  //   const sourceNode = nodes.find((node) => node.id === params.source);
+  //   const targetNode = nodes.find((node) => node.id === params.target);
   
-    if ((params as Edge).type === 'temporalEdge' && !isValidTemporalEdgeConnection(sourceNode, targetNode)) {
-      const error = `Invalid temporal edge between ${sourceNode?.data.label} and ${targetNode?.data.label}`;
-      setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, error } } as Edge, eds));
+  //   if ((params as Edge).type === 'temporalEdge' && !isValidTemporalEdgeConnection(sourceNode, targetNode)) {
+  //     const error = `Invalid temporal edge between ${sourceNode?.data.label} and ${targetNode?.data.label}`;
+  //     setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, error } } as Edge, eds));
+  //   } else {
+  //     setEdges((eds) => addEdge(params, eds));
+  //   }
+  
+  //   takeSnapshot();
+  // };
+  const onConnect = (params: Edge | Connection) => {
+    if ('data' in params) {
+      setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, Error } } as Edge, eds));
     } else {
       setEdges((eds) => addEdge(params, eds));
     }
-  
     takeSnapshot();
   };
-  
 
   useEffect(() => {
-    const { edges: validatedEdges, errors: validationErrors } = validateEdges(nodes, edges);
+    // const { edges: validatedEdges, errors: validationErrors } = validateEdges(nodes, edges);
+    const { edges: validatedEdges,} = validateEdges(nodes, edges);
     setEdges(validatedEdges);
-    setErrors(validationErrors);
+    // setErrors(validationErrors);
   }, [nodes, edges]);
 
 
@@ -545,7 +562,7 @@ function ShapesProExampleApp({
 
   const isBothEntities = (sourceNode: Node | undefined, targetNode: Node | undefined) => {
     const entityTypes = ['temporalEntity', 'atemporalEntity', 'weakEntity'];
-    return entityTypes.includes(String(sourceNode?.data.type)) && entityTypes.includes(targetNode?.data.type);
+    return entityTypes.includes(String(sourceNode?.data.type)) && entityTypes.includes(String(targetNode?.data.type));
   };
   
 
@@ -768,7 +785,7 @@ const sendToDriver = () => {
 
               {selectedEdge.data?.error && (
                 <div style={{ color: 'red', marginTop: '5px' }}>
-                  {selectedEdge.data.error}
+                  {String(selectedEdge.data.error)}
                 </div>
               )}
             </>

@@ -32,7 +32,6 @@ const EdgeVerbalization: React.FC<EdgeVerbalizationProps> = ({ selectedEdge, nod
   const targetNodeType = targetNode.data.type;
   const sourceNodeLabel = sourceNode.data.label;
   const targetNodeLabel = targetNode.data.label;
-  const quanta = ''
 //   const maybe = '[at least/at most/exactly] '
   const maybe = ''
 

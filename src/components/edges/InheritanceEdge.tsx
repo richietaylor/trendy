@@ -44,6 +44,11 @@ const InheritanceEdge: React.FC<EdgeProps> = ({
           </marker>
         </defs>
       </svg>
+      <path
+        className="react-flow__edge-path"
+        style={{ strokeWidth: 30, stroke: "initial" }}
+        d={edgePath}
+      />
       
       {inheritanceType === 'Subsumption' ? (
         // Render a single black line for Subsumption

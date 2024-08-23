@@ -49,6 +49,24 @@ const TemporalEdge: React.FC<EdgeProps> = ({
           </marker>
         </defs>
       </svg>
+
+
+
+      {/* <path
+        id={`${id}-hitarea`}
+        d={edgePath}
+        fill="none"
+        stroke="black"
+        strokeWidth={3} 
+        className="react-flow__edge-path"
+        style={{ cursor: 'pointer' }}
+      /> */}
+      <path
+        className="react-flow__edge-path"
+        style={{ strokeWidth: 30, stroke: "initial" }}
+        d={edgePath}
+      />
+
       <path
         id={id}
         style={{ ...style, strokeDasharray: optional === 'Optional' ? '5,5' : undefined, zIndex: 11 }}
@@ -56,6 +74,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
         d={edgePath}
         markerEnd={markerEndDef ? 'url(#open-arrow)' : undefined}
       />
+      
       {persistent && (
         <image
         // href={SmallImage}
@@ -68,6 +87,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
         y={labelY-30}
         width={20}
         height={20}
+        // style={{ zIndex: 20, pointerEvents: 'none' }}
       />
       )}
       <text

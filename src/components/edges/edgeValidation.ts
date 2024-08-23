@@ -64,7 +64,7 @@ export const isValidTemporalEdgeConnection = (sourceNode: Node | undefined, targ
 
   // Allow connections between an entity and a relationship, and between similar types (both entities or both relationships)
   const isValidConnection =
-    (sourceIsEntity && targetIsRelationship) || (sourceIsRelationship && targetIsEntity) || 
+    // (sourceIsEntity && targetIsRelationship) || (sourceIsRelationship && targetIsEntity) || 
     (sourceIsEntity && targetIsEntity) || (sourceIsRelationship && targetIsRelationship);
 
   return isSourceValid && isTargetValid && isValidConnection;
