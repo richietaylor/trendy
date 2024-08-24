@@ -21,10 +21,6 @@ import { type ShapeProps } from '.';
 import SmallImage from '../../../../public/pin.svg';
 
 function Circle({ width, height, ...svgAttributes }: ShapeProps) {
-  // Calculate the vertical center position of the image
-  const imageSize = 20; // Size of the image
-  const offsetX = 5; // Offset from the left border
-  const centerY = (height - imageSize) / 2 - 1;
 
   return (
     <svg width={width} height={height} {...svgAttributes}>
