@@ -78,13 +78,13 @@ class Trigger {
                     text += "\t\t\tOR\n";
                     text += "\t\t\t(NEW." + this.finalEntity.name + "_start >= " + this.initialEntity.name + "_start AND NEW." + this.finalEntity.name + "_end <= " + this.initialEntity.name +"_end)\n";
                     text += "\t\t);\n";   
-                    text += "\tIF initial_exists = 0 THEN\n";
-                    text += "\t\tSIGNAL SQLSTATE '45000'\n";
-                    text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must have been in " + this.initialEntity.name + " before.';\n";
-                    text += "\tEND IF;\n";
                     text += "\tIF overlap_count > 0 THEN\n";
                     text += "\t\tSIGNAL SQLSTATE '45000'\n";
                     text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " cannot overlap with " + this.initialEntity.name + ".';\n";
+                    text += "\tEND IF;\n";
+                    text += "\tIF initial_exists = 0 THEN\n";
+                    text += "\t\tSIGNAL SQLSTATE '45000'\n";
+                    text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must have been in " + this.initialEntity.name + " before.';\n";
                     text += "\tEND IF;\n";
                     text += "END;\n//\n\n";
                     if (!this.pinned) {

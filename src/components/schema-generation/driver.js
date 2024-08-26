@@ -51,11 +51,14 @@ document.addEventListener('nodesAndEdgesData', async function(event) {
 async function processGraph() {
     if (Nodes && Edges) {
         try {
+            console.time("ButtonToDownload");
             const file = new SerialProcessor(Nodes,Edges,chronon);
             const fileNodes = await file.getNodes(); 
-            const fileEdges = await file.getEdges(); 
+            const fileEdges = await file.getEdges();
+            console.time("GraphProcessing"); 
             const graph = new GraphProcessor(fileNodes, fileEdges);
             await graph.process();
+            console.timeEnd("GraphProcessing");
             const entities = graph.getEntities();
             const relations = graph.getRelations();
             const attributes = graph.getAttributes();
@@ -69,6 +72,7 @@ async function processGraph() {
             a.href = window.URL.createObjectURL(blob);
             a.click();
             window.URL.revokeObjectURL(a.href);
+            console.timeEnd("ButtonToDownload");
         } catch (error) {
             console.error('Failed to process graph:', error);
         }

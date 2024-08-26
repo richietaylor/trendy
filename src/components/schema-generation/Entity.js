@@ -26,6 +26,8 @@ class Entity {
         this.isaID = null;
         /** @type {boolean} */
         this.hasTable = true;
+        /** @type {boolean} */
+        this.hasTrigger = true;
     }
 
     disableTable() {
