@@ -71,5 +71,5 @@ export type ShapeNode = Node<ShapeNodeData> & {
   // xPos?: number;  
   // yPos?: number; 
   style?: React.CSSProperties;
-  selected: boolean;
+  selected?: boolean;
 };
