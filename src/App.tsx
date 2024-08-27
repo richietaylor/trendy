@@ -43,7 +43,7 @@ import TemporalEdge from './components/edges/TemporalEdge';
 // import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
 // import EdgeVerbalization from 'components/verbalization/EdgeVerbalization';
-import {generateEdgeVerbalization} from './components/verbalization/EdgeVerbalization';
+import {generateEdgeVerbalization} from './components/verbalization/edgeVerbalization';
 
 
 
