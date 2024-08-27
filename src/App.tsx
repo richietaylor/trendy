@@ -40,7 +40,7 @@ import AtemporalEdge from  './components/edges/AtemporalEdge'
 import InheritanceEdge from './components/edges/InheritanceEdge';
 import TemporalEdge from './components/edges/TemporalEdge';
 
-import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
+// import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
 
 
@@ -827,9 +827,9 @@ const sendToDriver = () => {
         </div>
       )}
       {/* <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} />  */}
-      {selectedEdge && selectedEdge.type === 'temporalEdge' && verbalization && (
+      {/* {selectedEdge && selectedEdge.type === 'temporalEdge' && verbalization && (
         <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} timeQuanta={timeQuanta}/>
-      )}
+      )} */}
       <ReactFlow
         nodes={nodes}
         edges={edges}
