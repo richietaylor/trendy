@@ -25,9 +25,77 @@ export const defaultNodes: ShapeNode[] = [
   //     color: 'black',
   //   },
   // } 
+
+
+
+  
+
+  // {
+  //   "id": "1jOUuA",
+  //   "type": "shape",
+  //   "position": {
+  //     "x": 380,
+  //     "y": 120
+  //   },
+  //   "data": {
+  //     "type": "atemporalEntity",
+  //     "label": "Add Text",
+  //     "identifier": false,
+  //     "disjoint": false
+  //   },
+  //   "style": {
+  //     "width": 120,
+  //     "height": 80
+  //   },
+  //   "selected": true,
+  //   "measured": {
+  //     "width": 120,
+  //     "height": 80
+  //   }
+  // },
+  // {
+  //   "id": "2iOOBE",
+  //   "type": "shape",
+  //   "position": {
+  //     "x": 420,
+  //     "y": 260
+  //   },
+  //   "data": {
+  //     "type": "temporalEntity",
+  //     "label": "Add Text",
+  //     "identifier": false,
+  //     "disjoint": false
+  //   },
+  //   "style": {
+  //     "width": 120,
+  //     "height": 80
+  //   },
+  //   "selected": false,
+  //   "measured": {
+  //     "width": 120,
+  //     "height": 80
+  //   }
+  // }
 ];
 
 export const defaultEdges: Edge[] = [ 
+  // {
+  //   "type": "temporalEdge",
+  //   "style": {
+  //     "stroke": "black",
+  //     "strokeWidth": 2
+  //   },
+  //   "source": "1jOUuA",
+  //   "sourceHandle": "bottom",
+  //   "target": "2iOOBE",
+  //   "targetHandle": "top",
+  //   "id": "xy-edge__1jOUuAbottom-2iOOBEtop",
+  //   "data": {}
+  // }
+
+
+
+
 //   {
 //   id: 'e1-2',
 //   source: '1',

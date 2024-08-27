@@ -42,6 +42,8 @@ import TemporalEdge from './components/edges/TemporalEdge';
 
 // import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
+// import EdgeVerbalization from 'components/verbalization/EdgeVerbalization';
+import {generateEdgeVerbalization} from './components/verbalization/EdgeVerbalization';
 
 
 
@@ -67,7 +69,7 @@ const nodeTypes: NodeTypes = {
 const edgeTypes: EdgeTypes = {
   temporalEdge: TemporalEdge,
   atemporalEdge: AtemporalEdge,
-  inheritanceEdge: InheritanceEdge
+  inheritanceEdge: InheritanceEdge,
 };
 
 //change this eventually!
@@ -150,6 +152,8 @@ function ShapesProExampleApp({
     
     evt.dataTransfer.dropEffect = 'move';
   };
+  
+
 
   const onDrop: React.DragEventHandler<HTMLDivElement> = (evt) => {
     evt.preventDefault();
@@ -159,8 +163,19 @@ function ShapesProExampleApp({
     const type = evt.dataTransfer.getData('application/reactflow') as ShapeType;
     const position = screenToFlowPosition({ x: evt.clientX, y: evt.clientY });
 
+    function generateRandomString(length: number) {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
+      }
+      return result;
+    }
+
+
     const newNode: ShapeNode = {
-      id: (nodes.length + 1).toString(),
+      id: (nodes.length + 1).toString() + generateRandomString(5),
       type: 'shape',
       position,
       data: {
@@ -216,6 +231,46 @@ function ShapesProExampleApp({
     setCopiedElements({ nodes: selectedNodes, edges: selectedEdges });
   };
 
+  // const pasteCopiedElements = () => {
+  //   if (copiedElements) {
+  //     const newNodes = copiedElements.nodes.map((node) => ({
+  //       ...node,
+  //       id: `${node.id}-copy-${Date.now()}`,
+  //       position: { x: node.position.x + 20, y: node.position.y + 20 },
+  //       selected: false,
+  //       // data: {
+  //       //   ...node.data,
+  //       //   // Ensure data properties match ShapeNodeData
+  //       //   // You may need to adjust these depending on your actual ShapeNodeData definition
+  //       //   type: node.data.type,
+  //       //   label: node.data.label || '',
+  //       //   identifier: node.data.identifier,
+  //       //   disjoint: node.data.disjoint,
+  //       // },
+  //       data: {
+  //         type: node.data.type,
+  //         label: node.data.label || '',
+  //         identifier: node.data.identifier ?? false,
+  //         disjoint: node.data.disjoint ?? false,
+  //       },
+  //     }));
+
+
+  //     const newEdges = copiedElements.edges.map((edge) => ({
+  //       ...edge,
+  //       id: `${edge.id}-copy-${Date.now()}`,
+  //       source: `${edge.source}-copy-${Date.now()}`,
+  //       target: `${edge.target}-copy-${Date.now()}`,
+  //       selected: false,
+  //     }));
+
+  //     setNodes((nds) => nds.concat(newNodes as unknown as ShapeNode[]));
+  //     setEdges((eds) => eds.concat(newEdges));
+
+  //     takeSnapshot();
+  //   }
+  // };
+
   const pasteCopiedElements = () => {
     if (copiedElements) {
       const newNodes = copiedElements.nodes.map((node) => ({
@@ -223,15 +278,6 @@ function ShapesProExampleApp({
         id: `${node.id}-copy-${Date.now()}`,
         position: { x: node.position.x + 20, y: node.position.y + 20 },
         selected: false,
-        // data: {
-        //   ...node.data,
-        //   // Ensure data properties match ShapeNodeData
-        //   // You may need to adjust these depending on your actual ShapeNodeData definition
-        //   type: node.data.type,
-        //   label: node.data.label || '',
-        //   identifier: node.data.identifier,
-        //   disjoint: node.data.disjoint,
-        // },
         data: {
           type: node.data.type,
           label: node.data.label || '',
@@ -239,21 +285,22 @@ function ShapesProExampleApp({
           disjoint: node.data.disjoint ?? false,
         },
       }));
-
+  
       const newEdges = copiedElements.edges.map((edge) => ({
         ...edge,
-        id: `${edge.id}-copy-${Date.now()}`,
+        id: `${edge.id}-copy-${Date.now()}`, // Set a unique ID here
         source: `${edge.source}-copy-${Date.now()}`,
         target: `${edge.target}-copy-${Date.now()}`,
         selected: false,
       }));
-
+  
       setNodes((nds) => nds.concat(newNodes as unknown as ShapeNode[]));
       setEdges((eds) => eds.concat(newEdges));
-
+  
       takeSnapshot();
     }
   };
+  
 
 
   useEffect(() => {
@@ -558,14 +605,38 @@ function ShapesProExampleApp({
   
   //   takeSnapshot();
   // };
+
+
+
+
+  // const onConnect = (params: Edge | Connection) => {
+  //   if ('data' in params) {
+  //     setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, Error } } as Edge, eds));
+  //   } else {
+  //     setEdges((eds) => addEdge(params, eds));
+  //   }
+  //   takeSnapshot();
+  // };
+
   const onConnect = (params: Edge | Connection) => {
     if ('data' in params) {
-      setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, Error } } as Edge, eds));
+      const newEdge: Edge = {
+        ...params,
+        id: `edge-${Date.now()}`, // Set a unique ID here
+        style: { stroke: 'red', strokeWidth: 2 },
+        data: { ...params.data, Error }
+      };
+      setEdges((eds) => addEdge(newEdge, eds));
     } else {
-      setEdges((eds) => addEdge(params, eds));
+      const newEdge: Edge = {
+        ...params,
+        id: `edge-${Date.now()}`, // Set a unique ID here
+      };
+      setEdges((eds) => addEdge(newEdge, eds));
     }
     takeSnapshot();
   };
+  
 
   useEffect(() => {
     // const { edges: validatedEdges, errors: validationErrors } = validateEdges(nodes, edges);
@@ -599,21 +670,67 @@ function ShapesProExampleApp({
   };
   
 
+  // const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       const content = e.target?.result;
+  //       const { nodes, edges } = JSON.parse(content as string);
+  //       setNodes(nodes);
+  //       setEdges(edges);
+  //       // console.log("Loaded edges:", edges);
+  //     };
+      
+  //     reader.readAsText(file);
+  //   }
+  //   takeSnapshot();
+  // };
+  
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const content = e.target?.result;
-        const { nodes, edges } = JSON.parse(content as string);
-        setNodes(nodes);
-        setEdges(edges);
+        try {
+          const content = e.target?.result as string;
+          const parsedData = JSON.parse(content);
+          const { nodes, edges } = parsedData;
+  
+          if (Array.isArray(nodes) && Array.isArray(edges)) {
+            console.log("Loaded nodes:", nodes);
+            console.log("Loaded edges:", edges);
+  
+            setNodes(nodes);
+            setEdges(edges);
+
+
+            // // setEdges(edges);
+            // edges.forEach(edge => {
+            //   console.log("Processing edge:", edge);
+            //   setEdges((eds) => addEdge(edge, eds));
+            //   // You can do additional processing here if needed
+            // });
+                        
+  
+            // Debugging state update
+            console.log("Nodes state:", nodes);
+            console.log("Edges state:", edges);
+          } else {
+            console.error('Invalid data structure:', parsedData);
+          }
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+        }
       };
+  
       reader.readAsText(file);
     }
-
     takeSnapshot();
   };
+  
+  
+  
 
   const saveToFile = () => {
     const content = JSON.stringify({ nodes, edges }, null, 2);
@@ -827,9 +944,14 @@ const sendToDriver = () => {
         </div>
       )}
       {/* <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} />  */}
-      {/* {selectedEdge && selectedEdge.type === 'temporalEdge' && verbalization && (
-        <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} timeQuanta={timeQuanta}/>
-      )} */}
+      {selectedEdge && selectedEdge.type === 'temporalEdge' && verbalization && (
+        // <EdgeVerbalization selectedEdge={selectedEdge} nodes={nodes} timeQuanta={timeQuanta}/>
+        <div style={{ position: 'absolute', bottom: 15, left: 70, background: 'white', padding: '10px', border: '1px solid #ccc', borderRadius: '4px', zIndex: 10 }}>
+          <p>{generateEdgeVerbalization(selectedEdge, nodes, timeQuanta)}</p>
+        </div>
+      )}
+
+      
       <ReactFlow
         nodes={nodes}
         edges={edges}
