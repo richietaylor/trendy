@@ -78,13 +78,13 @@ class Trigger {
                     text += "\t\t\tOR\n";
                     text += "\t\t\t(NEW." + this.finalEntity.name + "_start >= " + this.initialEntity.name + "_start AND NEW." + this.finalEntity.name + "_end <= " + this.initialEntity.name +"_end)\n";
                     text += "\t\t);\n";   
-                    text += "\tIF initial_exists = 0 THEN\n";
-                    text += "\t\tSIGNAL SQLSTATE '45000'\n";
-                    text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must have been in " + this.initialEntity.name + " before.';\n";
-                    text += "\tEND IF;\n";
                     text += "\tIF overlap_count > 0 THEN\n";
                     text += "\t\tSIGNAL SQLSTATE '45000'\n";
                     text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " cannot overlap with " + this.initialEntity.name + ".';\n";
+                    text += "\tEND IF;\n";
+                    text += "\tIF initial_exists = 0 THEN\n";
+                    text += "\t\tSIGNAL SQLSTATE '45000'\n";
+                    text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must have been in " + this.initialEntity.name + " before.';\n";
                     text += "\tEND IF;\n";
                     text += "END;\n//\n\n";
                     if (!this.pinned) {
@@ -283,7 +283,7 @@ class Trigger {
                         text += "\t\t\t)\n";
                     }
                     text += "\t\tAND " + this.initialEntity.name + "_end <= NEW." + this.finalEntity.name + "_start\n";
-                    text += "\t\tORDER BY " + this.initialEntity.name + "_start;\n";
+                    text += "\t\tORDER BY " + this.initialEntity.name + "_start DESC;\n";
                     text += "\tDECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;\n\n";
                     text += "\tOPEN cursor_a;\n\n";
                     text += "\tread_loop: LOOP\n";
@@ -291,11 +291,10 @@ class Trigger {
                     text += "\t\tIF done THEN\n";
                     text += "\t\t\tLEAVE read_loop;\n";
                     text += "\t\tEND IF;\n\n";
-                    text += "\t\tIF prev_end IS NULL OR prev_end = cur_start THEN\n";
+                    text += "\t\tIF cur_end = NEW." + this.finalEntity.name + "_start OR prev_end = cur_end THEN\n";
                     text += "\t\t\tSET total_time = total_time + TIMESTAMPDIFF(" + this.unit + ", cur_start, cur_end);\n";
-                    text += "\t\t\tSET prev_end = cur_end;\n"
+                    text += "\t\t\tSET prev_end = cur_start;\n"
                     text += "\t\tELSE\n";
-                    text += "\t\t\tSET total_time = 0;\n";
                     text += "\t\t\tLEAVE read_loop;\n";
                     text += "\t\tEND IF;\n";
                     text += "\tEND LOOP;\n\n";
@@ -337,6 +336,7 @@ class Trigger {
                         text += "\tEND IF;\n";
                         text += "END;\n//\n\n";
                     }
+
                    
                     // cannot insert date in initial that's past an existing final entry
                     if (this.pinned) {
@@ -831,8 +831,9 @@ class Trigger {
                         text += "\tSET total_time = TIMESTAMPDIFF(" + this.unit + ", NEW." + this.initialEntity.name + "_start, NEW." + this.initialEntity.name + "_end);\n";
                         text += "\tIF total_time > " + this.duration.toString() + " THEN\n";
                         text += "\t\tSIGNAL SQLSTATE '45000'\n";
-                        text += "\t\tSET MESSAGE_TEXT = 'No period in " + this.initialEntity.name + " can result in more than " + this.duration.toString() + " continuous units.';\n";
-                        text += "\tEND IF;\n"
+                        text += "\t\tSET MESSAGE_TEXT = 'No period in " + this.initialEntity.name + " can result in more than " + this.duration.toString() + " continuous units without extending.';\n";
+                        text += "\tEND IF;\n";
+                        text += "\tSET total_time = 0;\n";
                         text += "\tOPEN cursor_a;\n\n";
                         text += "\tread_loop: LOOP\n";
                         text += "\t\tFETCH cursor_a INTO cur_start, cur_end;\n";

@@ -63,8 +63,8 @@ class Attribute {
     writeSQL() {
         var text = "";
         text += "CREATE OR REPLACE TABLE " + this.name + " (\n";
-        for (var j = 0; j < this.belongsTo.primaryKey.length; j++) {
-            text += "\t" + this.belongsTo.primaryKey[j] + ",\n";
+        for (var j = 0; j < this.belongsTo.getPrimaryKey().length; j++) {
+            text += "\t" + this.belongsTo.getPrimaryKey()[j] + ",\n";
         }
         text += "\t" + this.name + " " + this.datatype + ",\n";
         if (this.temporal) {
@@ -73,9 +73,9 @@ class Attribute {
             text += "\tPERIOD FOR " + this.name+ "_period(" + this.name + "_start, " + this.name + "_end),\n";
         }
         text += "\tPRIMARY KEY (" + this.name + ", ";
-        for (var j = 0; j < this.belongsTo.primaryKey.length; j++)   {
-            text += this.belongsTo.primaryKey[j].split(" ")[0];
-            if (j !== this.belongsTo.primaryKey.length - 1) {
+        for (var j = 0; j < this.belongsTo.getPrimaryKey().length; j++)   {
+            text += this.belongsTo.getPrimaryKey()[j].split(" ")[0];
+            if (j !== this.belongsTo.getPrimaryKey().length - 1) {
                 text += ", ";
             }
         }
@@ -86,16 +86,16 @@ class Attribute {
         if (this.belongsTo.hasTable) {
             text += ",\n\tCONSTRAINT `" + this.belongsTo.name + "_" + this.name + "_foreign_key`\n";
             text += "\tFOREIGN KEY (";
-                for (var j = 0; j < this.belongsTo.primaryKey.length; j++)   {
-                    text += this.belongsTo.primaryKey[j].split(" ")[0];
-                    if (j !== this.belongsTo.primaryKey.length - 1) {
+                for (var j = 0; j < this.belongsTo.getPrimaryKey().length; j++)   {
+                    text += this.belongsTo.getPrimaryKey()[j].split(" ")[0];
+                    if (j !== this.belongsTo.getPrimaryKey().length - 1) {
                         text += ", ";
                     }
                 }
                 text += ") REFERENCES " + this.belongsTo.name + "(";
-                for (var j = 0; j < this.belongsTo.primaryKey.length; j++)   {
-                    text += this.belongsTo.primaryKey[j].split(" ")[0];
-                    if (j !== this.belongsTo.primaryKey.length - 1) {
+                for (var j = 0; j < this.belongsTo.getPrimaryKey().length; j++)   {
+                    text += this.belongsTo.getPrimaryKey()[j].split(" ")[0];
+                    if (j !== this.belongsTo.getPrimaryKey().length - 1) {
                         text += ", ";
                     }
                 }
