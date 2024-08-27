@@ -204,15 +204,17 @@ import {
 
 import Shape from '../shape';
 import { type ShapeNode } from '../shape/types';
+import {type ShapeType} from '../shape/types';
 
 // Extend NodeProps to include all possible required properties
 interface ExtendedNodeProps extends NodeProps<ShapeNode> {
+  type: ShapeType,
   xPos?: number;
   yPos?: number;
   sourcePosition?: Position;
   targetPosition?: Position;
   draggable?: boolean;
-  selectable?: boolean;
+  selectable?: boolean |undefined;
   deletable?: boolean;
   dragHandle?: string;
   parentId?: string;
@@ -233,7 +235,7 @@ function ShapeNode({
   parentId,
   ...restProps
 }: ExtendedNodeProps): JSX.Element {
-  const { type, label, identifier, disjoint } = data;
+  const { type = 'temporalEntity', label, identifier, disjoint } = data;
   const { setNodes } = useReactFlow();
   const inputRef = useRef<HTMLInputElement>(null);
   
@@ -254,8 +256,13 @@ function ShapeNode({
           return {
             ...node,
             data: {
+              // ...node.data,
+              // label: newLabel,
               ...node.data,
               label: newLabel,
+              type: node.data.type,  // Ensure type is correctly assigned
+              identifier: node.data.identifier,
+              disjoint: node.data.disjoint,
             },
           };
         }

@@ -43,11 +43,17 @@ import TemporalEdge from './components/edges/TemporalEdge';
 import EdgeVerbalization from './components/verbalization/EdgeVerbalization';
 import { validateEdges, isValidTemporalEdgeConnection } from './components/edges/edgeValidation';
 
+
+
 // import DownloadButton from './components/DownloadButton';
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
 };
+
+// interface ShapeNode extends Node<ShapeNode> {
+//   selected: boolean;
+// }
 
 // const nodeTypes: NodeTypes = {
 //   shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
@@ -101,6 +107,7 @@ const nodeStyles = {
   derivedAttribute: {width: 120, height: 80},
   weakEntity: {width: 120, height: 80},
   weakRelationship: { width: 120, height: 80},
+  default: { width: 120, height: 120 }
 };
 
 // const getEdgeCenter = (sourcePosition: XYPosition | undefined, targetPosition: XYPosition | undefined) => ({
@@ -163,16 +170,27 @@ function ShapesProExampleApp({
         label: type === 'inheritance' ? '' : 'Add Text',
         identifier: false, //umm is this okay?
         // identifier: type === 'atemporalAttribute' ? false : undefined,
-        disjoint: type === 'inheritance' ? false : undefined,
+        // disjoint: type === 'inheritance' ? false : undefined,
+        disjoint: false,
       },
       style: nodeStyles[type] || { width: 120, height: 120 },
       selected: true,
     };
 
   setNodes((nds) =>
-      nds.map((n) => ({ ...n, selected: false })).concat(newNode)
-    );
+      // nds.map((n) => ({ ...n, selected: n.selected ?? false })).concat(newNode)
+       nds.concat(newNode as unknown as ShapeNode[]));
+    // maybe deselect other nodes here?
   };
+
+
+
+  
+
+  // setNodes((nds) => [
+  //     ...nds.map((n) => ({ ...n, selected: false })),
+  //     newNode,
+  //     ]);
 
   const onNodeDragStart: OnNodeDrag = useCallback(() => {
     // 👇 make dragging a node undoable
@@ -205,6 +223,21 @@ function ShapesProExampleApp({
         id: `${node.id}-copy-${Date.now()}`,
         position: { x: node.position.x + 20, y: node.position.y + 20 },
         selected: false,
+        // data: {
+        //   ...node.data,
+        //   // Ensure data properties match ShapeNodeData
+        //   // You may need to adjust these depending on your actual ShapeNodeData definition
+        //   type: node.data.type,
+        //   label: node.data.label || '',
+        //   identifier: node.data.identifier,
+        //   disjoint: node.data.disjoint,
+        // },
+        data: {
+          type: node.data.type,
+          label: node.data.label || '',
+          identifier: node.data.identifier ?? false,
+          disjoint: node.data.disjoint ?? false,
+        },
       }));
 
       const newEdges = copiedElements.edges.map((edge) => ({
@@ -215,7 +248,7 @@ function ShapesProExampleApp({
         selected: false,
       }));
 
-      setNodes((nds) => nds.concat(newNodes));
+      setNodes((nds) => nds.concat(newNodes as unknown as ShapeNode[]));
       setEdges((eds) => eds.concat(newEdges));
 
       takeSnapshot();

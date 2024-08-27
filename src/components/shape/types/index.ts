@@ -32,6 +32,35 @@ export const ShapeComponents = {
 
 export type ShapeType = keyof typeof ShapeComponents;
 
+// export type ShapeProps = {
+//   width: number;
+//   height: number;
+// } & SVGAttributes<SVGElement>;
+
+// export type ShapeComponentProps = Partial<ShapeProps> & { type: ShapeType };
+
+
+
+
+
+
+// export type ShapeNodeData = {
+//   type: ShapeType | undefined;
+//   // color: string;
+//   label?: string| undefined;
+//   identifier?: boolean| undefined;
+//   disjoint?: boolean| undefined;
+// };
+
+// export type ShapeNode = Node<ShapeNodeData> & {
+//   id: string| undefined;
+//   position: XYPosition| undefined;
+//   // xPos?: number;  
+//   // yPos?: number; 
+//   style?: React.CSSProperties| undefined;
+//   selected?: boolean | undefined;
+// };
+
 export type ShapeProps = {
   width: number;
   height: number;
@@ -39,37 +68,16 @@ export type ShapeProps = {
 
 export type ShapeComponentProps = Partial<ShapeProps> & { type: ShapeType };
 
-
-
-// export type ShapeNode = {
-//   id: string;
-//   position: XYPosition;
-//   type: string;
-//   data: {
-//     type: ShapeType; // Adjust according to your ShapeType enum or union
-//     color: string;
-//     label?: string;
-//     identifier?: boolean;
-//     disjoint?: boolean;
-//   };
-//   style?: React.CSSProperties;
-//   selected: boolean;
-// };
-
-
 export type ShapeNodeData = {
-  type: ShapeType;
-  // color: string;
+  type: ShapeType; // Ensure type is always defined
   label?: string;
   identifier?: boolean;
   disjoint?: boolean;
 };
 
 export type ShapeNode = Node<ShapeNodeData> & {
-  id: string;
-  position: XYPosition;
-  // xPos?: number;  
-  // yPos?: number; 
+  id: string; // id should always be defined
+  position: XYPosition; // position should always be defined
   style?: React.CSSProperties;
-  selected?: boolean;
+  selected?: boolean; // Optional, depending on usage
 };
