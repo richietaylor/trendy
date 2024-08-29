@@ -53,7 +53,7 @@ class Attribute {
     }
 
     getPrimaryKey() {
-        return this.belongsTo.getPrimaryKey();
+        return this.belongsTo.getPrimaryKey().concat(this.getAttributeName());
     }
 
     addEntity(entity) {

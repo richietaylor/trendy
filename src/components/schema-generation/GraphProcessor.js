@@ -321,6 +321,8 @@ class GraphProcessor {
                         final_entity = this.attribute_tables[edge.destination];
                     }
                     if (final_entity.temporal && initial_entity.temporal) {
+                        initial_entity.giveOwnTable();
+                        final_entity.giveOwnTable();
                         trigger.setInitial(initial_entity);
                         trigger.setFinal(final_entity);
                         console.log(trigger);
