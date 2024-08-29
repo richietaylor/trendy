@@ -18,6 +18,8 @@ class Relation {
         this.weak = weak;
         /** @type {string[]} */
         this.optionalAttributes = [];
+        /** @type {Entity[]} */
+        this.children = [];
     }
 
     addAttribute(attribute) {

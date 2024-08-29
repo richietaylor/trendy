@@ -28,6 +28,8 @@ class Entity {
         this.hasTable = true;
         /** @type {boolean} */
         this.hasTrigger = true;
+        /** @type {Entity[]} */
+        this.children = [];
     }
 
     disableTable() {

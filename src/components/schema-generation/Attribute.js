@@ -24,6 +24,8 @@ class Attribute {
         this.datatype = datatype; //
         /** @type {boolean} */
         this.pinned = pinned;
+        /** @type {Entity[]} */
+        this.children = [];
 
     }
 

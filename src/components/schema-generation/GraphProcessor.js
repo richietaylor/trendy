@@ -32,6 +32,7 @@ class GraphProcessor {
         await this.priorities();
         const sorter = new SortingUtils();
         this.entities_write = sorter.sort(this.entities_write); // sort the entitiess
+        console.log(this.entities);
     }
 
     async inheritance() {
@@ -42,6 +43,9 @@ class GraphProcessor {
                 entity.addParent(this.isa_list[entity.isaID].parentEntity);
                 if (entity.parent[0].temporal) { // If the parent is temporal, the child should be temporal
                     entity.temporal = true;
+                }
+                if (entity.getID() !== this.isa_list[entity.isaID].parentEntity.getID()) {
+                    this.isa_list[entity.isaID].parentEntity.children.push(entity);
                 }
             }
         }

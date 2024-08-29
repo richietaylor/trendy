@@ -18,6 +18,10 @@ class Trigger {
         this.pinned = pinned;
     }
 
+    copy() {
+        return new Trigger(this.type,this.optional,this.duration,this.pinned,this.unit);
+    }
+
     setInitial(entity) {
         this.initialEntity = entity;
     }
