@@ -113,6 +113,8 @@ class SerialProcessor {
                 var label = "chg";
                 var value = 0;
                 var dashed = false;
+                var pinned = false;
+                var quantitative = false;
                 if (Object.hasOwn(edge.data,"label")) {
                     label = edge.data.label;
                 }
@@ -122,7 +124,16 @@ class SerialProcessor {
                 if (Object.hasOwn(edge.data,"optional")) {
                     dashed = edge.data.optional === "Optional";
                 }
-                return {"double":false,"dashed":dashed,"parent":false,"curved":true,"type":label,"duration":value,"pinned":Object.hasOwn(edge.data,"persistent"),"chronon":this.chronon, "source_arrow": false, "dest_arrow": true, "cardinality": ""};
+                if (Object.hasOwn(edge.data,"persistent")) {
+                    pinned = edge.data.persistent;
+                }
+                if (Object.hasOwn(edge.data,"quantitative")) {
+                    quantitative = edge.data.quantitative;
+                    if (!quantitative) {
+                        value = 0;
+                    }
+                }
+                return {"double":false,"dashed":dashed,"parent":false,"curved":true,"type":label,"duration":value,"pinned":pinned,"chronon":this.chronon, "source_arrow": false, "dest_arrow": true, "cardinality": ""};
         }
     }
 

@@ -419,25 +419,14 @@ class Trigger {
                         text += "\t\t(NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
                         text += "\t\t)\n";
                     }
-                    if (!this.pinned) {
-                        text += "\t\tAND " + this.initialEntity.name + "_start <= NEW." + this.finalEntity.name + "_start;\n";
-                        text += "\tIF initial_exists = 0 THEN\n";
-                        text += "\t\tSIGNAL SQLSTATE '45000'\n";
-                        text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must extend from " + this.initialEntity.name + ".';\n";
-                        text += "\tEND IF;\n";
-                        text += "END;\n//";
-                    } else {
-                        text += "\t\tAND (" + this.initialEntity.name + "_start <= NEW." + this.finalEntity.name + "_start AND " + this.initialEntity.name + "_end >= NEW." + this.finalEntity.name + "_end);\n";
-                        text += "\tIF initial_exists = 0 THEN\n";
-                        text += "\t\tSIGNAL SQLSTATE '45000'\n";
-                        text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must always extend from " + this.initialEntity.name + ".';\n";
-                        text += "\tEND IF;\n";
-                        text += "END;\n//";
-                    }
+                    text += "\t\tAND " + this.initialEntity.name + "_start <= NEW." + this.finalEntity.name + "_start;\n";
+                    text += "\tIF initial_exists = 0 THEN\n";
+                    text += "\t\tSIGNAL SQLSTATE '45000'\n";
+                    text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must extend from " + this.initialEntity.name + ".';\n";
+                    text += "\tEND IF;\n";
+                    text += "END;\n//";
                 } else if (this.duration === 0 && this.optional) {
                     // Do Nothing?
-
-
                 }
                 else if (this.duration !==0){
                     text += "CREATE TRIGGER " + this.initialEntity.name + "_chg_to_" + this.finalEntity.name + "_1\n";
@@ -499,19 +488,11 @@ class Trigger {
                         text += "\t\t(NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
                         text += "\t\t)\n";
                     }
-                    if (!this.pinned) {
-                        text += "\t\tAND " + this.initialEntity.name + "_start <= NEW." + this.finalEntity.name + "_start;\n";
-                        text += "\tIF initial_exists = 0 THEN\n";
-                        text += "\t\tSIGNAL SQLSTATE '45000'\n";
-                        text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must extend from " + this.initialEntity.name + ".';\n";
-                        text += "\tEND IF;\n";
-                    } else {
-                        text += "\t\tAND (" + this.initialEntity.name + "_start <= NEW." + this.finalEntity.name + "_start AND " + this.initialEntity.name + "_end >= NEW." + this.finalEntity.name + "_end);\n";
-                        text += "\tIF initial_exists = 0 THEN\n";
-                        text += "\t\tSIGNAL SQLSTATE '45000'\n";
-                        text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must always extend from " + this.initialEntity.name + ".';\n";
-                        text += "\tEND IF;\n";
-                    }
+                    text += "\t\tAND " + this.initialEntity.name + "_start <= NEW." + this.finalEntity.name + "_start;\n";
+                    text += "\tIF initial_exists = 0 THEN\n";
+                    text += "\t\tSIGNAL SQLSTATE '45000'\n";
+                    text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must extend from " + this.initialEntity.name + ".';\n";
+                    text += "\tEND IF;\n";
                     if (this.optional) {
                         text += "\tIF total_time < " + this.duration.toString() + " THEN\n";
                         text += "\t\tSIGNAL SQLSTATE '45000'\n";
@@ -526,6 +507,45 @@ class Trigger {
                         text += "\tEND IF;\n";
                         text += "END;\n//\n\n";
                     }
+                }
+                if (this.pinned) { // if pinned, a new trigger gets made
+                    text += "\n\nCREATE TRIGGER " + this.initialEntity.name + "_pext_to_" + this.finalEntity.name + "\n";
+                    text += "BEFORE INSERT ON " + this.initialEntity.name + "\n";
+                    text += "FOR EACH ROW\n";
+                    text += "BEGIN\n";
+                    text += "\tDECLARE initial_exists INT;\n";
+                    text += "\tDECLARE existing INT;\n";
+                    text += "\tSELECT COUNT(*)\n";
+                    text += "\tINTO existing\n";
+                    text += "\tFROM " + this.finalEntity.name + "\n";
+                    if (this.initialEntity.getPrimaryKey().length === 1) {
+                        text += "\tWHERE NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + "\n";
+                    } else if (this.initialEntity.getPrimaryKey().length === 2){
+                        text += "\tWHERE (\n";
+                        text += "\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " AND NEW." + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + ")\n";
+                        text += "\t\tOR\n";
+                        text += "\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
+                        text += "\t\t)\n";
+                    }
+                    text += "\t\tAND " + this.finalEntity.name + "_start <= NEW." + this.initialEntity.name + "_start;\n";
+                    text += "\tSELECT COUNT(*)\n";
+                    text += "\tINTO initial_exists\n";
+                    text += "\tFROM " + this.finalEntity.name + "\n";
+                    if (this.initialEntity.getPrimaryKey().length === 1) {
+                        text += "\tWHERE NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + "\n";
+                    } else if (this.initialEntity.getPrimaryKey().length === 2){
+                        text += "\tWHERE (\n";
+                        text += "\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " AND NEW." + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + ")\n";
+                        text += "\t\tOR\n";
+                        text += "\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
+                        text += "\t\t)\n";
+                    }
+                    text += "\t\tAND (" + this.finalEntity.name + "_start <= NEW." + this.initialEntity.name + "_start AND "+ this.finalEntity.name +"_end >= NEW."+ this.initialEntity.name +"_end);\n";
+                    text += "\tIF initial_exists = 0 AND existing <> 0 THEN\n";
+                    text += "\t\tSIGNAL SQLSTATE '45000'\n";
+                    text += "\t\tSET MESSAGE_TEXT = '" + this.initialEntity.name + " must always be in " + this.finalEntity.name + " after pinned transition.';\n";
+                    text += "\tEND IF;\n";
+                    text += "END;\n//";
                 }
                 break;
             case "CHG":
@@ -986,25 +1006,56 @@ class Trigger {
                             text += "\t\t(NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
                             text += "\t\t)\n";
                         }
-                        if (!this.pinned) {
-                            text += "\t\tAND " + this.initialEntity.name + "_start <= NEW." + this.finalEntity.name + "_start;\n";
-                            text += "\tIF initial_exists = 0 THEN\n";
-                            text += "\t\tSIGNAL SQLSTATE '45000'\n";
-                            text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must extend from " + this.initialEntity.name + ".';\n";
-                            text += "\tEND IF;\n";
-                        } else {
-                            text += "\t\tAND (" + this.initialEntity.name + "_start <= NEW." + this.finalEntity.name + "_start AND " + this.initialEntity.name + "_end >= NEW." + this.finalEntity.name + "_end);\n";
-                            text += "\tIF initial_exists = 0 THEN\n";
-                            text += "\t\tSIGNAL SQLSTATE '45000'\n";
-                            text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must always extend from " + this.initialEntity.name + ".';\n";
-                            text += "\tEND IF;\n";
-                        }
+                        text += "\t\tAND " + this.initialEntity.name + "_start <= NEW." + this.finalEntity.name + "_start;\n";
+                        text += "\tIF initial_exists = 0 THEN\n";
+                        text += "\t\tSIGNAL SQLSTATE '45000'\n";
+                        text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must extend from " + this.initialEntity.name + ".';\n";
+                        text += "\tEND IF;\n";
                         text += "\tIF total_time < " + this.duration.toString() + " THEN\n";
                         text += "\t\tSIGNAL SQLSTATE '45000'\n";
                         text += "\t\tSET MESSAGE_TEXT = '" + this.finalEntity.name + " must have been in " + this.initialEntity.name + " for at least " + this.duration.toString() + " units.';\n";
                         text += "\tEND IF;\n";
                         text += "END;\n//\n\n";
                     }
+                }
+                if (this.pinned) { // if pinned, a new trigger gets made
+                    text += "\n\nCREATE TRIGGER " + this.initialEntity.name + "_PEXT_to_" + this.finalEntity.name + "\n";
+                    text += "BEFORE INSERT ON " + this.initialEntity.name + "\n";
+                    text += "FOR EACH ROW\n";
+                    text += "BEGIN\n";
+                    text += "\tDECLARE initial_exists INT;\n";
+                    text += "\tDECLARE existing INT;\n";
+                    text += "\tSELECT COUNT(*)\n";
+                    text += "\tINTO existing\n";
+                    text += "\tFROM " + this.finalEntity.name + "\n";
+                    if (this.initialEntity.getPrimaryKey().length === 1) {
+                        text += "\tWHERE NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + "\n";
+                    } else if (this.initialEntity.getPrimaryKey().length === 2){
+                        text += "\tWHERE (\n";
+                        text += "\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " AND NEW." + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + ")\n";
+                        text += "\t\tOR\n";
+                        text += "\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
+                        text += "\t\t)\n";
+                    }
+                    text += "\t\tAND " + this.finalEntity.name + "_start <= NEW." + this.initialEntity.name + "_start;\n";
+                    text += "\tSELECT COUNT(*)\n";
+                    text += "\tINTO initial_exists\n";
+                    text += "\tFROM " + this.finalEntity.name + "\n";
+                    if (this.initialEntity.getPrimaryKey().length === 1) {
+                        text += "\tWHERE NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + "\n";
+                    } else if (this.initialEntity.getPrimaryKey().length === 2){
+                        text += "\tWHERE (\n";
+                        text += "\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " AND NEW." + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + ")\n";
+                        text += "\t\tOR\n";
+                        text += "\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
+                        text += "\t\t)\n";
+                    }
+                    text += "\t\tAND (" + this.finalEntity.name + "_start <= NEW." + this.initialEntity.name + "_start AND "+ this.finalEntity.name +"_end >= NEW."+ this.initialEntity.name +"_end);\n";
+                    text += "\tIF initial_exists = 0 AND existing <> 0 THEN\n";
+                    text += "\t\tSIGNAL SQLSTATE '45000'\n";
+                    text += "\t\tSET MESSAGE_TEXT = '" + this.initialEntity.name + " must always be in " + this.finalEntity.name + " after pinned transition.';\n";
+                    text += "\tEND IF;\n";
+                    text += "END;\n//";
                 }
                 break;
             case "pin":
