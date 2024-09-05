@@ -52,8 +52,10 @@ class GraphProcessor {
         for (const key in this.entities) {
             var entity = this.entities[key];
             if (entity.isaID !== null) {
+                console.log(this.isa_list[entity.isaID]);
                 entity.addPrimaryKeyArray(this.isa_list[entity.isaID].parentEntity.getPrimaryKey());
                 if (this.isa_list[entity.isaID].disjoint && this.isa_list[entity.isaID].complete) {
+                    console.log("DISJOINT AND COMPLETE");
                     entity.addAttributeArray(this.isa_list[entity.isaID].parentEntity.attributes);
                     entity.addOptionalAttributeArray(this.isa_list[entity.isaID].parentEntity.optionalAttributes);
                 }
@@ -428,7 +430,9 @@ class GraphProcessor {
                             }
                         }
                     } else if (this.isa_list[edge.destination]) {
-                        this.isa_list[edge.destination].complete = edge.double;
+                        if (!this.isa_list[edge.destination].complete) {
+                            this.isa_list[edge.destination].complete = edge.double;
+                        }
                         if (edge.parent) { // if the entity is the parent
                             this.isa_list[edge.destination].addParent(this.entities[edge.source]);
                             if (this.isa_list[edge.destination].disjoint && this.isa_list[edge.destination].complete) {
@@ -468,7 +472,9 @@ class GraphProcessor {
                             }
                         }
                     } else if (this.isa_list[edge.source]) {
-                        this.isa_list[edge.source].complete = edge.double;
+                        if (!this.isa_list[edge.source].complete) {
+                            this.isa_list[edge.source].complete = edge.double;
+                        }
                         if (edge.parent) { // if the entity is the parent
                             this.isa_list[edge.source].addParent(this.entities[edge.destination]);
                             if (this.isa_list[edge.source].disjoint && this.isa_list[edge.source].complete) {

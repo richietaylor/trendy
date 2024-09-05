@@ -43,6 +43,7 @@ class SQL_Writer {
                         var temp_trigger = trigger.copy();
                         temp_trigger.setInitial(trigger.initialEntity.children[j]);
                         temp_trigger.setFinal(trigger.finalEntity);
+                        temp_trigger.setAttributeName(trigger.attributeName);
                         new_triggers.push(temp_trigger);
                     }                    
                 }
@@ -56,6 +57,8 @@ class SQL_Writer {
                 }
             }
             for (var i=0; i<new_triggers.length; i++) {
+                console.log("NEW TRIGGER");
+                console.log(new_triggers[i]);
                 text += new_triggers[i].writeSQL();
                 text += "\n\n";
             }

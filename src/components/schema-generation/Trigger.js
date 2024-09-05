@@ -237,7 +237,7 @@ class Trigger {
                         text += "\tEND IF;\n";
                         text += "END;\n//\n\n";
                         // cannot insert date in initial that overlaps with final
-                        text += "CREATE TRIGGER " + this.initialEntity.name + "_chg_to_" + this.finalEntity.name + "_2\n";
+                        text += "CREATE TRIGGER " + this.initialEntity.name + "_pchg_to_" + this.finalEntity.name + "_2\n";
                         text += "BEFORE INSERT ON " + this.initialEntity.name + "\n";
                         text += "FOR EACH ROW\n";
                         text += "BEGIN\n";
@@ -729,12 +729,12 @@ class Trigger {
                         text += "\t\tSELECT " + this.initialEntity.name + "_start, " + this.initialEntity.name + "_end\n";
                         text += "\t\tFROM " + this.initialEntity.name + "\n";
                         if (this.initialEntity.getPrimaryKey().length === 1) {
-                            text += "\t\tWHERE NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + "\n";
+                            text += "\t\tWHERE NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + "\n";
                         } else if (this.initialEntity.getPrimaryKey().length === 2){
                             text += "\t\tWHERE (\n";
-                            text += "\t\t\t(NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + ")\n";
+                            text += "\t\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + ")\n";
                             text += "\t\t\tOR\n";
-                            text += "\t\t\t(NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
+                            text += "\t\t\t(NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + ")\n";
                             text += "\t\t\t)\n";
                         }
                         text += "\t\tORDER BY " + this.initialEntity.name + "_start;\n";
@@ -745,6 +745,7 @@ class Trigger {
                         text += "\t\tSET MESSAGE_TEXT = 'No period in " + this.initialEntity.name + " can result in more than " + this.duration.toString() + " continuous units.';\n";
                         text += "\tEND IF;\n"
                         text += "\tOPEN cursor_a;\n\n";
+                        text += "\tSET total_time = 0;\n\n";
                         text += "\tread_loop: LOOP\n";
                         text += "\t\tFETCH cursor_a INTO cur_start, cur_end;\n";
                         text += "\t\tIF done THEN\n";
@@ -756,6 +757,9 @@ class Trigger {
                         text += "\t\tELSE\n";
                         text += "\t\t\tSET total_time = TIMESTAMPDIFF(" + this.unit + ", cur_start, cur_end);\n";
                         text += "\t\t\tSET prev_end = cur_end;\n";
+                        text += "\t\tEND IF;\n";
+                        text += "\t\tIF cur_end = NEW." + this.initialEntity.name + "_start THEN\n";
+                        text += "\t\t\tSET total_time = total_time + TIMESTAMPDIFF(" + this.unit + ", NEW." + this.initialEntity.name + "_start, NEW." + this.initialEntity.name + "_end);\n";
                         text += "\t\tEND IF;\n";
                         text += "\t\tIF total_time > " + this.duration.toString() + " THEN\n";
                         text += "\t\t\tSIGNAL SQLSTATE '45000'\n";
@@ -842,7 +846,7 @@ class Trigger {
                         text += "\t\tSELECT " + this.initialEntity.name + "_start, " + this.initialEntity.name + "_end\n";
                         text += "\t\tFROM " + this.initialEntity.name + "\n";
                         if (this.initialEntity.getPrimaryKey().length === 1) {
-                            text += "\t\tWHERE NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + "\n";
+                            text += "\t\tWHERE NEW." + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + "\n";
                         } else if (this.initialEntity.getPrimaryKey().length === 2){
                             text += "\t\tWHERE (\n";
                             text += "\t\t\t(NEW." + this.finalEntity.getPrimaryKey()[0].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[0].split(" ")[0] + " AND NEW." + this.finalEntity.getPrimaryKey()[1].split(" ")[0] + " = " + this.initialEntity.getPrimaryKey()[1].split(" ")[0] + ")\n";
@@ -1019,7 +1023,7 @@ class Trigger {
                     }
                 }
                 if (this.pinned) { // if pinned, a new trigger gets made
-                    text += "\n\nCREATE TRIGGER " + this.initialEntity.name + "_PEXT_to_" + this.finalEntity.name + "\n";
+                    text += "CREATE TRIGGER " + this.initialEntity.name + "_PEXT_to_" + this.finalEntity.name + "\n";
                     text += "BEFORE INSERT ON " + this.initialEntity.name + "\n";
                     text += "FOR EACH ROW\n";
                     text += "BEGIN\n";
