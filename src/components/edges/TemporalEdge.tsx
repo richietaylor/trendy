@@ -14,6 +14,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   style = {},
   markerEnd = { type: MarkerType.ArrowClosed, color: 'black' },
   data,
+  selected,
 }) => {
   const [edgePath, labelX, labelY] = getSimpleBezierPath({
     sourceX,
@@ -24,7 +25,10 @@ const TemporalEdge: React.FC<EdgeProps> = ({
     targetPosition,
   });
 
-  const markerEndDef = typeof markerEnd === 'string' ? { type: MarkerType.ArrowClosed, color: 'black' } : markerEnd;
+  // const strokeColor = style.stroke || 'black';
+  const strokeColor = selected ? 'grey' : style.stroke || 'black';
+
+  const markerEndDef = typeof markerEnd === 'string' ? { type: MarkerType.ArrowClosed,  color: strokeColor } : markerEnd;
   const edgeLabel = data?.label || 'chg';
   const optional = data?.optional || 'Mandatory';
   const quantitative = data?.quantitative || false;
@@ -45,7 +49,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
             orient="auto"
             markerUnits="strokeWidth"
           >
-            <path d="M0,0 L4,4 L0,8" fill="none" stroke={/*markerEndDef.color ||*/ "black"} strokeWidth="1" />
+            <path d="M0,0 L4,4 L0,8" fill="none" stroke={strokeColor} strokeWidth="1" />
           </marker>
         </defs>
       </svg>
@@ -69,7 +73,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
 
       <path
         id={id}
-        style={{ ...style, strokeDasharray: optional === 'Optional' ? '5,5' : undefined, zIndex: 11 }}
+        style={{ ...style, stroke: strokeColor, strokeDasharray: optional === 'Optional' ? '5,5' : undefined, zIndex: 11 }}
         className="react-flow__edge-path"
         d={edgePath}
         markerEnd={markerEndDef ? 'url(#open-arrow)' : undefined}
@@ -93,7 +97,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
       <text
         x={labelX}
         y={labelY-5}
-        style={{ fontSize: 13, zIndex: 10, position: 'relative'}}
+        style={{ fontSize: 13, zIndex: 10, position: 'relative', fill: strokeColor}}
         textAnchor="middle"
       >
         {edgeLabel}

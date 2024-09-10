@@ -28,11 +28,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   const edgeLabel = data?.label || '';
   const cardinalityStart = data?.cardinalityStart || 'None';
   const cardinalityEnd = data?.cardinalityEnd || 'None';
-
-  //something to add in at a later stage
-  const edgeStyle = selected
-    ? { stroke: 'blue', strokeWidth: 3 }  // Thicker and blue when selected
-    : { stroke: 'black', strokeWidth: 2 }; // Default style
+  const strokeColor = selected ? 'grey' : style.stroke || 'black';
 
   // const startLabelX = sourcePosition === Position.Left ? sourceX - 10 : sourcePosition === Position.Right ? sourceX + 10 : sourceX;
   // const startLabelY = sourcePosition === Position.Top ? sourceY - 10 : sourcePosition === Position.Bottom ? sourceY + 10 : sourceY;
@@ -85,7 +81,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
             orient="auto"
             markerUnits="strokeWidth"
           >
-            <path d="M0,0 L4,4 L0,8" fill="none" stroke={/*markerEndDef.color ||*/ "black"} strokeWidth="1" />
+            <path d="M0,0 L4,4 L0,8" fill="none" stroke={/*markerEndDef.color ||*/ strokeColor} strokeWidth="1" />
           </marker>
           <marker
             id="start-arrow"
@@ -96,7 +92,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
             orient="auto"
             markerUnits="strokeWidth"
           >
-            <path d="M8,0 L4,4 L8,8" fill="none" stroke={/*markerStartDef.color ||*/ "black"} strokeWidth="1" />
+            <path d="M8,0 L4,4 L8,8" fill="none" stroke={/*markerStartDef.color ||*/ strokeColor} strokeWidth="1" />
           </marker>
         </defs>
       </svg>
@@ -116,7 +112,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
         // Render a single black line for Subsumption
         <path
           id={id}
-          style={{ stroke: 'black', strokeWidth: 2, zIndex: 1 }}
+          style={{ stroke: strokeColor, strokeWidth: 2, zIndex: 1 }}
           className="react-flow__edge-path"
           d={edgePath}
           // markerEnd="url(#arrow)"
@@ -126,7 +122,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
           {/* Render the double line for other types */}
           <path
             id={`${id}-outer`}
-            style={{ stroke: 'black', strokeWidth: 5, zIndex: 1 }}
+            style={{ stroke: strokeColor, strokeWidth: 5, zIndex: 1 }}
             className="react-flow__edge-path"
             d={edgePath}
           />
@@ -159,7 +155,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
             <text
         x={sourceX}
         y={sourceY}
-        style={{ fontSize: 12, zIndex: 10, position: 'relative' }}
+        style={{ fontSize: 12, zIndex: 10, position: 'relative', fill: strokeColor }}
         textAnchor="middle"
       >
         {cardinalityStart !== 'None' && cardinalityStart}
@@ -167,7 +163,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
       <text
         x={targetX}
         y={targetY}
-        style={{ fontSize: 12, zIndex: 10, position: 'relative' }}
+        style={{ fontSize: 12, zIndex: 10, position: 'relative', fill: strokeColor }}
         textAnchor="middle"
       >
         {cardinalityEnd !== 'None' && cardinalityEnd}

@@ -11,6 +11,7 @@ const InheritanceEdge: React.FC<EdgeProps> = ({
   targetPosition,
   style = {},
   data,
+  selected,
 }) => {
   const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
@@ -25,6 +26,7 @@ const InheritanceEdge: React.FC<EdgeProps> = ({
 
   const edgeLabel = data?.label || '';
   const inheritanceType = data?.inheritanceType || 'Subsumption';
+  const strokeColor = selected ? 'grey' : style.stroke || 'black';
 
   return (
     <>
@@ -40,7 +42,7 @@ const InheritanceEdge: React.FC<EdgeProps> = ({
             orient="auto"
             markerUnits="strokeWidth"
           >
-            <path d="M0,0 L5,5 L0,10 Z" fill="black" /> 
+            <path d="M0,0 L5,5 L0,10 Z" fill={strokeColor} /> 
           </marker>
         </defs>
       </svg>
@@ -54,7 +56,7 @@ const InheritanceEdge: React.FC<EdgeProps> = ({
         // Render a single black line for Subsumption
         <path
           id={id}
-          style={{ stroke: 'black', strokeWidth: 2, zIndex: 1 }}
+          style={{ stroke: strokeColor, strokeWidth: 2, zIndex: 1 }}
           className="react-flow__edge-path"
           d={edgePath}
           markerEnd="url(#arrow)"
@@ -64,7 +66,7 @@ const InheritanceEdge: React.FC<EdgeProps> = ({
           {/* Render the double line for other types */}
           <path
             id={`${id}-outer`}
-            style={{ stroke: 'black', strokeWidth: 5, zIndex: 1 }}
+            style={{ stroke: strokeColor, strokeWidth: 5, zIndex: 1 }}
             className="react-flow__edge-path"
             d={edgePath}
           />

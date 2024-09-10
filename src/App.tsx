@@ -76,6 +76,7 @@ const edgeTypes: EdgeTypes = {
 const defaultEdgeOptions: DefaultEdgeOptions = {
   type: 'atemporalEdge',
   style: { stroke: 'black', strokeWidth: 2 },
+  // data: {label:''}
   // data: {Optonal: 'Optional'},
 };
 
@@ -189,7 +190,7 @@ function ShapesProExampleApp({
         disjoint: false,
       },
       style: nodeStyles[type] || { width: 120, height: 120 },
-      selected: true,
+      selected: false,
     };
 
   setNodes((nds) =>
@@ -372,12 +373,39 @@ function ShapesProExampleApp({
   const handleChangeEdgeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newType = event.target.value;
     if (selectedEdge) {
-      const updatedEdge = { ...selectedEdge, type: newType };
-      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
-      setSelectedEdge(updatedEdge);  // This line was added
+      // Update the label to empty if the type is "atemporalEdge" (default)
+      const newLabel = newType === 'atemporalEdge' ? '' : selectedEdge.data?.label;
+  
+      const updatedEdge = {
+        ...selectedEdge,
+        type: newType,
+        selected: true,
+        style: { ...selectedEdge.style, stroke: 'grey' }, // Apply grey color when selected
+        data: { ...selectedEdge.data, label: newLabel },  // Update the label if necessary
+      };
+  
+      // Update the edges state
+      setEdges((eds) =>
+        eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge))
+      );
+  
+      // Reapply selected state and updated style
+      setSelectedEdge(updatedEdge);
+  
+      // Take a snapshot for undo/redo purposes
+      takeSnapshot();
     }
-    takeSnapshot();
   };
+  
+  // const handleChangeEdgeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const newType = event.target.value;
+  //   if (selectedEdge) {
+  //     const updatedEdge = { ...selectedEdge, type: newType, selected: true,style: {...selectedEdge.style, stroke: 'grey'} };
+  //     setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+  //     setSelectedEdge(updatedEdge);
+  //   }
+  //   takeSnapshot();
+  // };
   
 
 
@@ -523,6 +551,7 @@ function ShapesProExampleApp({
       const updatedEdge = {
         ...selectedEdge,
         data: { ...selectedEdge.data, inheritanceType: newType },
+        selected: true,
       };
       setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
       setSelectedEdge(updatedEdge); // Update selected edge to trigger re-render
@@ -802,6 +831,7 @@ const sendToDriver = () => {
             position: 'absolute',
             top: transformPosition(selectedEdgeCenter).y,
             left: transformPosition(selectedEdgeCenter).x,
+            maxWidth: 1000,
             zIndex: 10,
             background: 'white',
             padding: '5px',
@@ -829,8 +859,8 @@ const sendToDriver = () => {
                     value={String(selectedEdge.data?.optional) || 'Mandatory'}
                     onChange={handleChangeOptional}
                   >
-                    <option value="Optional">Optional</option>
                     <option value="Mandatory">Mandatory</option>
+                    <option value="Optional">Optional</option>
                   </select>
               </label>
           )}
