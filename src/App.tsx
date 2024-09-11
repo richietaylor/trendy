@@ -369,6 +369,24 @@ function ShapesProExampleApp({
   //   }
   //   takeSnapshot();
   // };
+  const handleReverseEdge = useCallback(() => {
+    if (selectedEdge) {
+      // Swap the source and target of the selected edge
+      const updatedEdge = {
+        ...selectedEdge,
+        source: selectedEdge.target,
+        target: selectedEdge.source,
+        sourceHandle: selectedEdge.targetHandle,  // Swap the handles as well
+        targetHandle: selectedEdge.sourceHandle,  // Swap the handles as well  
+      };
+
+      // Update the edge in the edges array
+      setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+
+      // Keep the edge selected after swapping
+      setSelectedEdge(updatedEdge);
+    }
+  }, [selectedEdge, setEdges]);
 
   const handleChangeEdgeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newType = event.target.value;
@@ -697,6 +715,20 @@ function ShapesProExampleApp({
     const entityTypes = ['temporalEntity', 'atemporalEntity', 'weakEntity'];
     return entityTypes.includes(String(sourceNode?.data.type)) && entityTypes.includes(String(targetNode?.data.type));
   };
+
+  // const handleReverseEdge = () => {
+  //   if (selectedEdge) {
+  //     const updatedEdge = {
+  //       ...selectedEdge,
+  //       source: selectedEdge.target,
+  //       target: selectedEdge.source,
+  //     };
+  
+  //     setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+  //     setSelectedEdge(updatedEdge);
+  //     takeSnapshot();
+  //   }
+  // };
   
 
   // const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -757,8 +789,19 @@ function ShapesProExampleApp({
     }
     takeSnapshot();
   };
-  
-  
+//   const handleReverseEdge = () => {
+//   if (selectedEdge) {
+//     const updatedEdge = {
+//       ...selectedEdge,
+//       source: selectedEdge.target,
+//       target: selectedEdge.source,
+//     };
+
+//     setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
+//     setSelectedEdge(updatedEdge);
+//     takeSnapshot();
+//   }
+// };
   
 
   const saveToFile = () => {
@@ -837,6 +880,7 @@ const sendToDriver = () => {
             padding: '5px',
             border: '1px solid #ccc',
             borderRadius: '4px',
+            // FIX - ZOOM CAUSES RUNNING OVER ERROR
             transform: `scale(${zoom/1.5})`, // Adjust size according to zoom level
             transformOrigin: 'top left'  // Make sure the scale is from the top left corner
 
@@ -849,7 +893,7 @@ const sendToDriver = () => {
               <option value="atemporalEdge">Default</option>
               {/* <option value="optionalFutureEvolution">Optional Future Evolution</option> */}
               <option value="temporalEdge">Temporal</option>
-              <option value="inheritanceEdge">Subsumption</option>
+              <option value="inheritanceEdge">Subsumption (ISA)</option>
             </select>
           </label>
           {(selectedEdge.type === 'temporalEdge' || selectedEdge.type === 'atemporalEdge') && (
@@ -963,6 +1007,8 @@ const sendToDriver = () => {
                 </select>
               </label>
 
+              <button onClick={handleReverseEdge}>Reverse Direction</button>
+
               {selectedEdge.data?.error && (
                 <div style={{ color: 'red', marginTop: '5px' }}>
                   {String(selectedEdge.data.error)}
@@ -970,6 +1016,7 @@ const sendToDriver = () => {
               )}
             </>
           )}
+
 
         </div>
       )}
@@ -980,7 +1027,6 @@ const sendToDriver = () => {
           <p>{generateEdgeVerbalization(selectedEdge, nodes, timeQuanta)}</p>
         </div>
       )}
-
       
       <ReactFlow
         nodes={nodes}
