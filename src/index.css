@@ -14,7 +14,7 @@ body,
 .react-flow {
   --background: #e2e8f0;
   --panel-background: #f8fafc;
-  --panel-shadow: 0 0 4px 0 rgb(0 0 0 / 0.2);
+  --panel-shadow: 0 0 8px 0 rgb(0 0 0 / 0.5);
   --text: #0a0a0a;
 
   background-color: var(--background);
@@ -34,6 +34,8 @@ body,
   border-radius: 8px;
   padding: 8px;
 }
+
+/* .react-flow__node.selected */
 
 .react-flow svg {
   display: block;
@@ -85,6 +87,8 @@ body,
 .sidebar {
   width: 250px; /* Adjust the width as needed */
   transition: width 0.3s;
+  /* box-shadow: 8px 4px 8px rgba(0, 0, 0, 0.5);  */
+  padding: 0px;
 }
 
 .sidebar.collapsed {
@@ -92,27 +96,45 @@ body,
 }
 
 .sidebar-toggle-button {
-  background-color: #007bff;
+  /* background-color: #007bff;
   color: white;
   border: none;
   padding: 10px;
   cursor: pointer;
-  width: 100%;
+  width: 100%; */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.sidebar-toggle-button:hover {
-  background-color: #0056b3;
+.toggle-icon {
+  display: inline-block;
+  transition: transform 0.3s ease; /* Smooth transition for rotation */
 }
 
-.sidebar-label, .sidebar-items {
+.toggle-icon.collapsed  {
+  transform: rotate(0deg); /* Points to the right when collapsed */
+}
+
+.toggle-icon.expanded  {
+  transform: rotate(90deg); /* Points down when expanded */
+}
+
+
+/* .sidebar-label, .sidebar-items {
   margin-top: 10px;
-}
+} */
 /* end */
 
 .sidebar-items {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2px;
+  padding: 5px;
 }
 
 .sidebar-item {
@@ -197,6 +219,10 @@ body,
   user-select: none;
 }
 
+.react-flow__panel  {
+  color: '#000000'
+}
+
 
 /* .reactflow-button {
   background-color: #007bff;
@@ -233,3 +259,4 @@ body,
 .reactflow-sidebar-item-drag-image {
   display: none;
 } */
+

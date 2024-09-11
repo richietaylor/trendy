@@ -24,9 +24,10 @@ import {
   useViewport,
   // OnConnectStartParams
 } from '@xyflow/react';
-import { useControls } from 'leva';
+import {  Leva, useControls } from 'leva';
 
 import '@xyflow/react/dist/style.css';
+
 
 import useUndoRedo from './useUndoRedo';
 
@@ -64,7 +65,25 @@ const nodeTypes: NodeTypes = {
 // const nodeTypes: NodeTypes = {
 //   shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
 // };
-
+const lightTheme = {
+  colors: {
+    elevation1: '#e2e8f0',   // Default panel background
+    elevation2: '#ffffff',   // Default input background
+    elevation3: '#e2e8f0',   // Lighter background for inputs
+    accent1: '#000000',   // Accent color for controls
+    accent2: '#2c82ff',   // Accent color for sliders
+    highlight1: '#000000', // Highlight color for active elements
+    highlight2: '#000000', // Highlight color for focused elements
+  },
+  fonts: {
+    mono: 'monospace',
+    sans: 'sans-serif',
+  },
+  sizes: {
+    rootWidth: '280px',     // Panel width
+    controlHeight: '30px',  // Height of controls
+  },
+};
 
 const edgeTypes: EdgeTypes = {
   temporalEdge: TemporalEdge,
@@ -1055,7 +1074,7 @@ const sendToDriver = () => {
       >
         {/* <DownloadButton/> */}
         {/* <Background /> */}
-        <Background color="white" variant={BackgroundVariant.Lines} />
+        <Background color="black" variant={BackgroundVariant.Dots} />
         <Panel position="top-left">
           <Sidebar />
         </Panel>
@@ -1078,7 +1097,8 @@ function ProExampleWrapper() {
   });
 
   return (
-    <ReactFlowProvider>
+    <ReactFlowProvider> 
+      <Leva theme={lightTheme} /> 
       <ShapesProExampleApp {...(props as ExampleProps)} />
     </ReactFlowProvider>
   );

@@ -26,7 +26,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   });
 
   // const strokeColor = style.stroke || 'black';
-  const strokeColor = selected ? 'grey' : style.stroke || 'black';
+  const strokeColor = selected ? '#2c82ff' : style.stroke || 'black';
 
   const markerEndDef = typeof markerEnd === 'string' ? { type: MarkerType.ArrowClosed,  color: strokeColor } : markerEnd;
   const edgeLabel = data?.label || 'chg';

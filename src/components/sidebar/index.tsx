@@ -29,21 +29,29 @@ function Sidebar() {
   };
 
   return (
+    <>
+
+      
+      {/* <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}> */}
+        {/* <button onClick={toggleSidebar} className="sidebar-toggle-button">
+          {isCollapsed ? 'Expand' : 'Collapse'}
+        </button> */}
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <button onClick={toggleSidebar} className="sidebar-toggle-button">
-        {isCollapsed ? 'Expand' : 'Collapse'}
+        <span className={`toggle-icon ${isCollapsed ? 'collapsed' : 'expanded'}`}>&#9654;</span>
       </button>
-      {!isCollapsed && (
-        <>
-          <div className='sidebar-label'>Drag shapes to the canvas</div>
-          <div className='sidebar-items'>
-            {Object.keys(ShapeComponents).map((type) => (
-              <SidebarItem type={type as ShapeType} key={type} />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
+        {!isCollapsed && (
+          <>
+            {/* <div className='sidebar-label'>Drag shapes to the canvas</div> */}
+            <div className='sidebar-items'>
+              {Object.keys(ShapeComponents).map((type) => (
+                <SidebarItem type={type as ShapeType} key={type} />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }
 

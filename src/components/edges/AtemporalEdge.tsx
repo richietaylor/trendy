@@ -28,7 +28,7 @@ const TemporalEdge: React.FC<EdgeProps> = ({
   const edgeLabel = data?.label || '';
   const cardinalityStart = data?.cardinalityStart || 'None';
   const cardinalityEnd = data?.cardinalityEnd || 'None';
-  const strokeColor = selected ? 'grey' : style.stroke || 'black';
+  const strokeColor = selected ? '#2c82ff' : style.stroke || 'black';
 
   // const startLabelX = sourcePosition === Position.Left ? sourceX - 10 : sourcePosition === Position.Right ? sourceX + 10 : sourceX;
   // const startLabelY = sourcePosition === Position.Top ? sourceY - 10 : sourcePosition === Position.Bottom ? sourceY + 10 : sourceY;

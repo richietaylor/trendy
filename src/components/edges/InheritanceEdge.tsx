@@ -26,7 +26,7 @@ const InheritanceEdge: React.FC<EdgeProps> = ({
 
   const edgeLabel = data?.label || '';
   const inheritanceType = data?.inheritanceType || 'Subsumption';
-  const strokeColor = selected ? 'grey' : style.stroke || 'black';
+  const strokeColor = selected ? '#2c82ff' : style.stroke || 'black';
 
   return (
     <>

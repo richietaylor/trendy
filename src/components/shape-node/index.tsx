@@ -320,6 +320,22 @@ function ShapeNode({
           </filter>
         </defs>
       </svg>
+      {/* <svg width="0" height="0">
+      <defs>
+        <filter id="drop-shadow" x="-50%" y="-50%" width="200%" height="200%">
+
+          <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur" />
+
+          <feOffset in="blur" dx="0" dy="0" result="offsetBlur" />
+
+          <feMerge>
+            <feMergeNode in="offsetBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    </svg> */}
+
 
       <NodeResizer
         color={"black"}
