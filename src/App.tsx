@@ -897,8 +897,9 @@ const sendToDriver = () => {
             zIndex: 10,
             background: 'white',
             padding: '5px',
-            border: '1px solid #ccc',
+            // border: '1px solid #ccc',
             borderRadius: '4px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
             // FIX - ZOOM CAUSES RUNNING OVER ERROR
             transform: `scale(${zoom/1.5})`, // Adjust size according to zoom level
             transformOrigin: 'top left'  // Make sure the scale is from the top left corner
@@ -1089,9 +1090,9 @@ const sendToDriver = () => {
 function ProExampleWrapper() {
   const props = useControls({
     // theme: { value: 'light', options: ['dark', 'light'] },
-    snapToGrid: true,
-    panOnScroll: true,
-    zoomOnDoubleClick: false,
+    snapToGrid: { value: true, label: 'Snap to Grid' },
+    panOnScroll: { value: true, label: 'Pan on Scroll' },
+    zoomOnDoubleClick: { value: false, label: 'Zoom on DoubleClick' },
     verbalization: { value: true, label: 'Verbalization' },
     timeQuanta: { value: 'day', options: ['day', 'year'], label: 'Time Quanta' },
   });

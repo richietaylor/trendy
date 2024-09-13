@@ -25,6 +25,7 @@ body,
   --panel-background: #1e293b;
   --panel-shadow: 0 0 8px 0 rgb(0 0 0 / 0.4);
   --text: "black";
+  
 }
 
 .react-flow__panel,
@@ -224,6 +225,42 @@ body,
 }
 
 
+
+/* .reactflow-button {
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.button {
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+} */
+
+/* .button:hover {
+  background-color: #e8e8e8;
+}
+
+.button:focus {
+  outline: 2px solid #0366d6;
+} */
+
+
 /* .reactflow-button {
   background-color: #007bff;
   border: none;
@@ -234,9 +271,9 @@ body,
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+} */
 
-.reactflow-button:hover {
+/* .reactflow-button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
 }
