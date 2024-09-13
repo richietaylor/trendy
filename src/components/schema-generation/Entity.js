@@ -96,15 +96,9 @@ class Entity {
     writeSQL() {
         var text = "";
         text += "CREATE OR REPLACE TABLE " + this.name + " (\n";
-        //if (this.parent.length === 0) {
         for (var j = 0; j < this.primaryKey.length; j++) {
             text += "\t" + this.primaryKey[j] + " NOT NULL,\n";
             }
-        //} else {
-            //for (var j = 0; j < this.parent.primaryKey.length; j++) {
-                //text += "\t" + this.parent.primaryKey[j] + " VARCHAR(30) NOT NULL,\n";
-            //}
-        //}
         for (var i = 0; i < this.attributes.length; i++) {
             text += "\t" + this.attributes[i] + " NOT NULL,\n";
         }
@@ -136,19 +130,10 @@ class Entity {
             }
         }
         // If the database is temporal, it needs to have a period, and primary keys need to use UNIQUE, not PRIMARY KEY
-        //if (this.parent.length === 0) {
         if (this.temporal) { 
             text += this.writePeriod();
         } 
         text += this.writePrimaryKey();
-        //} else {
-            //if (this.parent.temporal) { 
-                //text += this.parent.writePeriod();
-             //} else if (this.temporal) { // If the child is temporal but the parent isn't
-                //text += this.writePeriod();
-             //}
-            //text += this.parent.writePrimaryKey();
-        //}
         var foreign_key_exists_flag = false;
         for (var i = 0; i < this.foreignKey.length; i++) {
             if(this.foreignKey[i].entity.hasTable) {

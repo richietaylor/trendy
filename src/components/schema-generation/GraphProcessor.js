@@ -32,11 +32,9 @@ class GraphProcessor {
         await this.priorities();
         const sorter = new SortingUtils();
         this.entities_write = sorter.sort(this.entities_write); // sort the entitiess
-        console.log(this.entities);
     }
 
     async inheritance() {
-        console.log(this.entities);
         for (const key in this.entities) {
             var entity = this.entities[key];
             if (entity.isaID !== null) {
@@ -52,10 +50,8 @@ class GraphProcessor {
         for (const key in this.entities) {
             var entity = this.entities[key];
             if (entity.isaID !== null) {
-                console.log(this.isa_list[entity.isaID]);
                 entity.addPrimaryKeyArray(this.isa_list[entity.isaID].parentEntity.getPrimaryKey());
                 if (this.isa_list[entity.isaID].disjoint && this.isa_list[entity.isaID].complete) {
-                    console.log("DISJOINT AND COMPLETE");
                     entity.addAttributeArray(this.isa_list[entity.isaID].parentEntity.attributes);
                     entity.addOptionalAttributeArray(this.isa_list[entity.isaID].parentEntity.optionalAttributes);
                 }
@@ -331,7 +327,6 @@ class GraphProcessor {
                         final_entity.giveOwnTable();
                         trigger.setInitial(initial_entity);
                         trigger.setFinal(final_entity);
-                        console.log(trigger);
                         this.trigger_list.push(trigger);
                     } else {
                         console.log("Cannot have temporal transitions between non-temporal entities");
