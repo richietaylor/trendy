@@ -34,10 +34,6 @@ document.addEventListener('nodesAndEdgesData', async function(event) {
     Nodes = nodes;
     Edges = edges;
     chronon = timeQuanta;
-    console.log('Received Nodes:', Nodes);
-    console.log('Received Edges:', Edges);
-    console.log('Recieved Quanta Value', timeQuanta);
-    console.log(chronon);
 
     if (Nodes.length > 0 || Edges.length > 0 ) {
         await processGraph();

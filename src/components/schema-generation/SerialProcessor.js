@@ -7,10 +7,6 @@ class SerialProcessor {
         this.nodes = nodes;
         this.edges = edges;
         this.chronon = chronon.toUpperCase();
-        console.log("Got edges:");
-        console.log(edges);
-        console.log("Got nodes:");
-        console.log(nodes);
     }
 
     async getNodes() {
@@ -33,8 +29,6 @@ class SerialProcessor {
             };
             newNodes.push(nodeObject);
         });
-        console.log("newNodes");
-        console.log(newNodes);
         return newNodes;
     }
 
@@ -59,8 +53,6 @@ class SerialProcessor {
             };
             newEdges.push(edgeObject);
         });
-        console.log("newEdges");
-        console.log(newEdges);
         return newEdges;
     }
 
