@@ -767,6 +767,45 @@ function ShapesProExampleApp({
   //   takeSnapshot();
   // };
   
+
+
+
+
+
+
+  // const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       try {
+  //         const content = e.target?.result as string;
+  //         const parsedData = JSON.parse(content);
+  //         const { nodes, edges } = parsedData;
+  
+  //         if (Array.isArray(nodes) && Array.isArray(edges)) {
+  //           console.log("Loaded nodes:", nodes);
+  //           console.log("Loaded edges:", edges);
+  
+  //           setNodes(nodes);
+  //           setEdges(edges);
+
+  
+  //           // Debugging state update
+  //           console.log("Nodes state:", nodes);
+  //           console.log("Edges state:", edges);
+  //         } else {
+  //           console.error('Invalid data structure:', parsedData);
+  //         }
+  //       } catch (error) {
+  //         console.error('Error parsing JSON:', error);
+  //       }
+  //     };
+  
+  //     reader.readAsText(file);
+  //   }
+  //   takeSnapshot();
+  // };
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -781,21 +820,14 @@ function ShapesProExampleApp({
             console.log("Loaded nodes:", nodes);
             console.log("Loaded edges:", edges);
   
-            setNodes(nodes);
-            setEdges(edges);
-
-
-            // // setEdges(edges);
-            // edges.forEach(edge => {
-            //   console.log("Processing edge:", edge);
-            //   setEdges((eds) => addEdge(edge, eds));
-            //   // You can do additional processing here if needed
-            // });
-                        
+            // Ensure all edges have a valid type
+            const updatedEdges = edges.map((edge) => ({
+              ...edge,
+              type: edge.type || 'atemporalEdge', // Default to 'atemporalEdge' if type is missing
+            }));
   
-            // Debugging state update
-            console.log("Nodes state:", nodes);
-            console.log("Edges state:", edges);
+            setNodes(nodes);
+            setEdges(updatedEdges);
           } else {
             console.error('Invalid data structure:', parsedData);
           }
@@ -806,25 +838,32 @@ function ShapesProExampleApp({
   
       reader.readAsText(file);
     }
-    takeSnapshot();
+    // Move takeSnapshot() inside the reader.onload function if needed
   };
-//   const handleReverseEdge = () => {
-//   if (selectedEdge) {
-//     const updatedEdge = {
-//       ...selectedEdge,
-//       source: selectedEdge.target,
-//       target: selectedEdge.source,
-//     };
-
-//     setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
-//     setSelectedEdge(updatedEdge);
-//     takeSnapshot();
-//   }
-// };
   
 
+  
+
+  // const saveToFile = () => {
+  //   const content = JSON.stringify({ nodes, edges }, null, 2);
+  //   const blob = new Blob([content], { type: 'application/json' });
+  //   const url = URL.createObjectURL(blob);
+  //   const a = document.createElement('a');
+  //   a.href = url;
+  //   a.download = 'flow-data.json';
+  //   a.click();
+  //   URL.revokeObjectURL(url);
+  // };
+
+
   const saveToFile = () => {
-    const content = JSON.stringify({ nodes, edges }, null, 2);
+    // Ensure that all edges have their type included
+    const edgesToSave = edges.map((edge) => ({
+      ...edge,
+      type: edge.type || 'atemporalEdge',
+    }));
+  
+    const content = JSON.stringify({ nodes, edges: edgesToSave }, null, 2);
     const blob = new Blob([content], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -833,6 +872,19 @@ function ShapesProExampleApp({
     a.click();
     URL.revokeObjectURL(url);
   };
+  
+
+
+
+
+
+
+
+
+
+
+
+
 
   // const generateSchema: React.MouseEventHandler<HTMLButtonElement> | undefined(){
   //   console.log("Success"),
