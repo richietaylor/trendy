@@ -1,3 +1,5 @@
+// Converts the Graph edge into controlled Natural Language
+
 import { Edge } from '@xyflow/react';
 import { ShapeNode } from 'components/shape/types';
 
