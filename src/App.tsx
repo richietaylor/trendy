@@ -747,6 +747,7 @@ const sendToDriver = () => {
             </label>
           )}
         {selectedEdge.type === 'inheritanceEdge' && (
+          <>
           <label>
             Cover:
             <select value={String(selectedEdge.data?.inheritanceType) || 'Subsumption'} onChange={handleInheritanceTypeChange}>
@@ -754,6 +755,13 @@ const sendToDriver = () => {
               <option value="Cover">True</option>
             </select>
           </label>
+          {selectedEdge.data?.error && (
+                <div style={{ color: 'red', marginTop: '5px' }}>
+                  {String(selectedEdge.data.error)}
+                </div>
+              )}
+          </>
+          
         )}
 
         {selectedEdge.type === 'temporalEdge' && (
