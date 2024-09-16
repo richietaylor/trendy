@@ -1,6 +1,5 @@
 // Toolbar that generates on the left for dragging and dropping Nodes
 
-
 import React, { useState } from 'react';
 import SidebarItem from './sidebar-item';
 import { ShapeComponents, ShapeType } from '../shape/types';

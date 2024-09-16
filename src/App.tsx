@@ -1,4 +1,4 @@
-// This is my main class, and it handles all changes made to the model (acts as a controller)
+// This is my main class, and it handles all changes made to the models
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
