@@ -135,13 +135,6 @@ class Entity {
         } 
         text += this.writePrimaryKey();
         var foreign_key_exists_flag = false;
-        if (this.parent.length !==0) {
-            for(var i=0; i<this.parent.length; i++) {
-                if (this.parent[0].hasTable) {
-                    this.foreignKey.push({entity: this.parent[0]});
-                }
-            }
-        } 
         for (var i = 0; i < this.foreignKey.length; i++) {
             if(this.foreignKey[i].entity.hasTable) {
                 foreign_key_exists_flag = true;
@@ -155,14 +148,31 @@ class Entity {
                 text += ") REFERENCES " + this.foreignKey[i].entity.name + "(";
                 text += this.foreignKey[i].entity.primaryKey[this.foreignKey[i].entity.primaryKey.length - 1].split(" ")[0] + ")\n";
                 text += "\t\tON DELETE CASCADE\n";
-                text += "\t\tON UPDATE CASCADE\n";
+                text += "\t\tON UPDATE CASCADE";
             }
         }
-            
-        if (!foreign_key_exists_flag) {
-            text += "\n";
+        var parent_key_exists_flag = false;
+        for (var i = 0; i < this.parent.length; i++) {
+            if(this.parent[i].hasTable) {
+                parent_key_exists_flag = true;
+                text += ",\n\tCONSTRAINT `" + this.name + "_" + this.parent[i].name + "_foreign_key`\n";
+                text += "\t\tFOREIGN KEY (";
+                for (var j = 0; j < this.parent[i].getPrimaryKey().length - 1; j++) {
+                    text += this.parent[i].getPrimaryKey()[j].split(" ")[0];
+                    text += ", ";
+                }
+                text += this.parent[i].getPrimaryKey()[this.parent[i].getPrimaryKey().length - 1].split(" ")[0];
+                text += ") REFERENCES " + this.parent[i].name + "(";
+                text += this.parent[i].getPrimaryKey()[this.parent[i].getPrimaryKey().length - 1].split(" ")[0] + ")\n";
+                text += "\t\tON DELETE CASCADE\n";
+                if (i == this.parent.length-1) {
+                    text += "\t\tON UPDATE CASCADE";
+                } else {
+                    text += "\t\tON UPDATE CASCADE\n";
+                }
+            }
         }
-        text += ");"; // finish the statement :)
+        text += "\n);"; // finish the statement :)
         return text;
     }
 
