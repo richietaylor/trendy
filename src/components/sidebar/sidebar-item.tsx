@@ -1,3 +1,5 @@
+// Items that exist in the toolbar that are dragged and dropped on the canvass
+
 import { type DragEvent, useRef } from 'react';
 
 import Shape from '../shape';

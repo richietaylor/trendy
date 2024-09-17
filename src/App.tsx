@@ -1,3 +1,5 @@
+// This is my main class, and it handles all changes made to the models
+
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ReactFlow,
@@ -48,23 +50,13 @@ import {generateEdgeVerbalization} from './components/verbalization/edgeVerbaliz
 
 
 
-// import DownloadButton from './components/DownloadButton';
+
 
 const nodeTypes: NodeTypes = {
   shape: ShapeNodeComponent,
 };
 
-// interface ShapeNode extends Node<ShapeNode> {
-//   selected: boolean;
-// }
 
-// const nodeTypes: NodeTypes = {
-//   shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
-// };
-
-// const nodeTypes: NodeTypes = {
-//   shape: ShapeNodeComponent as React.ComponentType<NodeProps<ShapeNode>>,
-// };
 const lightTheme = {
   colors: {
     elevation1: '#e2e8f0',   // Default panel background
@@ -219,14 +211,6 @@ function ShapesProExampleApp({
   };
 
 
-
-  
-
-  // setNodes((nds) => [
-  //     ...nds.map((n) => ({ ...n, selected: false })),
-  //     newNode,
-  //     ]);
-
   const onNodeDragStart: OnNodeDrag = useCallback(() => {
     // 👇 make dragging a node undoable
     takeSnapshot();
@@ -251,45 +235,7 @@ function ShapesProExampleApp({
     setCopiedElements({ nodes: selectedNodes, edges: selectedEdges });
   };
 
-  // const pasteCopiedElements = () => {
-  //   if (copiedElements) {
-  //     const newNodes = copiedElements.nodes.map((node) => ({
-  //       ...node,
-  //       id: `${node.id}-copy-${Date.now()}`,
-  //       position: { x: node.position.x + 20, y: node.position.y + 20 },
-  //       selected: false,
-  //       // data: {
-  //       //   ...node.data,
-  //       //   // Ensure data properties match ShapeNodeData
-  //       //   // You may need to adjust these depending on your actual ShapeNodeData definition
-  //       //   type: node.data.type,
-  //       //   label: node.data.label || '',
-  //       //   identifier: node.data.identifier,
-  //       //   disjoint: node.data.disjoint,
-  //       // },
-  //       data: {
-  //         type: node.data.type,
-  //         label: node.data.label || '',
-  //         identifier: node.data.identifier ?? false,
-  //         disjoint: node.data.disjoint ?? false,
-  //       },
-  //     }));
 
-
-  //     const newEdges = copiedElements.edges.map((edge) => ({
-  //       ...edge,
-  //       id: `${edge.id}-copy-${Date.now()}`,
-  //       source: `${edge.source}-copy-${Date.now()}`,
-  //       target: `${edge.target}-copy-${Date.now()}`,
-  //       selected: false,
-  //     }));
-
-  //     setNodes((nds) => nds.concat(newNodes as unknown as ShapeNode[]));
-  //     setEdges((eds) => eds.concat(newEdges));
-
-  //     takeSnapshot();
-  //   }
-  // };
 
   const pasteCopiedElements = () => {
     if (copiedElements) {
@@ -376,33 +322,21 @@ function ShapesProExampleApp({
     setSelectedEdge(edge);
   };
 
-  // const handleChangeEdgeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const newType = event.target.value;
-  //   if (selectedEdge) {
-  //     setEdges((eds) =>
-  //       eds.map((edge) => (edge.id === selectedEdge.id ? { ...edge, type: newType } : edge))
-  //     );
-  //     // setSelectedEdge(null); // Deselect the edge after updating its type
-  //     setSelectedEdge((prevEdge) => prevEdge ? { ...prevEdge, type: newType } : null);
-      
-  //   }
-  //   takeSnapshot();
-  // };
+
   const handleReverseEdge = useCallback(() => {
     if (selectedEdge) {
-      // Swap the source and target of the selected edge
+
       const updatedEdge = {
         ...selectedEdge,
         source: selectedEdge.target,
         target: selectedEdge.source,
-        sourceHandle: selectedEdge.targetHandle,  // Swap the handles as well
-        targetHandle: selectedEdge.sourceHandle,  // Swap the handles as well  
+        sourceHandle: selectedEdge.targetHandle, 
+        targetHandle: selectedEdge.sourceHandle,  
       };
 
-      // Update the edge in the edges array
       setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
 
-      // Keep the edge selected after swapping
+     
       setSelectedEdge(updatedEdge);
     }
   }, [selectedEdge, setEdges]);
@@ -410,15 +344,15 @@ function ShapesProExampleApp({
   const handleChangeEdgeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newType = event.target.value;
     if (selectedEdge) {
-      // Update the label to empty if the type is "atemporalEdge" (default)
+
       const newLabel = newType === 'atemporalEdge' ? '' : selectedEdge.data?.label;
   
       const updatedEdge = {
         ...selectedEdge,
         type: newType,
         selected: true,
-        style: { ...selectedEdge.style, stroke: 'grey' }, // Apply grey color when selected
-        data: { ...selectedEdge.data, label: newLabel },  // Update the label if necessary
+        style: { ...selectedEdge.style, stroke: 'grey' }, 
+        data: { ...selectedEdge.data, label: newLabel },  
       };
   
       // Update the edges state
@@ -433,37 +367,7 @@ function ShapesProExampleApp({
       takeSnapshot();
     }
   };
-  
-  // const handleChangeEdgeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const newType = event.target.value;
-  //   if (selectedEdge) {
-  //     const updatedEdge = { ...selectedEdge, type: newType, selected: true,style: {...selectedEdge.style, stroke: 'grey'} };
-  //     setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
-  //     setSelectedEdge(updatedEdge);
-  //   }
-  //   takeSnapshot();
-  // };
-  
 
-
-  // const handleChangeOptional = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const newOptional = event.target.value;
-  //   if (selectedEdge) {
-  //     setEdges((eds) =>
-  //       eds.map((edge) =>
-  //         edge.id === selectedEdge.id
-  //           ? { ...edge, data: { ...edge.data, optional: newOptional } }
-  //           : edge
-  //       )
-  //     );
-  //     setSelectedEdge((prevEdge) =>
-  //       prevEdge
-  //         ? { ...prevEdge, data: { ...prevEdge.data, optional: newOptional } }
-  //         : null
-  //     );
-  //   }
-  //   takeSnapshot();
-  // };
 
   const handleChangeOptional = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newOptional = event.target.value;
@@ -476,20 +380,6 @@ function ShapesProExampleApp({
   };
   
 
-
-  // const handleChangeEdgeLabel = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const newLabel = event.target.value;
-  //   if (selectedEdge) {
-  //     setEdges((eds) =>
-  //       eds.map((edge) => 
-  //         edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, label: newLabel } } : edge
-  //       )
-  //     );
-  //     // setSelectedEdge((psrevEdge) => prevEdge ? { ...prevEdge, data: { ...prevEdge.data, label: newLabel } } : null);
-  //   }
-  //   takeSnapshot();
-  // };
-
   const handleChangeEdgeLabel = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newLabel = event.target.value;
     if (selectedEdge) {
@@ -501,24 +391,7 @@ function ShapesProExampleApp({
   };
   
 
-  // const handleChangeQuantitative = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const newQuantitative = event.target.value === 'true';
-  //   if (selectedEdge) {
-  //     setEdges((eds) =>
-  //       eds.map((edge) =>
-  //         edge.id === selectedEdge.id
-  //           ? { ...edge, data: { ...edge.data, quantitative: newQuantitative, value: '' } }
-  //           : edge
-  //       )
-  //     );
-  //     setSelectedEdge((prevEdge) =>
-  //       prevEdge
-  //         ? { ...prevEdge, data: { ...prevEdge.data, quantitative: newQuantitative, value: '' } }
-  //         : null
-  //     );
-  //   }
-  //   takeSnapshot();
-  // };
+
   const handleChangeQuantitative = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newQuantitative = event.target.value === 'true';
     if (selectedEdge) {
@@ -528,26 +401,7 @@ function ShapesProExampleApp({
     }
     takeSnapshot();
   };
-  
 
-  // const handleChangeQuantitativeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newValue = event.target.value;
-  //   if (selectedEdge) {
-  //     setEdges((eds) =>
-  //       eds.map((edge) =>
-  //         edge.id === selectedEdge.id
-  //           ? { ...edge, data: { ...edge.data, value: newValue } }
-  //           : edge
-  //       )
-  //     );
-  //     setSelectedEdge((prevEdge) =>
-  //       prevEdge
-  //         ? { ...prevEdge, data: { ...prevEdge.data, value: newValue } }
-  //         : null
-  //     );
-  //   }
-  //   takeSnapshot();
-  // };
   const handleChangeQuantitativeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     if (selectedEdge) {
@@ -559,18 +413,6 @@ function ShapesProExampleApp({
   };
   
 
-  // const handleChangePersistent = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const newPersistent = event.target.value === 'true';
-  //   if (selectedEdge) {
-  //     setEdges((eds) =>
-  //       eds.map((edge) =>
-  //         edge.id === selectedEdge.id ? { ...edge, data: { ...edge.data, persistent: newPersistent } } : edge
-  //       )
-  //     );
-  //     setSelectedEdge((prevEdge) => (prevEdge ? { ...prevEdge, data: { ...prevEdge.data, persistent: newPersistent } } : null));
-  //   }
-  //   takeSnapshot();
-  // };
 
   const handleChangePersistent = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newPersistent = event.target.value === 'true';
@@ -596,29 +438,7 @@ function ShapesProExampleApp({
     takeSnapshot();
   };
 
-  // const handleChangeCardinalityStart = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   if (!selectedEdge) {
-  //     return;
-  //   }
-  
-  //   const newCardinalityStart = event.target.value;
-  //   const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityStart: newCardinalityStart } };
-  //   setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
-  //   setSelectedEdge(updatedEdge);
-  //   takeSnapshot();
-  // };
-  
-  // const handleChangeCardinalityEnd = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   if (!selectedEdge) {
-  //     return;
-  //   }
-  
-  //   const newCardinalityEnd = event.target.value;
-  //   const updatedEdge = { ...selectedEdge, data: { ...selectedEdge.data, cardinalityEnd: newCardinalityEnd } };
-  //   setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
-  //   setSelectedEdge(updatedEdge);
-  //   takeSnapshot();
-  // };
+
   const handleChangeCardinality = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (!selectedEdge) {
       return;
@@ -658,31 +478,6 @@ function ShapesProExampleApp({
     );
   };
 
-  // const onConnect = (params: Edge | Connection) => {
-  //   const sourceNode = nodes.find((node) => node.id === params.source);
-  //   const targetNode = nodes.find((node) => node.id === params.target);
-  
-  //   if ((params as Edge).type === 'temporalEdge' && !isValidTemporalEdgeConnection(sourceNode, targetNode)) {
-  //     const error = `Invalid temporal edge between ${sourceNode?.data.label} and ${targetNode?.data.label}`;
-  //     setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, error } } as Edge, eds));
-  //   } else {
-  //     setEdges((eds) => addEdge(params, eds));
-  //   }
-  
-  //   takeSnapshot();
-  // };
-
-
-
-
-  // const onConnect = (params: Edge | Connection) => {
-  //   if ('data' in params) {
-  //     setEdges((eds) => addEdge({ ...params, style: { stroke: 'red', strokeWidth: 2 }, data: { ...params.data, Error } } as Edge, eds));
-  //   } else {
-  //     setEdges((eds) => addEdge(params, eds));
-  //   }
-  //   takeSnapshot();
-  // };
 
   const onConnect = (params: Edge | Connection) => {
     if ('data' in params) {
@@ -735,38 +530,6 @@ function ShapesProExampleApp({
     return entityTypes.includes(String(sourceNode?.data.type)) && entityTypes.includes(String(targetNode?.data.type));
   };
 
-  // const handleReverseEdge = () => {
-  //   if (selectedEdge) {
-  //     const updatedEdge = {
-  //       ...selectedEdge,
-  //       source: selectedEdge.target,
-  //       target: selectedEdge.source,
-  //     };
-  
-  //     setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
-  //     setSelectedEdge(updatedEdge);
-  //     takeSnapshot();
-  //   }
-  // };
-  
-
-  // const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       const content = e.target?.result;
-  //       const { nodes, edges } = JSON.parse(content as string);
-  //       setNodes(nodes);
-  //       setEdges(edges);
-  //       // console.log("Loaded edges:", edges);
-  //     };
-      
-  //     reader.readAsText(file);
-  //   }
-  //   takeSnapshot();
-  // };
-  
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -781,21 +544,14 @@ function ShapesProExampleApp({
             console.log("Loaded nodes:", nodes);
             console.log("Loaded edges:", edges);
   
-            setNodes(nodes);
-            setEdges(edges);
-
-
-            // // setEdges(edges);
-            // edges.forEach(edge => {
-            //   console.log("Processing edge:", edge);
-            //   setEdges((eds) => addEdge(edge, eds));
-            //   // You can do additional processing here if needed
-            // });
-                        
+            // Ensure all edges have a valid type
+            const updatedEdges = edges.map((edge) => ({
+              ...edge,
+              type: edge.type || 'atemporalEdge', // Default to 'atemporalEdge' if type is missing
+            }));
   
-            // Debugging state update
-            console.log("Nodes state:", nodes);
-            console.log("Edges state:", edges);
+            setNodes(nodes);
+            setEdges(updatedEdges);
           } else {
             console.error('Invalid data structure:', parsedData);
           }
@@ -806,25 +562,21 @@ function ShapesProExampleApp({
   
       reader.readAsText(file);
     }
-    takeSnapshot();
+    // Move takeSnapshot() inside the reader.onload function if needed
   };
-//   const handleReverseEdge = () => {
-//   if (selectedEdge) {
-//     const updatedEdge = {
-//       ...selectedEdge,
-//       source: selectedEdge.target,
-//       target: selectedEdge.source,
-//     };
-
-//     setEdges((eds) => eds.map((edge) => (edge.id === selectedEdge.id ? updatedEdge : edge)));
-//     setSelectedEdge(updatedEdge);
-//     takeSnapshot();
-//   }
-// };
   
 
+
+
+
   const saveToFile = () => {
-    const content = JSON.stringify({ nodes, edges }, null, 2);
+    // Ensure that all edges have their type included
+    const edgesToSave = edges.map((edge) => ({
+      ...edge,
+      type: edge.type || 'atemporalEdge',
+    }));
+  
+    const content = JSON.stringify({ nodes, edges: edgesToSave }, null, 2);
     const blob = new Blob([content], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -833,6 +585,19 @@ function ShapesProExampleApp({
     a.click();
     URL.revokeObjectURL(url);
   };
+  
+
+
+
+
+
+
+
+
+
+
+
+
 
   // const generateSchema: React.MouseEventHandler<HTMLButtonElement> | undefined(){
   //   console.log("Success"),
@@ -982,6 +747,7 @@ const sendToDriver = () => {
             </label>
           )}
         {selectedEdge.type === 'inheritanceEdge' && (
+          <>
           <label>
             Cover:
             <select value={String(selectedEdge.data?.inheritanceType) || 'Subsumption'} onChange={handleInheritanceTypeChange}>
@@ -989,6 +755,13 @@ const sendToDriver = () => {
               <option value="Cover">True</option>
             </select>
           </label>
+          {selectedEdge.data?.error && (
+                <div style={{ color: 'red', marginTop: '5px' }}>
+                  {String(selectedEdge.data.error)}
+                </div>
+              )}
+          </>
+          
         )}
 
         {selectedEdge.type === 'temporalEdge' && (

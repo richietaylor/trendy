@@ -24,7 +24,6 @@ const defaultOptions: UseUndoRedoOptions = {
   enableShortcuts: true,
 };
 
-// https://redux.js.org/usage/implementing-undo-history
 export const useUndoRedo: UseUndoRedo = ({
   maxHistorySize = defaultOptions.maxHistorySize,
   enableShortcuts = defaultOptions.enableShortcuts,

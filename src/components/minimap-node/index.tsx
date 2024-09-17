@@ -1,3 +1,7 @@
+// Unused feature
+
+
+
 // import { type MiniMapNodeProps, useInternalNode } from '@xyflow/react';
 // import { ShapeComponents, ShapeNode } from '../shape/types';
 
