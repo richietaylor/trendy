@@ -135,6 +135,13 @@ class Entity {
         } 
         text += this.writePrimaryKey();
         var foreign_key_exists_flag = false;
+        if (this.parent.length !==0) {
+            for(var i=0; i<this.parent.length; i++) {
+                if (this.parent[0].hasTable) {
+                    this.foreignKey.push({entity: this.parent[0]});
+                }
+            }
+        } 
         for (var i = 0; i < this.foreignKey.length; i++) {
             if(this.foreignKey[i].entity.hasTable) {
                 foreign_key_exists_flag = true;

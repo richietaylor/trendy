@@ -39,6 +39,7 @@ class GraphProcessor {
             var entity = this.entities[key];
             if (entity.isaID !== null) {
                 entity.addParent(this.isa_list[entity.isaID].parentEntity);
+                this.order_statements.push({"before": this.isa_list[entity.isaID].parentEntity.getID(),"after": entity.getID()})
                 if (entity.parent[0].temporal) { // If the parent is temporal, the child should be temporal
                     entity.temporal = true;
                 }
