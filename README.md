@@ -1,7 +1,7 @@
 # TRENDy
 
 Designing a graphical modelling tool for the trend
-Temporal Conceptual Data Modelling Language, the production build of this project can be found [here](https://trendy-blue.vercel.app/).
+Temporal Conceptual Data Modelling Language, the production build of this project can be found [here](https://trendy-blue.vercel.app/), and a demo video of the project can be found [here](https://www.dropbox.com/scl/fi/q4lso59ymzt0hxap1wkh2/TRENDy-Demo.mp4?rlkey=yp7o8ong4pkhrqu1legw7hqbi&st=74cqpf99&dl=0).
 
 ## Table of Contents
 
